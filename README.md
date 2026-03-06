@@ -8,7 +8,7 @@ The main reasons are:
 - Lack of time
 - Lack of digital marketing knowledge
 - Lack of resources to hire professionals
-- 
+  
 As a result, many of these businesses have low online visibility and lose opportunities to attract new customers.
 
 ## Solution
