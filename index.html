@@ -2,11 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LocalBoost IA - Marketing Content Generator</title>
     <meta name="description" content="Generate marketing content with AI for local businesses - Genera contenido de marketing con IA para negocios locales">
     <meta name="keywords" content="marketing, AI, local business, social media, content generator, marketing digital">
     <meta name="author" content="LocalBoost IA">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="background-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="LocalBoost IA">
+    <meta name="application-name" content="LocalBoost IA">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="shortcut icon" href="/icons/icon-192x192.png">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -283,6 +312,21 @@
         </main>
     </div>
 
+    <!-- PWA Install Button -->
+    <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display: none;">
+        <div class="pwa-install-content">
+            <div class="pwa-install-icon">📱</div>
+            <div class="pwa-install-text">
+                <h4>Install LocalBoost IA</h4>
+                <p>Get the full experience with our mobile app</p>
+            </div>
+            <div class="pwa-install-actions">
+                <button id="pwaInstallBtn" class="pwa-install-btn">Install App</button>
+                <button id="pwaDismissBtn" class="pwa-dismiss-btn">Not Now</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Conversational AI Chatbot -->
     <div id="chatbotContainer" class="chatbot-container">
         <div id="chatbotToggle" class="chatbot-toggle">
@@ -345,6 +389,76 @@
         </div>
     </div>
 
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New content is available
+                                    if (confirm('New version available! Reload to update?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const pwaInstallPrompt = document.getElementById('pwaInstallPrompt');
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        const pwaDismissBtn = document.getElementById('pwaDismissBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt after 3 seconds
+            setTimeout(() => {
+                if (pwaInstallPrompt && !localStorage.getItem('pwaInstallDismissed')) {
+                    pwaInstallPrompt.style.display = 'block';
+                }
+            }, 3000);
+        });
+
+        pwaInstallBtn?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+                pwaInstallPrompt.style.display = 'none';
+            }
+        });
+
+        pwaDismissBtn?.addEventListener('click', () => {
+            pwaInstallPrompt.style.display = 'none';
+            localStorage.setItem('pwaInstallDismissed', 'true');
+        });
+
+        // Hide install prompt when app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            pwaInstallPrompt.style.display = 'none';
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
