@@ -23,30 +23,55 @@ class MarketingContentGenerator {
         const socialMedia = document.getElementById('socialMedia').value;
         const format = document.getElementById('format').value;
         const communicationStyle = document.getElementById('communicationStyle').value;
+        const contentType = document.getElementById('contentType').value;
+        const imageOption = document.getElementById('imageOption').value;
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
         if (!language || !businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
-            this.showAlert(language === 'es' ? 'Por favor complete todos los campos' : 'Please fill in all fields');
+            this.showAlert(language === 'es' ? 'Por favor complete todos los campos' : language === 'ca' ? 'Si us plau, completeu tots els camps' : 'Please fill in all fields');
             return;
         }
 
         this.showLoadingState();
 
         setTimeout(() => {
-            const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
-            this.displayResults(content);
+            if (contentType === 'complete') {
+                const content = this.generateCompletePost(language, businessType, socialMedia, communicationStyle, dailyProducts, promotions);
+                this.displayCompleteResults(content, language);
+            } else if (contentType === 'ai-enhanced') {
+                const content = this.generateAIEnhancedContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions, imageOption);
+                this.displayAIEnhancedResults(content, language);
+            } else {
+                const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
+                this.displayResults(content, language);
+            }
         }, 1000);
     }
 
     createMarketingContent(language, businessType, socialMedia, format, communicationStyle, products, promotions) {
         const businessTypeNames = {
-            restaurant: language === 'es' ? 'Restaurante/Café' : 'Restaurant/Café',
-            retail: language === 'es' ? 'Tienda Minorista' : 'Retail Store',
-            service: language === 'es' ? 'Negocio de Servicios' : 'Service Business',
-            beauty: language === 'es' ? 'Belleza/Salón' : 'Beauty/Salon',
-            fitness: language === 'es' ? 'Fitness/Gimnasio' : 'Fitness/Gym',
-            other: language === 'es' ? 'Negocio' : 'Business'
+            restaurant: language === 'es' ? 'Restaurante/Café' : language === 'ca' ? 'Restaurant/Cafè' : 'Restaurant/Café',
+            retail: language === 'es' ? 'Tienda Minorista' : language === 'ca' ? 'Botiga Minorista' : 'Retail Store',
+            service: language === 'es' ? 'Negocio de Servicios' : language === 'ca' ? 'Negoci de Serveis' : 'Service Business',
+            beauty: language === 'es' ? 'Belleza/Salón' : language === 'ca' ? 'Bellesa/Saló' : 'Beauty/Salon',
+            fitness: language === 'es' ? 'Fitness/Gimnasio' : language === 'ca' ? 'Fitness/Gimnàs' : 'Fitness/Gym',
+            bakery: language === 'es' ? 'Panadería/Pastelería' : language === 'ca' ? 'Forn/Pastisseria' : 'Bakery/Pastry',
+            grocery: language === 'es' ? 'Supermercado/Tienda de Alimentos' : language === 'ca' ? 'Supermercat/Botiga d\'Aliments' : 'Grocery Store/Food Shop',
+            pharmacy: language === 'es' ? 'Farmacia' : language === 'ca' ? 'Farmàcia' : 'Pharmacy',
+            petshop: language === 'es' ? 'Tienda de Mascotas/Veterinaria' : language === 'ca' ? 'Botiga de Mascotes/Veterinari' : 'Pet Shop/Veterinary',
+            hardware: language === 'es' ? 'Ferretería' : language === 'ca' ? 'Ferreteria' : 'Hardware Store',
+            flowers: language === 'es' ? 'Florería' : language === 'ca' ? 'Floristeria' : 'Flower Shop',
+            butcher: language === 'es' ? 'Carnicería' : language === 'ca' ? 'Carnisseria' : 'Butcher Shop',
+            fishmonger: language === 'es' ? 'Pescadería' : language === 'ca' ? 'Peixateria' : 'Fishmonger',
+            stationery: language === 'es' ? 'Papelería' : language === 'ca' ? 'Papeteria' : 'Stationery Store',
+            laundry: language === 'es' ? 'Lavandería' : language === 'ca' ? 'Bugaderia' : 'Laundry',
+            shoes: language === 'es' ? 'Zapatería' : language === 'ca' ? 'Sabateria' : 'Shoe Store',
+            books: language === 'es' ? 'Librería' : language === 'ca' ? 'Llibreria' : 'Bookstore',
+            toys: language === 'es' ? 'Juguetería' : language === 'ca' ? 'Joguina' : 'Toy Store',
+            jewelry: language === 'es' ? 'Joyería' : language === 'ca' ? 'Joieria' : 'Jewelry Store',
+            optics: language === 'es' ? 'Óptica' : language === 'ca' ? 'Òptica' : 'Optics',
+            other: language === 'es' ? 'Otro' : language === 'ca' ? 'Altres' : 'Other'
         };
 
         const businessName = businessTypeNames[businessType] || (language === 'es' ? 'Negocio' : 'Business');
@@ -86,6 +111,13 @@ class MarketingContentGenerator {
                 adjectives: ['exquisito', 'premium', 'refinado', 'lujoso', 'excepcional'],
                 callsToAction: ['Le invitamos a experimentar', 'Permítanos presentarle', 'Descubra la elegancia de'],
                 hashtags: ['#Lujo', '#Elegancia', '#Sofisticado', '#CalidadPremium']
+            } : language === 'ca' ? {
+                greeting: 'Estimat',
+                closing: 'Amb la màxima consideració',
+                tone: 'sofisticat',
+                adjectives: ['exquisit', 'premium', 'refinat', 'de luxe', 'excepcional'],
+                callsToAction: ['Us convidem a experimentar', 'Permeteu-nos presentar-vos', 'Descobriu l\'elegància de'],
+                hashtags: ['#Lux', '#Elegància', '#Sofisticat', '#QualitatPremium']
             } : {
                 greeting: 'Esteemed',
                 closing: 'With utmost regards',
@@ -101,6 +133,13 @@ class MarketingContentGenerator {
                 adjectives: ['increíble', 'maravilloso', 'fantástico', 'genial', 'increíble'],
                 callsToAction: ['Ven a pasar el rato', 'Únete a nosotros para', 'Disfrutemos juntos'],
                 hashtags: ['#Familia', '#Comunidad', '#Amigable', '#Juntos']
+            } : language === 'ca' ? {
+                greeting: 'Hola',
+                closing: 'Cordialment',
+                tone: 'acollidor',
+                adjectives: ['increïble', 'meravellós', 'fantàstic', 'genial', 'increïble'],
+                callsToAction: ['Vine a passar l\'estona', 'Uneix-te a nosaltres per', 'Gaudim junts'],
+                hashtags: ['#Familia', '#Comunitat', '#Amigable', '#Junts']
             } : {
                 greeting: 'Hey there',
                 closing: 'Warmly',
@@ -116,6 +155,13 @@ class MarketingContentGenerator {
                 adjectives: ['bueno', 'agradable', 'calidad', 'fresco', 'local'],
                 callsToAction: ['Visítanos', 'Prueba nuestro', 'Consigue tu'],
                 hashtags: ['#Simple', '#Directo', '#SinComplicaciones', '#Calidad']
+            } : language === 'ca' ? {
+                greeting: 'Hola',
+                closing: 'Gràcies',
+                tone: 'directe',
+                adjectives: ['bo', 'agradable', 'qualitat', 'fresc', 'local'],
+                callsToAction: ['Visita\'ns', 'Prova el nostre', 'Aconsegueix el teu'],
+                hashtags: ['#Simple', '#Directe', '#SenseComplicacions', '#Qualitat']
             } : {
                 greeting: 'Hello',
                 closing: 'Thanks',
@@ -131,6 +177,13 @@ class MarketingContentGenerator {
                 adjectives: ['tendencia', 'viral', 'épico', 'genial', 'increíble'],
                 callsToAction: ['Sube de nivel con', 'Experimenta el vibe', 'Entérate de'],
                 hashtags: ['#Tendencia', '#Moderno', '#Viral', '#SiguienteNivel']
+            } : language === 'ca' ? {
+                greeting: 'Com va',
+                closing: 'Salutacions',
+                tone: 'trendy',
+                adjectives: ['tendència', 'viral', 'èpic', 'genial', 'increïble'],
+                callsToAction: ['Puja de nivell amb', 'Experimenta el vibe', 'Assabenta\'t de'],
+                hashtags: ['#Tendència', '#Modern', '#Viral', '#SegüentNivell']
             } : {
                 greeting: 'Hi',
                 closing: 'Cheers',
@@ -499,6 +552,214 @@ class MarketingContentGenerator {
         return `<ul>${campaigns.map(campaign => `<li><strong>${campaign.title}</strong><br>${campaign.description}</li>`).join('')}</ul>`;
     }
 
+    generateAIEnhancedContent(language, businessType, socialMedia, format, communicationStyle, products, promotions, imageOption) {
+        const businessTypeNames = {
+            restaurant: language === 'es' ? 'Restaurante/Café' : language === 'ca' ? 'Restaurant/Cafè' : 'Restaurant/Café',
+            retail: language === 'es' ? 'Tienda Minorista' : language === 'ca' ? 'Botiga Minorista' : 'Retail Store',
+            service: language === 'es' ? 'Negocio de Servicios' : language === 'ca' ? 'Negoci de Serveis' : 'Service Business',
+            beauty: language === 'es' ? 'Belleza/Salón' : language === 'ca' ? 'Bellesa/Saló' : 'Beauty/Salon',
+            fitness: language === 'es' ? 'Fitness/Gimnasio' : language === 'ca' ? 'Fitness/Gimnàs' : 'Fitness/Gym',
+            bakery: language === 'es' ? 'Panadería/Pastelería' : language === 'ca' ? 'Forn/Pastisseria' : 'Bakery/Pastry',
+            grocery: language === 'es' ? 'Supermercado/Tienda de Alimentos' : language === 'ca' ? 'Supermercat/Botiga d\'Aliments' : 'Grocery Store/Food Shop',
+            pharmacy: language === 'es' ? 'Farmacia' : language === 'ca' ? 'Farmàcia' : 'Pharmacy',
+            petshop: language === 'es' ? 'Tienda de Mascotas/Veterinaria' : language === 'ca' ? 'Botiga de Mascotes/Veterinari' : 'Pet Shop/Veterinary',
+            hardware: language === 'es' ? 'Ferretería' : language === 'ca' ? 'Ferreteria' : 'Hardware Store',
+            flowers: language === 'es' ? 'Florería' : language === 'ca' ? 'Floristeria' : 'Flower Shop',
+            butcher: language === 'es' ? 'Carnicería' : language === 'ca' ? 'Carnisseria' : 'Butcher Shop',
+            fishmonger: language === 'es' ? 'Pescadería' : language === 'ca' ? 'Peixateria' : 'Fishmonger',
+            stationery: language === 'es' ? 'Papelería' : language === 'ca' ? 'Papeteria' : 'Stationery Store',
+            laundry: language === 'es' ? 'Lavandería' : language === 'ca' ? 'Bugaderia' : 'Laundry',
+            shoes: language === 'es' ? 'Zapatería' : language === 'ca' ? 'Sabateria' : 'Shoe Store',
+            books: language === 'es' ? 'Librería' : language === 'ca' ? 'Llibreria' : 'Bookstore',
+            toys: language === 'es' ? 'Juguetería' : language === 'ca' ? 'Joguina' : 'Toy Store',
+            jewelry: language === 'es' ? 'Joyería' : language === 'ca' ? 'Joieria' : 'Jewelry Store',
+            optics: language === 'es' ? 'Óptica' : language === 'ca' ? 'Òptica' : 'Optics',
+            other: language === 'es' ? 'Otro' : language === 'ca' ? 'Altres' : 'Other'
+        };
+
+        const businessName = businessTypeNames[businessType] || (language === 'es' ? 'Negocio' : language === 'ca' ? 'Negoci' : 'Business');
+        const productsList = products.split(',').map(p => p.trim()).filter(p => p);
+        const promotionsList = promotions.split(',').map(p => p.trim()).filter(p => p);
+        
+        const style = this.getStyleTemplates(communicationStyle, language);
+        
+        // Generate Gemini prompts for image creation
+        const geminiPrompts = this.generateGeminiPrompts(language, businessName, socialMedia, style, productsList, promotionsList, imageOption);
+        
+        // Generate enhanced content
+        const socialMediaContent = this.generateSocialMediaContent(language, businessName, socialMedia, format, communicationStyle, productsList, promotionsList);
+        const productPromotion = this.generateProductPromotion(language, businessName, communicationStyle, productsList, promotionsList);
+        const newsletterMessage = this.generateNewsletterMessage(language, businessName, communicationStyle, productsList, promotionsList);
+        const campaignIdeas = this.generateCampaignIdeas(language, businessName, communicationStyle, productsList, promotionsList);
+        const imageSuggestions = this.generateImageSuggestions(language, businessName, socialMedia, format, communicationStyle, productsList);
+
+        return {
+            geminiPrompts,
+            socialMedia: socialMediaContent,
+            imageSuggestions: imageSuggestions,
+            productPromotion: productPromotion,
+            newsletter: newsletterMessage,
+            campaigns: campaignIdeas,
+            businessName,
+            imageOption
+        };
+    }
+
+    generateGeminiPrompts(language, businessName, socialMedia, style, products, promotions, imageOption) {
+        const basePrompts = [];
+        
+        // Instagram prompts
+        if (socialMedia === 'instagram' || socialMedia === 'all') {
+            basePrompts.push({
+                platform: 'Instagram',
+                format: 'Square Post (1:1)',
+                prompt: language === 'es' ? 
+                    `Crea una imagen profesional para Instagram de ${businessName}. Muestra ${products[0] || 'producto principal'} en un estilo ${style.adjectives[0]}. Fondo minimalista con colores ${style.adjectives[1]}. Iluminación profesional. Texto sutil: "${style.callsToAction[0]} ahora". Sin elementos distractivos. Estilo comercial atractivo.` :
+                    language === 'ca' ?
+                    `Crea una imatge professional per Instagram de ${businessName}. Mostra ${products[0] || 'producte principal'} en un estil ${style.adjectives[0]}. Fons minimalista amb colors ${style.adjectives[1]}. Il·luminació professional. Text subtil: "${style.callsToAction[0]} ara". Sense elements distractors. Estil comercial atractiu.` :
+                    `Create a professional Instagram image for ${businessName}. Show ${products[0] || 'main product'} in a ${style.adjectives[0]} style. Minimalist background with ${style.adjectives[1]} colors. Professional lighting. Subtle text: "${style.callsToAction[0]} now". No distracting elements. Attractive commercial style.`,
+                geminiUrl: 'https://gemini.google.com/app?hl=es-ES'
+            });
+            
+            basePrompts.push({
+                platform: 'Instagram',
+                format: 'Story (9:16)',
+                prompt: language === 'es' ? 
+                    `Diseña una story vertical para Instagram de ${businessName}. Animación de ${products[0] || 'producto'} con efectos ${style.adjectives[2]}. Colores vibrantes pero profesionales. Texto grande: "${promotions[0] || 'OFERTA ESPECIAL'}". Elementos dinámicos. Duración 15 segundos.` :
+                    language === 'ca' ?
+                    `Dissenya una story vertical per Instagram de ${businessName}. Animació de ${products[0] || 'producte'} amb efectes ${style.adjectives[2]}. Colors vibrants però professionals. Text gran: "${promotions[0] || 'OFERTA ESPECIAL'}". Elements dinàmics. Durada 15 segons.` :
+                    `Design a vertical Instagram story for ${businessName}. Animation of ${products[0] || 'product'} with ${style.adjectives[2]} effects. Vibrant but professional colors. Large text: "${promotions[0] || 'SPECIAL OFFER'}". Dynamic elements. 15 seconds duration.`,
+                geminiUrl: 'https://gemini.google.com/app?hl=es-ES'
+            });
+        }
+        
+        // TikTok prompts
+        if (socialMedia === 'tiktok' || socialMedia === 'all') {
+            basePrompts.push({
+                platform: 'TikTok',
+                format: 'Vertical Video (9:16)',
+                prompt: language === 'es' ? 
+                    `Crea un video corto para TikTok mostrando ${products[0] || 'producto'} de ${businessName}. Estilo ${style.adjectives[3]} con música trendy. Transiciones rápidas. Texto animado: "¡${style.adjectives[4]} calidad!". Efectos de brillo. Formato vertical optimizado para móvil.` :
+                    language === 'ca' ?
+                    `Crea un video curt per TikTok mostrant ${products[0] || 'producte'} de ${businessName}. Estil ${style.adjectives[3]} amb música trendy. Transicions ràpides. Text animat: "¡${style.adjectives[4]} qualitat!". Efectes de brillantor. Format vertical optimitzat per mòbil.` :
+                    `Create a short TikTok video showing ${products[0] || 'product'} from ${businessName}. ${style.adjectives[3]} style with trending music. Quick transitions. Animated text: "${style.adjectives[4]} quality!". Sparkle effects. Mobile-optimized vertical format.`,
+                geminiUrl: 'https://gemini.google.com/app?hl=es-ES'
+            });
+        }
+        
+        // Facebook prompts
+        if (socialMedia === 'facebook' || socialMedia === 'all') {
+            basePrompts.push({
+                platform: 'Facebook',
+                format: 'Post Image (1200x630)',
+                prompt: language === 'es' ? 
+                    `Genera una imagen para Facebook de ${businessName}. Muestra ${products.slice(0, 2).join(' y ')} en un entorno ${style.tone}. Colores corporativos. Texto: "${promotions[0] || 'DESCUENTOS ESPECIALES'}". Estilo profesional pero accesible. Buen espacio para texto superpuesto.` :
+                    language === 'ca' ?
+                    `Genera una imatge per Facebook de ${businessName}. Mostra ${products.slice(0, 2).join(' i ')} en un entorn ${style.tone}. Colors corporatius. Text: "${promotions[0] || 'DESCOMPTE ESPECIAL'}". Estil professional però accessible. Bon espai per text superposat.` :
+                    `Generate a Facebook image for ${businessName}. Show ${products.slice(0, 2).join(' and ')} in a ${style.tone} environment. Corporate colors. Text: "${promotions[0] || 'SPECIAL DISCOUNTS'}". Professional but accessible style. Good space for overlay text.`,
+                geminiUrl: 'https://gemini.google.com/app?hl=es-ES'
+            });
+        }
+        
+        // X/Twitter prompts
+        if (socialMedia === 'twitter' || socialMedia === 'all') {
+            basePrompts.push({
+                platform: 'X/Twitter',
+                format: 'Header Image (1500x500)',
+                prompt: language === 'es' ? 
+                    `Crea una imagen para X/Twitter de ${businessName}. Diseño ${style.adjectives[0]} con ${products[0] || 'producto'} como elemento principal. Minimalista pero impactante. Texto corto: "Calidad ${style.adjectives[1]}". Alto contraste. Formato horizontal optimizado para la plataforma.` :
+                    language === 'ca' ?
+                    `Crea una imatge per X/Twitter de ${businessName}. Disseny ${style.adjectives[0]} amb ${products[0] || 'producte'} com a element principal. Minimalista però impactant. Text curt: "Qualitat ${style.adjectives[1]}". Alt contrast. Format horitzontal optimitzat per la plataforma.` :
+                    `Create a X/Twitter image for ${businessName}. ${style.adjectives[0]} design with ${products[0] || 'product'} as main element. Minimalist but impactful. Short text: "${style.adjectives[1]} Quality". High contrast. Platform-optimized horizontal format.`,
+                geminiUrl: 'https://gemini.google.com/app?hl=es-ES'
+            });
+        }
+        
+        return basePrompts;
+    }
+
+    generateCompletePost(language, businessName, socialMedia, communicationStyle, products, promotions) {
+        const style = this.getStyleTemplates(communicationStyle, language);
+        
+        const themes = {
+            motivation: language === 'es' ? 'motivación' : language === 'ca' ? 'motivació' : 'motivation',
+            growth: language === 'es' ? 'crecimiento personal' : language === 'ca' ? 'creixement personal' : 'personal growth', 
+            business: language === 'es' ? 'negocios online' : language === 'ca' ? 'negocis online' : 'online business',
+            mindset: language === 'es' ? 'mentalidad' : language === 'ca' ? 'mentalitat' : 'mindset',
+            productivity: language === 'es' ? 'productividad' : language === 'ca' ? 'productivitat' : 'productivity',
+            tips: language === 'es' ? 'consejos prácticos' : language === 'ca' ? 'consells pràctics' : 'practical tips'
+        };
+        
+        const selectedTheme = themes.motivation; // Default theme, could be randomized or selected
+        
+        const imagePrompts = {
+            instagram: language === 'es' ? {
+                prompt: `Imagen minimalista y moderna para Instagram, formato cuadrado 1:1. Fondo degradido suave con colores ${style.adjectives[0]}. Texto grande y centrado en fuente bold moderna: "EL ÉXITO EMPIEZA CON UN PASO". Elementos gráficos sutiles: línea ascendente y pequeño icono de cohete en esquina. Estilo profesional, limpio, con buena iluminación. Alto contraste para legibilidad. Sin elementos distractivos.`,
+                imageText: "EL ÉXITO EMPIEZA CON UN PASO",
+                caption: `💫 **${style.greeting.toUpperCase()}**! 🚀\n\nCada pequeño avance te acerca más a tus metas. 🎯\n\n${style.adjectives[0]} recordatorio: tu potencial no tiene límites. ✨\n\n¿Cuál es ese paso que darás hoy? 👇\n\n${style.callsToAction[0]} tu mejor versión. 💪\n\n${style.hashtags.slice(0, 3).join(' ')} #Motivación #Éxito #Crecimiento`,
+                hashtags: ['#Motivación', '#Éxito', '#Crecimiento', '#Inspiración', '#Meta', style.hashtags[0]]
+            } : language === 'ca' ? {
+                prompt: `Imatge minimalista i moderna per Instagram, format quadrat 1:1. Fons degradat suau amb colors ${style.adjectives[0]}. Text gran i centrat en font bold moderna: "L'ÈXIT COMENÇA AMB UN PAS". Elements gràfics subtils: línia ascendent i petit icon de coet a la cantonada. Estil professional, net, amb bona il·luminació. Alt contrast per llegibilitat. Sense elements distractors.`,
+                imageText: "L'ÈXIT COMENÇA AMB UN PAS",
+                caption: `💫 **${style.greeting.toUpperCase()}**! 🚀\n\nCada petit avanç t'apropa més a les teves metes. 🎯\n\n${style.adjectives[0]} recordatori: el teu potencial no té límits. ✨\n\nQuin és aquest pas que faràs avui? 👇\n\n${style.callsToAction[0]} la teva millor versió. 💪\n\n${style.hashtags.slice(0, 3).join(' ')} #Motivació #Èxit #Creixement`,
+                hashtags: ['#Motivació', '#Èxit', '#Creixement', '#Inspiració', '#Meta', style.hashtags[0]]
+            } : {
+                prompt: `Minimalist modern image for Instagram, square 1:1 format. Soft gradient background with ${style.adjectives[0]} colors. Large centered text in bold modern font: "SUCCESS STARTS WITH ONE STEP". Subtle graphic elements: ascending line and small rocket icon in corner. Professional, clean style with good lighting. High contrast for readability. No distracting elements.`,
+                imageText: "SUCCESS STARTS WITH ONE STEP",
+                caption: `💫 **${style.greeting.toUpperCase()}**! 🚀\n\nEvery small step brings you closer to your goals. 🎯\n\n${style.adjectives[0]} reminder: your potential has no limits. ✨\n\nWhat's that step you'll take today? 👇\n\n${style.callsToAction[0]} your best version. 💪\n\n${style.hashtags.slice(0, 3).join(' ')} #Motivation #Success #Growth`,
+                hashtags: ['#Motivation', '#Success', '#Growth', '#Inspiration', '#Goals', style.hashtags[0]]
+            }
+        };
+
+        const platformContent = imagePrompts[socialMedia] || imagePrompts.instagram;
+        
+        return `
+            <div class="complete-post">
+                <div class="post-theme">
+                    <strong>🎯 ${language === 'es' ? 'Tema del post:' : language === 'ca' ? 'Tema del post:' : 'Post theme:'}</strong> ${selectedTheme}
+                </div>
+                
+                <div class="image-prompt">
+                    <strong>1️⃣ ${language === 'es' ? 'PROMPT DE IMAGEN:' : language === 'ca' ? 'PROMPT D\'IMATGE:' : 'IMAGE PROMPT:'}</strong>
+                    <div class="prompt-content">${platformContent.prompt}</div>
+                </div>
+                
+                <div class="image-text">
+                    <strong>2️⃣ ${language === 'es' ? 'TEXTO EN LA IMAGEN:' : language === 'ca' ? 'TEXT A LA IMATGE:' : 'TEXT IN IMAGE:'}</strong>
+                    <div class="text-content">"${platformContent.imageText}"</div>
+                </div>
+                
+                <div class="caption">
+                    <strong>3️⃣ CAPTION:</strong>
+                    <div class="caption-content">${platformContent.caption}</div>
+                </div>
+                
+                <div class="hashtags">
+                    <strong>4️⃣ ${language === 'es' ? 'HASHTAGS:' : language === 'ca' ? 'HASHTAGS:' : 'HASHTAGS:'}</strong>
+                    <div class="hashtags-content">${platformContent.hashtags.slice(0, 8).join(' ')}</div>
+                </div>
+                
+                <div class="format-info">
+                    <strong>📱 ${language === 'es' ? 'FORMATO:' : language === 'ca' ? 'FORMAT:' : 'FORMAT:'}</strong> 
+                    ${socialMedia === 'instagram' ? 'Instagram (1:1)' : 
+                      socialMedia === 'tiktok' ? 'TikTok (9:16)' : 
+                      socialMedia === 'twitter' ? 'X/Twitter (16:9)' : 
+                      'Social Media Optimized'}
+                </div>
+                
+                <div class="engagement-tips">
+                    <strong>💡 ${language === 'es' ? 'CONSEJOS PARA ENGAGEMENT:' : language === 'ca' ? 'CONSELLS PER A L\'ENGAGEMENT:' : 'ENGAGEMENT TIPS:'}</strong>
+                    <ul>
+                        <li>${language === 'es' ? 'Publica en horas pico de tu audiencia' : language === 'ca' ? 'Publica en hores pic de la teva audiència' : 'Post during your audience peak hours'}</li>
+                        <li>${language === 'es' ? 'Usa emojis relevantes para aumentar visibilidad' : language === 'ca' ? 'Usa emojis rellevants per augmentar visibilitat' : 'Use relevant emojis to increase visibility'}</li>
+                        <li>${language === 'es' ? 'Responde a todos los comentarios rápidamente' : language === 'ca' ? 'Respon a tots els comentaris ràpidament' : 'Respond to all comments quickly'}</li>
+                        <li>${language === 'es' ? 'Añade llamada a la acción clara' : language === 'ca' ? 'Afegeix crida a l\'acció clara' : 'Add clear call-to-action'}</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
     showLoadingState() {
         const resultsSection = document.getElementById('resultsSection');
         resultsSection.style.display = 'block';
@@ -542,6 +803,62 @@ class MarketingContentGenerator {
             </div>
 
             <button id="generateNewBtn" class="generate-btn"><span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : 'Generate New Content'}</button>
+        `;
+
+        this.initEventListeners();
+        
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    displayAIEnhancedResults(content, language) {
+        const resultsSection = document.getElementById('resultsSection');
+        
+        resultsSection.innerHTML = `
+            <h2>${language === 'es' ? 'Contenido Mejorado con IA Generado' : language === 'ca' ? 'Contingut Millorat amb IA Generat' : 'AI Enhanced Content Generated'}</h2>
+            
+            <div class="content-card ai-enhanced-card">
+                <h3><span>🤖</span> ${language === 'es' ? 'Prompts para Gemini' : language === 'ca' ? 'Prompts per Gemini' : 'Gemini Prompts'}</h3>
+                <div class="gemini-prompts">
+                    ${content.geminiPrompts.map((prompt, index) => `
+                        <div class="prompt-item">
+                            <h4>📱 ${prompt.platform} - ${prompt.format}</h4>
+                            <div class="prompt-text">${prompt.prompt}</div>
+                            <button class="gemini-btn" onclick="window.open('${prompt.geminiUrl}', '_blank')">
+                                🎨 ${language === 'es' ? 'Abrir Gemini' : language === 'ca' ? 'Obrir Gemini' : 'Open Gemini'}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : language === 'ca' ? 'Contingut per Xarxes Socials' : 'Social Media Content'}</h3>
+                <div>${content.socialMedia}</div>
+            </div>
+
+            <div class="content-card">
+                <h3><span>🖼️</span> ${language === 'es' ? 'Sugerencias de Imágenes' : language === 'ca' ? 'Suggeriments d\'Imatges' : 'Image Suggestions'}</h3>
+                <div>${content.imageSuggestions}</div>
+            </div>
+
+            <div class="content-card">
+                <h3><span>🏆</span> ${language === 'es' ? 'Texto de Promoción de Productos' : language === 'ca' ? 'Text de Promoció de Productes' : 'Product Promotion Text'}</h3>
+                <div>${content.productPromotion}</div>
+            </div>
+
+            <div class="content-card">
+                <h3><span>📧</span> ${language === 'es' ? 'Mensaje para Boletín de Clientes' : language === 'ca' ? 'Missatge per Butlletí de Clients' : 'Customer Newsletter Message'}</h3>
+                <div>${content.newsletter}</div>
+            </div>
+
+            <div class="content-card">
+                <h3><span>🎯</span> ${language === 'es' ? 'Ideas de Campaña Promocional' : language === 'ca' ? 'Idees de Campanya Promocional' : 'Promotional Campaign Ideas'}</h3>
+                <div>${content.campaigns}</div>
+            </div>
+
+            <button id="generateNewBtn" class="generate-btn">
+                <span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : language === 'ca' ? 'Generar Nou Contingut' : 'Generate New Content'}
+            </button>
         `;
 
         this.initEventListeners();
