@@ -39,7 +39,23 @@
                             <option value="service">💼 Service Business / Negocio de Servicios</option>
                             <option value="beauty">💇 Beauty/Salon / Belleza/Salón</option>
                             <option value="fitness">💪 Fitness/Gym / Fitness/Gimnasio</option>
-                            <option value="other">🏪 Other / Otro</option>
+                            <option value="bakery">🥐 Bakery / Forn / Pastisseria</option>
+                            <option value="grocery">🛒 Grocery Store / Supermercat / Tienda de Alimentos</option>
+                            <option value="pharmacy">💊 Pharmacy / Farmàcia / Farmacia</option>
+                            <option value="petshop">🐾 Pet Shop / Veterinari / Tienda de Mascotas</option>
+                            <option value="hardware">🔧 Hardware Store / Ferreteria / Tienda de Herramientas</option>
+                            <option value="flowers">💐 Flower Shop / Floristeria / Tienda de Flores</option>
+                            <option value="butcher">🥩 Butcher / Carnisseria / Carnicería</option>
+                            <option value="fishmonger">🐟 Fishmonger / Peixateria / Pescadería</option>
+                            <option value="fruitstore">🍎 Fruit Store / Fruiteria / Frutería</option>
+                            <option value="stationery">📝 Stationery / Papeleria / Tienda de Papelería</option>
+                            <option value="laundry">👕 Laundry / Bugaderia / Lavandería</option>
+                            <option value="shoes">👟 Shoe Store / Sabateria / Zapatería</option>
+                            <option value="books">📚 Bookstore / Llibreria / Librería</option>
+                            <option value="toys">🧸 Toy Store / Joguina / Tienda de Juguetes</option>
+                            <option value="jewelry">💍 Jewelry Store / Joieria / Joyería</option>
+                            <option value="optics">👓 Optics / Òptica / Óptica</option>
+                            <option value="other">🏪 Other / Altres / Otro</option>
                         </select>
                     </div>
 
@@ -72,35 +88,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="contentType">
-                            <span>📋</span> Content Type / Tipo de Contenido:
+                        <label for="dailyProducts">
+                            <span>📦</span> Daily Products/Services / Productos/Servicios Diarios:
                         </label>
-                        <select id="contentType" required>
-                            <option value="marketing">🎯 Marketing Ideas / Ideas de Marketing</option>
-                            <option value="complete">🚀 Complete Post / Publicación Completa</option>
-                            <option value="ai-enhanced">🤖 AI Enhanced / Mejorado con IA</option>
-                        </select>
+                        <textarea id="dailyProducts" rows="3" placeholder="e.g., Fresh coffee, pastries, sandwiches, specialty drinks / ej., café fresco, pasteles, sándwiches, bebidas especiales" required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="imageOption">
-                            <span>🖼️</span> Image Option / Opción de Imagen:
+                        <label for="promotions">
+                            <span>🎉</span> Current Promotions / Promociones Actuales:
                         </label>
-                        <select id="imageOption">
-                            <option value="ai-generate">🤖 Generate with AI / Generar con IA</option>
-                            <option value="upload">📤 Upload Reference / Subir Referencia</option>
-                            <option value="none">🚫 No Image / Sin Imagen</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" id="imageUploadGroup" style="display: none;">
-                        <label for="imageUpload">
-                            <span>📤</span> Upload Reference Image / Subir Imagen de Referencia:
-                        </label>
-                        <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
-                        <div id="imagePreview" style="margin-top: 10px; max-width: 200px; max-height: 200px; overflow: hidden; border-radius: 8px; display: none;">
-                            <img id="previewImg" style="width: 100%; height: auto; border-radius: 8px;">
-                        </div>
+                        <textarea id="promotions" rows="3" placeholder="e.g., 20% off on weekends, Buy one get one free, Happy hour 3-6 PM / ej., 20% de descuento los fines de semana, Compre uno lléve dos, Happy hour 3-6 PM" required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -114,20 +112,6 @@
                             <option value="simple">⚡ Simple / Sencillo</option>
                             <option value="modern">🚀 Modern / Moderno</option>
                         </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dailyProducts">
-                            <span>📦</span> Daily Products/Services / Productos/Servicios Diarios:
-                        </label>
-                        <textarea id="dailyProducts" rows="3" placeholder="e.g., Fresh coffee, pastries, sandwiches, specialty drinks / ej., café fresco, pasteles, sándwiches, bebidas especiales" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="promotions">
-                            <span>🎉</span> Current Promotions / Promociones Actuales:
-                        </label>
-                        <textarea id="promotions" rows="3" placeholder="e.g., 20% off on weekends, Buy one get one free, Happy hour 3-6 PM / ej., 20% de descuento los fines de semana, Compre uno lléve dos, Happy hour 3-6 PM" required></textarea>
                     </div>
 
                     <button type="submit" class="generate-btn">
@@ -172,33 +156,5 @@
     </div>
 
     <script src="script.js"></script>
-<script>
-        function previewImage(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('imagePreview');
-            const previewImg = document.getElementById('previewImg');
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImg.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        // Toggle image upload visibility
-        document.getElementById('imageOption').addEventListener('change', function() {
-            const uploadGroup = document.getElementById('imageUploadGroup');
-            if (this.value === 'upload') {
-                uploadGroup.style.display = 'block';
-            } else {
-                uploadGroup.style.display = 'none';
-            }
-        });
-    </script>
 </body>
 </html>

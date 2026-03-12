@@ -23,8 +23,6 @@ class MarketingContentGenerator {
         const socialMedia = document.getElementById('socialMedia').value;
         const format = document.getElementById('format').value;
         const communicationStyle = document.getElementById('communicationStyle').value;
-        const contentType = document.getElementById('contentType').value;
-        const imageOption = document.getElementById('imageOption').value;
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
@@ -36,16 +34,8 @@ class MarketingContentGenerator {
         this.showLoadingState();
 
         setTimeout(() => {
-            if (contentType === 'complete') {
-                const content = this.generateCompletePost(language, businessType, socialMedia, communicationStyle, dailyProducts, promotions);
-                this.displayCompleteResults(content, language);
-            } else if (contentType === 'ai-enhanced') {
-                const content = this.generateAIEnhancedContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions, imageOption);
-                this.displayAIEnhancedResults(content, language);
-            } else {
-                const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
-                this.displayResults(content, language);
-            }
+            const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
+            this.displayResults(content, language);
         }, 1000);
     }
 
@@ -64,6 +54,7 @@ class MarketingContentGenerator {
             flowers: language === 'es' ? 'Florería' : language === 'ca' ? 'Floristeria' : 'Flower Shop',
             butcher: language === 'es' ? 'Carnicería' : language === 'ca' ? 'Carnisseria' : 'Butcher Shop',
             fishmonger: language === 'es' ? 'Pescadería' : language === 'ca' ? 'Peixateria' : 'Fishmonger',
+            fruitstore: language === 'es' ? 'Frutería' : language === 'ca' ? 'Fruiteria' : 'Fruit Store',
             stationery: language === 'es' ? 'Papelería' : language === 'ca' ? 'Papeteria' : 'Stationery Store',
             laundry: language === 'es' ? 'Lavandería' : language === 'ca' ? 'Bugaderia' : 'Laundry',
             shoes: language === 'es' ? 'Zapatería' : language === 'ca' ? 'Sabateria' : 'Shoe Store',
@@ -86,7 +77,12 @@ class MarketingContentGenerator {
             imageSuggestions: this.generateImageSuggestions(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList),
             productPromotion: this.generateProductPromotion(language, businessName, communicationStyle, productsList, promotionsList),
             newsletter: this.generateNewsletterMessage(language, businessName, communicationStyle, productsList, promotionsList),
-            campaigns: this.generateCampaignIdeas(language, businessName, socialMedia, communicationStyle, productsList, promotionsList)
+            campaigns: this.generateCampaignIdeas(language, businessName, socialMedia, communicationStyle, productsList, promotionsList),
+            businessName,
+            socialMedia,
+            style: this.getStyleTemplates(communicationStyle, language),
+            productsList,
+            promotionsList
         };
     }
 
@@ -601,6 +597,10 @@ class MarketingContentGenerator {
             newsletter: newsletterMessage,
             campaigns: campaignIdeas,
             businessName,
+            socialMedia,
+            style,
+            productsList,
+            promotionsList,
             imageOption
         };
     }
@@ -771,38 +771,64 @@ class MarketingContentGenerator {
         `;
     }
 
-    displayResults(content) {
+    displayResults(content, language) {
         const resultsSection = document.getElementById('resultsSection');
         
+        // Generate Gemini prompts
+        const geminiPrompts = this.generateGeminiPrompts(language, content.businessName, content.socialMedia, content.style, content.productsList, content.promotionsList);
+        
         resultsSection.innerHTML = `
-            <h2>${language === 'es' ? 'Contenido de Marketing Generado' : 'Generated Marketing Content'}</h2>
+            <h2>${language === 'es' ? 'Contenido de Marketing Generado' : language === 'ca' ? 'Contingut de Marketing Generat' : 'Generated Marketing Content'}</h2>
+            
+            <div class="content-card ai-enhanced-card">
+                <h3><span>🤖</span> ${language === 'es' ? 'Prompts para Gemini IA' : language === 'ca' ? 'Prompts per Gemini IA' : 'Gemini AI Prompts'}</h3>
+                <div class="gemini-prompts">
+                    ${geminiPrompts.map((prompt, index) => `
+                        <div class="prompt-item">
+                            <h4>📱 ${prompt.platform} - ${prompt.format}</h4>
+                            <div class="prompt-text">${prompt.prompt}</div>
+                            <button class="copy-prompt-btn" onclick="navigator.clipboard.writeText('${prompt.prompt.replace(/'/g, "\\'")}')">
+                                📋 ${language === 'es' ? 'Copiar Prompt' : language === 'ca' ? 'Copiar Prompt' : 'Copy Prompt'}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button class="gemini-main-btn" onclick="window.open('https://gemini.google.com/app?hl=es-ES', '_blank')">
+                        🎨 ${language === 'es' ? 'Abrir Gemini IA para Crear Imágenes' : language === 'ca' ? 'Obrir Gemini IA per Crear Imatges' : 'Open Gemini AI to Create Images'}
+                    </button>
+                </div>
+            </div>
             
             <div class="content-card">
-                <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : 'Social Media Content'}</h3>
+                <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : language === 'ca' ? 'Contingut per Xarxes Socials' : 'Social Media Content'}</h3>
                 <div>${content.socialMedia}</div>
             </div>
 
             <div class="content-card">
-                <h3><span>🖼️</span> ${language === 'es' ? 'Sugerencias de Imágenes' : 'Image Suggestions'}</h3>
+                <h3><span>🖼️</span> ${language === 'es' ? 'Sugerencias de Imágenes' : language === 'ca' ? 'Suggeriments d\'Imatges' : 'Image Suggestions'}</h3>
                 <div>${content.imageSuggestions}</div>
             </div>
 
             <div class="content-card">
-                <h3><span>🛍️</span> ${language === 'es' ? 'Texto de Promoción de Productos' : 'Product Promotion Text'}</h3>
+                <h3><span>🏆</span> ${language === 'es' ? 'Texto de Promoción de Productos' : language === 'ca' ? 'Text de Promoció de Productes' : 'Product Promotion Text'}</h3>
                 <div>${content.productPromotion}</div>
             </div>
 
             <div class="content-card">
-                <h3><span>📧</span> ${language === 'es' ? 'Mensaje para Boletín de Clientes' : 'Customer Newsletter Message'}</h3>
+                <h3><span>📧</span> ${language === 'es' ? 'Mensaje para Boletín de Clientes' : language === 'ca' ? 'Missatge per Butlletí de Clients' : 'Customer Newsletter Message'}</h3>
                 <div>${content.newsletter}</div>
             </div>
 
             <div class="content-card">
-                <h3><span>🎯</span> ${language === 'es' ? 'Ideas de Campaña Promocional' : 'Promotional Campaign Ideas'}</h3>
+                <h3><span>🎯</span> ${language === 'es' ? 'Ideas de Campaña Promocional' : language === 'ca' ? 'Idees de Campanya Promocional' : 'Promotional Campaign Ideas'}</h3>
                 <div>${content.campaigns}</div>
             </div>
 
-            <button id="generateNewBtn" class="generate-btn"><span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : 'Generate New Content'}</button>
+            <button id="generateNewBtn" class="generate-btn">
+                <span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : language === 'ca' ? 'Generar Nou Contingut' : 'Generate New Content'}
+            </button>
         `;
 
         this.initEventListeners();
