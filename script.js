@@ -6,6 +6,8 @@ class MarketingContentGenerator {
         this.imageGallery = JSON.parse(localStorage.getItem('localBoostImageGallery')) || [];
         this.currentGeneratedImage = null;
         this.currentTheme = localStorage.getItem('localBoostTheme') || 'light';
+        this.chatHistory = JSON.parse(localStorage.getItem('localBoostChatHistory')) || [];
+        this.currentBusinessContext = null;
         this.initTheme();
         this.initEventListeners();
     }
@@ -46,11 +48,56 @@ class MarketingContentGenerator {
         // Theme toggle listener
         this.initThemeToggleListener();
 
+        // Chatbot event listeners
+        this.initChatbotEventListeners();
+
         // Generate new content button
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'generateNewBtn') {
                 this.resetForm();
             }
+        });
+    }
+
+    initChatbotEventListeners() {
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const minimizeChatbot = document.getElementById('minimizeChatbot');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+        
+        if (chatbotToggle) {
+            chatbotToggle.addEventListener('click', () => this.toggleChatbot());
+        }
+        
+        if (minimizeChatbot) {
+            minimizeChatbot.addEventListener('click', () => this.minimizeChatbot());
+        }
+        
+        if (sendMessageBtn) {
+            sendMessageBtn.addEventListener('click', () => this.sendMessage());
+        }
+        
+        if (chatbotInput) {
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.sendMessage();
+                }
+            });
+            
+            // Auto-resize textarea
+            chatbotInput.addEventListener('input', () => {
+                chatbotInput.style.height = 'auto';
+                chatbotInput.style.height = Math.min(chatbotInput.scrollHeight, 80) + 'px';
+            });
+        }
+        
+        quickActionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.getAttribute('data-action');
+                this.handleQuickAction(action);
+            });
         });
     }
 
@@ -1554,6 +1601,265 @@ class MarketingContentGenerator {
         document.getElementById('imageFormat').value = this.currentGeneratedImage.format;
         
         this.generateImage();
+    }
+
+    // Chatbot Functions
+    toggleChatbot() {
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        
+        if (chatbotWindow) {
+            const isActive = chatbotWindow.classList.contains('active');
+            
+            if (isActive) {
+                chatbotWindow.classList.remove('active');
+                chatbotToggle.style.display = 'flex';
+            } else {
+                chatbotWindow.classList.add('active');
+                chatbotToggle.style.display = 'none';
+                this.focusChatInput();
+            }
+        }
+    }
+
+    minimizeChatbot() {
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        
+        if (chatbotWindow) {
+            chatbotWindow.classList.remove('active');
+            chatbotToggle.style.display = 'flex';
+        }
+    }
+
+    focusChatInput() {
+        const chatbotInput = document.getElementById('chatbotInput');
+        if (chatbotInput) {
+            setTimeout(() => chatbotInput.focus(), 300);
+        }
+    }
+
+    sendMessage() {
+        const chatbotInput = document.getElementById('chatbotInput');
+        const message = chatbotInput?.value.trim();
+        
+        if (!message) return;
+        
+        // Add user message
+        this.addMessage(message, 'user');
+        chatbotInput.value = '';
+        chatbotInput.style.height = 'auto';
+        
+        // Show typing indicator
+        this.showTypingIndicator();
+        
+        // Simulate AI response
+        setTimeout(() => {
+            this.hideTypingIndicator();
+            const response = this.generateAIResponse(message);
+            this.addMessage(response, 'bot');
+        }, 1500);
+    }
+
+    addMessage(content, sender) {
+        const messagesContainer = document.getElementById('chatbotMessages');
+        if (!messagesContainer) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${sender}-message`;
+        
+        const avatar = document.createElement('span');
+        avatar.className = `${sender}-avatar`;
+        avatar.textContent = sender === 'bot' ? '🤖' : '👤';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.innerHTML = `<p>${content}</p>`;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        // Remove welcome message if it exists
+        const welcomeMessage = messagesContainer.querySelector('.welcome-message');
+        if (welcomeMessage) {
+            welcomeMessage.remove();
+        }
+        
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        // Save to chat history
+        this.saveChatMessage(content, sender);
+    }
+
+    generateAIResponse(userMessage) {
+        const context = this.getBusinessContext();
+        const lowerMessage = userMessage.toLowerCase();
+        
+        // Content improvement suggestions
+        if (lowerMessage.includes('improve') || lowerMessage.includes('mejorar') || lowerMessage.includes('better')) {
+            return this.generateContentImprovement(context);
+        }
+        
+        // Platform optimization
+        if (lowerMessage.includes('instagram') || lowerMessage.includes('facebook') || lowerMessage.includes('optimize')) {
+            return this.generatePlatformOptimization(context, userMessage);
+        }
+        
+        // Creative ideas
+        if (lowerMessage.includes('ideas') || lowerMessage.includes('creative') || lowerMessage.includes('suggestions')) {
+            return this.generateCreativeIdeas(context);
+        }
+        
+        // General help
+        if (lowerMessage.includes('help') || lowerMessage.includes('ayuda') || lowerMessage.includes('how to')) {
+            return this.generateHelpResponse();
+        }
+        
+        // Context-aware response
+        return this.generateContextualResponse(context, userMessage);
+    }
+
+    getBusinessContext() {
+        if (this.currentBusinessContext) {
+            return this.currentBusinessContext;
+        }
+        
+        // Try to get current form data
+        const businessType = document.getElementById('businessType')?.value;
+        const socialMedia = document.getElementById('socialMedia')?.value;
+        const language = document.getElementById('language')?.value;
+        
+        return {
+            businessType,
+            socialMedia,
+            language,
+            hasContent: !!this.currentGeneratedImage || !!this.calendarData
+        };
+    }
+
+    generateContentImprovement(context) {
+        const suggestions = [
+            "✨ **Suggestion**: Add more emotional language to connect with your audience.",
+            "📱 **Tip**: Include a clear call-to-action in your posts.",
+            "🎯 **Advice**: Use hashtags relevant to your local area.",
+            "⏰ **Timing**: Post during peak hours (6-8 PM) for better engagement.",
+            "🖼️ **Visual**: Always include high-quality images or videos."
+        ];
+        
+        return suggestions[Math.floor(Math.random() * suggestions.length)];
+    }
+
+    generatePlatformOptimization(context, message) {
+        const platform = this.extractPlatform(message) || context.socialMedia;
+        
+        const platformTips = {
+            instagram: "📷 **Instagram Tips**: Use 1:1 or 4:5 ratios, add engaging captions, use 5-10 relevant hashtags, and post Stories daily for better reach.",
+            facebook: "📘 **Facebook Tips**: Keep posts under 80 characters, ask questions to encourage comments, and share user-generated content.",
+            tiktok: "🎵 **TikTok Tips**: Use trending sounds, keep videos under 30 seconds, add text overlays, and participate in challenges.",
+            twitter: "🐦 **X/Twitter Tips**: Keep tweets under 280 characters, use 2-3 hashtags, engage with replies quickly, and tweet 3-5 times daily."
+        };
+        
+        return platformTips[platform] || platformTips.instagram;
+    }
+
+    generateCreativeIdeas(context) {
+        const businessType = context.businessType;
+        
+        const ideas = {
+            restaurant: [
+                "🍽️ **Behind the Scenes**: Show your kitchen team preparing today's special.",
+                "📸 **Customer Spotlight**: Feature happy customers with their permission.",
+                "🎉 **Weekly Special**: Create a 'Dish of the Week' campaign."
+            ],
+            retail: [
+                "🛍️ **Product Spotlight**: Highlight one product per day with its story.",
+                "👥 **Staff Picks**: Have employees share their favorite items.",
+                "🎁 **Gift Ideas**: Create gift guides for different occasions."
+            ],
+            beauty: [
+                "💄 **Before/After**: Share transformation photos (with permission).",
+                "📚 **Tutorial Tuesday**: Weekly makeup or skincare tutorials.",
+                "✨ **Product Demo**: Show how to use products effectively."
+            ]
+        };
+        
+        const typeIdeas = ideas[businessType] || ideas.retail;
+        return typeIdeas[Math.floor(Math.random() * typeIdeas.length)];
+    }
+
+    generateHelpResponse() {
+        return `I can help you with:
+        
+🎨 **Content Creation**: Improve your marketing content
+📱 **Platform Optimization**: Tailor content for different social media
+💡 **Creative Ideas**: Get fresh content suggestions
+📅 **Planning**: Organize your content calendar
+🖼️ **Images**: Generate visual content
+
+Try asking me about any of these topics, or describe what you'd like to achieve with your marketing!`;
+    }
+
+    generateContextualResponse(context, message) {
+        if (!context.hasContent) {
+            return "👋 Welcome! Start by generating some marketing content using the form above, and then I can help you improve and optimize it!";
+        }
+        
+        return `Based on your current setup, I suggest focusing on creating engaging content for ${context.socialMedia || 'your social media platforms'}. Would you like specific tips for content improvement or creative ideas?`;
+    }
+
+    extractPlatform(message) {
+        const platforms = ['instagram', 'facebook', 'tiktok', 'twitter', 'linkedin', 'blog'];
+        const lowerMessage = message.toLowerCase();
+        
+        return platforms.find(platform => lowerMessage.includes(platform));
+    }
+
+    handleQuickAction(action) {
+        const actionMessages = {
+            improve: "Can you help me improve my current marketing content?",
+            optimize: "How can I optimize my content for better engagement?",
+            ideas: "I need some creative ideas for my social media posts."
+        };
+        
+        const message = actionMessages[action];
+        if (message) {
+            document.getElementById('chatbotInput').value = message;
+            this.sendMessage();
+        }
+    }
+
+    showTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+            typingIndicator.style.display = 'flex';
+        }
+    }
+
+    hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+            typingIndicator.style.display = 'none';
+        }
+    }
+
+    saveChatMessage(content, sender) {
+        this.chatHistory.push({
+            content,
+            sender,
+            timestamp: new Date().toISOString()
+        });
+        
+        // Keep only last 50 messages
+        if (this.chatHistory.length > 50) {
+            this.chatHistory = this.chatHistory.slice(-50);
+        }
+        
+        localStorage.setItem('localBoostChatHistory', JSON.stringify(this.chatHistory));
+    }
+
+    updateBusinessContext(content) {
+        this.currentBusinessContext = content;
     }
 }
 
