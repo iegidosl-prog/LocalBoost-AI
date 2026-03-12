@@ -778,10 +778,10 @@ class MarketingContentGenerator {
         const geminiPrompts = this.generateGeminiPrompts(language, content.businessName, content.socialMedia, content.style, content.productsList, content.promotionsList);
         
         resultsSection.innerHTML = `
-            <h2>${language === 'es' ? 'Contenido de Marketing Generado' : language === 'ca' ? 'Contingut de Marketing Generat' : 'Generated Marketing Content'}</h2>
+            <h2>${language === 'es' ? 'Contenido de Marketing LocalBoost IA' : language === 'ca' ? 'Contingut de Marketing LocalBoost IA' : 'LocalBoost IA Marketing Content Generated'}</h2>
             
             <div class="content-card ai-enhanced-card">
-                <h3><span>🤖</span> ${language === 'es' ? 'Prompts para Gemini IA' : language === 'ca' ? 'Prompts per Gemini IA' : 'Gemini AI Prompts'}</h3>
+                <h3><span>🤖</span> ${language === 'es' ? 'Prompts para LocalBoost IA' : language === 'ca' ? 'Prompts per LocalBoost IA' : 'LocalBoost IA Gemini Prompts'}</h3>
                 <div class="gemini-prompts">
                     ${geminiPrompts.map((prompt, index) => `
                         <div class="prompt-item">
