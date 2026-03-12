@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Content Generator for Small Shops</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Marketing Content Generator</h1>
+            <p>Create compelling marketing content for your small business</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <h2>Business Information</h2>
+                <form id="businessForm">
+                    <div class="form-group">
+                        <label for="language">
+                            <span>🌍</span> Language / Idioma:
+                        </label>
+                        <select id="language" required>
+                            <option value="">Select language / Seleccione idioma</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="businessType">
+                            <span>🏢</span> Type of Business / Tipo de Negocio:
+                        </label>
+                        <select id="businessType" required>
+                            <option value="">Select your business type / Seleccione su tipo de negocio</option>
+                            <option value="restaurant">🍽️ Restaurant/Café / Restaurante/Café</option>
+                            <option value="retail">🛍️ Retail Store / Tienda Minorista</option>
+                            <option value="service">💼 Service Business / Negocio de Servicios</option>
+                            <option value="beauty">💇 Beauty/Salon / Belleza/Salón</option>
+                            <option value="fitness">💪 Fitness/Gym / Fitness/Gimnasio</option>
+                            <option value="other">🏪 Other / Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="socialMedia">
+                            <span>📱</span> Social Media Platform / Plataforma de Red Social:
+                        </label>
+                        <select id="socialMedia" required>
+                            <option value="">Select platform / Seleccione plataforma</option>
+                            <option value="instagram">📷 Instagram</option>
+                            <option value="facebook">📘 Facebook</option>
+                            <option value="tiktok">🎵 TikTok</option>
+                            <option value="linkedin">💼 LinkedIn</option>
+                            <option value="twitter">🐦 X / Twitter</option>
+                            <option value="blog">🌐 Blog / Web</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="format">
+                            <span>📋</span> Content Format / Formato de Contenido:
+                        </label>
+                        <select id="format">
+                            <option value="">Auto-recommend / Auto-recomendar</option>
+                            <option value="story">📱 Story</option>
+                            <option value="post">📝 Post / Publicación</option>
+                            <option value="reel">🎥 Reel / Short Video</option>
+                            <option value="carousel">🎠 Carousel / Carrusel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="communicationStyle">
+                            <span>🎨</span> Communication Style / Estilo de Comunicación:
+                        </label>
+                        <select id="communicationStyle" required>
+                            <option value="">Select style / Seleccione estilo</option>
+                            <option value="elegant">🌟 Elegant / Elegante</option>
+                            <option value="friendly">👨‍👩‍👧‍👦 Friendly / Familiar</option>
+                            <option value="simple">⚡ Simple / Sencillo</option>
+                            <option value="modern">🚀 Modern / Moderno</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dailyProducts">
+                            <span>📦</span> Daily Products/Services / Productos/Servicios Diarios:
+                        </label>
+                        <textarea id="dailyProducts" rows="3" placeholder="e.g., Fresh coffee, pastries, sandwiches, specialty drinks / ej., café fresco, pasteles, sándwiches, bebidas especiales" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="promotions">
+                            <span>🎉</span> Current Promotions / Promociones Actuales:
+                        </label>
+                        <textarea id="promotions" rows="3" placeholder="e.g., 20% off on weekends, Buy one get one free, Happy hour 3-6 PM / ej., 20% de descuento los fines de semana, Compre uno lléve dos, Happy hour 3-6 PM" required></textarea>
+                    </div>
+
+                    <button type="submit" class="generate-btn">
+                        <span>✨</span> Generate Marketing Content / Generar Contenido de Marketing
+                    </button>
+                </form>
+            </section>
+
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <h2>Generated Marketing Content / Contenido de Marketing Generado</h2>
+                
+                <div class="content-card">
+                    <h3><span>📱</span> Social Media Content / Contenido para Redes Sociales</h3>
+                    <div id="socialMediaPosts"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>🖼️</span> Image Suggestions / Sugerencias de Imágenes</h3>
+                    <div id="imageSuggestions"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>🛍️</span> Product Promotion Text / Texto de Promoción de Productos</h3>
+                    <div id="productPromotion"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>📧</span> Customer Newsletter Message / Mensaje para Boletín de Clientes</h3>
+                    <div id="newsletterMessage"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>🎯</span> Promotional Campaign Ideas / Ideas de Campaña Promocional</h3>
+                    <div id="campaignIdeas"></div>
+                </div>
+
+                <button id="generateNewBtn" class="generate-btn">
+                    <span>🔄</span> Generate New Content / Generar Nuevo Contenido
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
