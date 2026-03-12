@@ -1959,3 +1959,171 @@ header {
         padding: 16px;
     }
 }
+
+/* Enhanced Social Media Section Styles */
+.social-media-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-secondary) 100%);
+    border: 2px solid var(--border-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-media-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-accent);
+}
+
+.social-media-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.social-media-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.platform-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gradient-accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+}
+
+.platform-badge span:first-child {
+    font-size: 1rem;
+}
+
+.social-media-content {
+    position: relative;
+}
+
+.content-preview {
+    background: var(--input-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    min-height: 100px;
+    position: relative;
+}
+
+.content-preview .hashtag {
+    color: var(--accent-primary);
+    font-weight: 600;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.content-preview .mention {
+    color: var(--success);
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.content-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.copy-content-btn,
+.share-content-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.copy-content-btn {
+    background: var(--success);
+    color: white;
+}
+
+.copy-content-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.share-content-btn {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.share-content-btn:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Copy feedback animation */
+.copy-content-btn.copied {
+    background: #10b981;
+    animation: copySuccess 0.6s ease;
+}
+
+@keyframes copySuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive Social Media Section */
+@media (max-width: 768px) {
+    .social-media-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .platform-badge {
+        align-self: flex-start;
+    }
+    
+    .content-preview {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .content-actions {
+        justify-content: center;
+    }
+    
+    .copy-content-btn,
+    .share-content-btn {
+        flex: 1;
+        justify-content: center;
+        min-width: 120px;
+    }
+}

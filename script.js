@@ -56,7 +56,74 @@ class MarketingContentGenerator {
             if (e.target && e.target.id === 'generateNewBtn') {
                 this.resetForm();
             }
+            
+            // Handle copy prompt buttons
+            if (e.target && e.target.classList.contains('copy-prompt-btn')) {
+                const prompt = e.target.getAttribute('data-prompt');
+                if (prompt) {
+                    navigator.clipboard.writeText(prompt).then(() => {
+                        this.showCopyFeedback(e.target);
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        this.fallbackCopyText(prompt);
+                    });
+                }
+            }
+            
+            // Handle copy content buttons
+            if (e.target && e.target.classList.contains('copy-content-btn')) {
+                const content = e.target.getAttribute('data-content');
+                if (content) {
+                    navigator.clipboard.writeText(content).then(() => {
+                        this.showCopyContentFeedback(e.target);
+                    }).catch(err => {
+                        console.error('Failed to copy content: ', err);
+                        this.fallbackCopyText(content);
+                    });
+                }
+            }
         });
+    }
+
+    showCopyFeedback(button) {
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = '';
+        }, 2000);
+    }
+
+    showCopyContentFeedback(button) {
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        button.classList.add('copied');
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('copied');
+        }, 2000);
+    }
+
+    fallbackCopyText(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            this.showAlert('Prompt copied to clipboard!');
+        } catch (err) {
+            console.error('Fallback copy failed: ', err);
+        }
+        
+        document.body.removeChild(textArea);
     }
 
     initChatbotEventListeners() {
@@ -989,23 +1056,35 @@ class MarketingContentGenerator {
                         <div class="prompt-item">
                             <h4>📱 ${prompt.platform} - ${prompt.format}</h4>
                             <div class="prompt-text">${prompt.prompt}</div>
-                            <button class="copy-prompt-btn" onclick="navigator.clipboard.writeText('${prompt.prompt.replace(/'/g, "\\'")}')">
+                            <button class="copy-prompt-btn" data-prompt="${prompt.prompt.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
                                 📋 ${language === 'es' ? 'Copiar Prompt' : language === 'ca' ? 'Copiar Prompt' : 'Copy Prompt'}
                             </button>
                         </div>
                     `).join('')}
                 </div>
-                
-                <div style="text-align: center; margin-top: 25px;">
-                    <button class="gemini-main-btn" onclick="window.open('https://gemini.google.com/app?hl=es-ES', '_blank')">
-                        🎨 ${language === 'es' ? 'Abrir Gemini IA para Crear Imágenes' : language === 'ca' ? 'Obrir Gemini IA per Crear Imatges' : 'Open Gemini AI to Create Images'}
-                    </button>
-                </div>
             </div>
             
-            <div class="content-card">
-                <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : language === 'ca' ? 'Contingut per Xarxes Socials' : 'Social Media Content'}</h3>
-                <div>${content.socialMedia}</div>
+            <div class="content-card social-media-card">
+                <div class="social-media-header">
+                    <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : language === 'ca' ? 'Contingut per Xarxes Socials' : 'Social Media Content'}</h3>
+                    <div class="platform-badge">
+                        ${this.getPlatformIcon(content.socialMedia)}
+                        <span>${this.getPlatformName(content.socialMedia)}</span>
+                    </div>
+                </div>
+                <div class="social-media-content">
+                    <div class="content-preview">
+                        ${this.formatSocialMediaContent(content.socialMedia)}
+                    </div>
+                    <div class="content-actions">
+                        <button class="copy-content-btn" data-content="${content.socialMedia.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
+                            📋 ${language === 'es' ? 'Copiar Contenido' : language === 'ca' ? 'Copiar Contingut' : 'Copy Content'}
+                        </button>
+                        <button class="share-content-btn">
+                            📤 ${language === 'es' ? 'Compartir' : language === 'ca' ? 'Compartir' : 'Share'}
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="content-card">
@@ -1407,7 +1486,7 @@ class MarketingContentGenerator {
     }
 
     generateMockImage(prompt, style, format) {
-        // Create a canvas-based placeholder image
+        // Create a canvas-based content-rich image
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
@@ -1423,29 +1502,180 @@ class MarketingContentGenerator {
         canvas.width = width;
         canvas.height = height;
         
+        // Create themed background based on business context
+        const businessContext = this.getBusinessContext();
+        const backgroundGradient = this.createBusinessBackground(ctx, width, height, businessContext, style);
+        
+        // Add decorative elements
+        this.addDecorativeElements(ctx, width, height, style);
+        
+        // Add content-based visual elements
+        this.addContentVisuals(ctx, width, height, prompt, businessContext);
+        
+        // Add main text with better typography
+        this.addStyledText(ctx, width, height, prompt, style);
+        
+        // Add branding and metadata
+        this.addImageBranding(ctx, width, height, style, format);
+        
+        // Convert to data URL
+        const imageUrl = canvas.toDataURL('image/png');
+        
+        this.displayGeneratedImage(imageUrl, prompt, style, format);
+        this.hideImageLoadingSpinner();
+    }
+
+    createBusinessBackground(ctx, width, height, context, style) {
+        const businessType = context.businessType || 'retail';
+        
+        // Business-specific color schemes
+        const businessThemes = {
+            restaurant: ['#FF6B6B', '#4ECDC4', '#45B7D1'],
+            retail: ['#667EEA', '#764BA2', '#F093FB'],
+            beauty: ['#FF6B9D', '#C44569', '#F8B500'],
+            fitness: ['#4ECDC4', '#44A08D', '#093637'],
+            bakery: ['#D4A574', '#8B4513', '#FFE5B4'],
+            service: ['#3498DB', '#2980B9', '#5DADE2']
+        };
+        
+        const colors = businessThemes[businessType] || businessThemes.retail;
+        
         // Create gradient background
         const gradient = ctx.createLinearGradient(0, 0, width, height);
-        const colors = this.getStyleColors(style);
-        gradient.addColorStop(0, colors[0]);
-        gradient.addColorStop(1, colors[1]);
+        gradient.addColorStop(0, colors[0] + 'CC');
+        gradient.addColorStop(0.5, colors[1] + 'CC');
+        gradient.addColorStop(1, colors[2] + 'CC');
+        
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
         
-        // Add text
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 24px Arial';
+        // Add pattern overlay
+        ctx.globalAlpha = 0.1;
+        for (let i = 0; i < 20; i++) {
+            ctx.beginPath();
+            ctx.arc(
+                Math.random() * width,
+                Math.random() * height,
+                Math.random() * 50 + 10,
+                0,
+                Math.PI * 2
+            );
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        
+        return gradient;
+    }
+
+    addDecorativeElements(ctx, width, height, style) {
+        // Add style-specific decorative elements
+        ctx.globalAlpha = 0.3;
+        
+        switch(style) {
+            case 'artistic':
+                // Abstract shapes
+                for (let i = 0; i < 5; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(Math.random() * width, Math.random() * height);
+                    ctx.bezierCurveTo(
+                        Math.random() * width, Math.random() * height,
+                        Math.random() * width, Math.random() * height,
+                        Math.random() * width, Math.random() * height
+                    );
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                break;
+                
+            case 'minimalist':
+                // Clean lines
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 3; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, (height / 4) * (i + 1));
+                    ctx.lineTo(width, (height / 4) * (i + 1));
+                    ctx.stroke();
+                }
+                break;
+                
+            case 'vintage':
+                // Vintage frame
+                ctx.strokeStyle = '#8B4513';
+                ctx.lineWidth = 8;
+                ctx.strokeRect(20, 20, width - 40, height - 40);
+                break;
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addContentVisuals(ctx, width, height, prompt, context) {
+        // Add business-specific icons and visuals
+        const businessType = context.businessType || 'retail';
+        
+        ctx.globalAlpha = 0.6;
+        
+        // Business-specific visual elements
+        const businessIcons = {
+            restaurant: ['🍽️', '🥘', '🍰', '☕'],
+            retail: ['🛍️', '📦', '🏷️', '💳'],
+            beauty: ['💄', '💅', '🧴', '✨'],
+            fitness: ['💪', '🏋️', '🏃', '🧘'],
+            bakery: ['🥐', '🍞', '🧁', '🥖'],
+            service: ['📞', '💼', '🤝', '⭐']
+        };
+        
+        const icons = businessIcons[businessType] || businessIcons.retail;
+        
+        // Add floating icons
+        for (let i = 0; i < 4; i++) {
+            ctx.font = `${30 + Math.random() * 20}px Arial`;
+            ctx.fillText(
+                icons[i % icons.length],
+                Math.random() * (width - 50) + 25,
+                Math.random() * (height - 50) + 25
+            );
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addStyledText(ctx, width, height, prompt, style) {
+        // Style-specific typography
+        const textStyles = {
+            realistic: { font: 'Arial', weight: '600', size: 32 },
+            artistic: { font: 'Georgia', weight: 'italic', size: 36 },
+            cartoon: { font: 'Comic Sans MS', weight: 'bold', size: 34 },
+            minimalist: { font: 'Helvetica', weight: '300', size: 30 },
+            vintage: { font: 'Times New Roman', weight: 'bold', size: 33 }
+        };
+        
+        const textStyle = textStyles[style] || textStyles.realistic;
+        
+        // Add main text
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `${textStyle.weight} ${textStyle.size}px ${textStyle.font}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
         
-        // Add prompt text (wrapped)
+        // Word wrap for long text
         const words = prompt.split(' ');
         const lines = [];
         let currentLine = '';
+        const maxWidth = width - 60;
         
         words.forEach(word => {
             const testLine = currentLine + (currentLine ? ' ' : '') + word;
             const metrics = ctx.measureText(testLine);
-            if (metrics.width > width - 40 && currentLine) {
+            
+            if (metrics.width > maxWidth && currentLine) {
                 lines.push(currentLine);
                 currentLine = word;
             } else {
@@ -1454,22 +1684,39 @@ class MarketingContentGenerator {
         });
         lines.push(currentLine);
         
-        const lineHeight = 30;
+        // Draw text lines
+        const lineHeight = textStyle.size + 10;
         const startY = height / 2 - (lines.length - 1) * lineHeight / 2;
         
         lines.forEach((line, index) => {
             ctx.fillText(line, width / 2, startY + index * lineHeight);
         });
         
-        // Add style and format labels
-        ctx.font = '16px Arial';
-        ctx.fillText(`${style} • ${format}`, width / 2, height - 30);
+        // Reset shadow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+    }
+
+    addImageBranding(ctx, width, height, style, format) {
+        // Add LocalBoost IA branding
+        ctx.fillStyle = '#FFFFFF';
+        ctx.globalAlpha = 0.7;
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
         
-        // Convert to data URL
-        const imageUrl = canvas.toDataURL('image/png');
+        const branding = `LocalBoost IA • ${style} • ${format}`;
+        ctx.fillText(branding, width - 10, height - 10);
         
-        this.displayGeneratedImage(imageUrl, prompt, style, format);
-        this.hideImageLoadingSpinner();
+        // Add timestamp
+        ctx.globalAlpha = 0.5;
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText(new Date().toLocaleDateString(), 10, height - 10);
+        
+        ctx.globalAlpha = 1;
     }
 
     getStyleColors(style) {
@@ -1860,6 +2107,48 @@ Try asking me about any of these topics, or describe what you'd like to achieve 
 
     updateBusinessContext(content) {
         this.currentBusinessContext = content;
+    }
+
+    // Enhanced Social Media Functions
+    getPlatformIcon(platform) {
+        const icons = {
+            instagram: '📷',
+            facebook: '📘',
+            tiktok: '🎵',
+            twitter: '🐦',
+            linkedin: '💼',
+            blog: '📝'
+        };
+        return icons[platform] || '📱';
+    }
+
+    getPlatformName(platform) {
+        const names = {
+            instagram: 'Instagram',
+            facebook: 'Facebook',
+            tiktok: 'TikTok',
+            twitter: 'X/Twitter',
+            linkedin: 'LinkedIn',
+            blog: 'Blog'
+        };
+        return names[platform] || platform;
+    }
+
+    formatSocialMediaContent(content) {
+        // Split content by lines and format with proper styling
+        const lines = content.split('\n').filter(line => line.trim());
+        
+        return lines.map(line => {
+            // Add hashtags highlighting
+            if (line.includes('#')) {
+                return line.replace(/(#\w+)/g, '<span class="hashtag">$1</span>');
+            }
+            // Add mentions highlighting
+            if (line.includes('@')) {
+                return line.replace(/(@\w+)/g, '<span class="mention">$1</span>');
+            }
+            return line;
+        }).join('<br>');
     }
 }
 
