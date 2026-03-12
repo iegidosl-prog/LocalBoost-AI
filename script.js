@@ -1063,29 +1063,6 @@ class MarketingContentGenerator {
                     `).join('')}
                 </div>
             </div>
-            
-            <div class="content-card social-media-card">
-                <div class="social-media-header">
-                    <h3><span>📱</span> ${language === 'es' ? 'Contenido para Redes Sociales' : language === 'ca' ? 'Contingut per Xarxes Socials' : 'Social Media Content'}</h3>
-                    <div class="platform-badge">
-                        ${this.getPlatformIcon(content.socialMedia)}
-                        <span>${this.getPlatformName(content.socialMedia)}</span>
-                    </div>
-                </div>
-                <div class="social-media-content">
-                    <div class="content-preview">
-                        ${this.formatSocialMediaContent(content.socialMedia)}
-                    </div>
-                    <div class="content-actions">
-                        <button class="copy-content-btn" data-content="${content.socialMedia.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
-                            📋 ${language === 'es' ? 'Copiar Contenido' : language === 'ca' ? 'Copiar Contingut' : 'Copy Content'}
-                        </button>
-                        <button class="share-content-btn">
-                            📤 ${language === 'es' ? 'Compartir' : language === 'ca' ? 'Compartir' : 'Share'}
-                        </button>
-                    </div>
-                </div>
-            </div>
 
             <div class="content-card">
                 <h3><span>🖼️</span> ${language === 'es' ? 'Sugerencias de Imágenes' : language === 'ca' ? 'Suggeriments d\'Imatges' : 'Image Suggestions'}</h3>
@@ -1486,7 +1463,7 @@ class MarketingContentGenerator {
     }
 
     generateMockImage(prompt, style, format) {
-        // Create a canvas-based content-rich image
+        // Create a canvas-based AI-like image generation
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
@@ -1502,21 +1479,17 @@ class MarketingContentGenerator {
         canvas.width = width;
         canvas.height = height;
         
-        // Create themed background based on business context
-        const businessContext = this.getBusinessContext();
-        const backgroundGradient = this.createBusinessBackground(ctx, width, height, businessContext, style);
+        // Create AI-like sophisticated background
+        this.createAIBackground(ctx, width, height, prompt, style);
         
-        // Add decorative elements
-        this.addDecorativeElements(ctx, width, height, style);
+        // Generate AI-like visual elements
+        this.generateAIVisuals(ctx, width, height, prompt, style);
         
-        // Add content-based visual elements
-        this.addContentVisuals(ctx, width, height, prompt, businessContext);
+        // Add AI-like text rendering
+        this.addAIText(ctx, width, height, prompt, style);
         
-        // Add main text with better typography
-        this.addStyledText(ctx, width, height, prompt, style);
-        
-        // Add branding and metadata
-        this.addImageBranding(ctx, width, height, style, format);
+        // Add AI-like post-processing effects
+        this.addAIEffects(ctx, width, height, style);
         
         // Convert to data URL
         const imageUrl = canvas.toDataURL('image/png');
@@ -1525,151 +1498,482 @@ class MarketingContentGenerator {
         this.hideImageLoadingSpinner();
     }
 
-    createBusinessBackground(ctx, width, height, context, style) {
-        const businessType = context.businessType || 'retail';
+    createAIBackground(ctx, width, height, prompt, style) {
+        // AI-like background generation with multiple layers
+        const businessContext = this.getBusinessContext();
         
-        // Business-specific color schemes
-        const businessThemes = {
-            restaurant: ['#FF6B6B', '#4ECDC4', '#45B7D1'],
-            retail: ['#667EEA', '#764BA2', '#F093FB'],
-            beauty: ['#FF6B9D', '#C44569', '#F8B500'],
-            fitness: ['#4ECDC4', '#44A08D', '#093637'],
-            bakery: ['#D4A574', '#8B4513', '#FFE5B4'],
-            service: ['#3498DB', '#2980B9', '#5DADE2']
+        // Create complex gradient background
+        const gradient1 = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/2);
+        const gradient2 = ctx.createLinearGradient(0, 0, width, height);
+        
+        // AI-chosen colors based on prompt analysis
+        const colors = this.analyzePromptColors(prompt, style);
+        
+        gradient1.addColorStop(0, colors.primary + 'FF');
+        gradient1.addColorStop(0.7, colors.secondary + 'CC');
+        gradient1.addColorStop(1, colors.tertiary + '88');
+        
+        gradient2.addColorStop(0, colors.primary + '33');
+        gradient2.addColorStop(1, colors.secondary + '33');
+        
+        // Apply gradients
+        ctx.fillStyle = gradient1;
+        ctx.fillRect(0, 0, width, height);
+        
+        ctx.fillStyle = gradient2;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Add AI-like texture overlay
+        this.addAITexture(ctx, width, height, style);
+        
+        // Add AI-like lighting effects
+        this.addAILighting(ctx, width, height, colors);
+    }
+
+    analyzePromptColors(prompt, style) {
+        // AI-like color analysis based on prompt keywords
+        const lowerPrompt = prompt.toLowerCase();
+        
+        // Business-specific color palettes
+        const businessColors = {
+            restaurant: { primary: '#FF6B6B', secondary: '#4ECDC4', tertiary: '#45B7D1' },
+            retail: { primary: '#667EEA', secondary: '#764BA2', tertiary: '#F093FB' },
+            beauty: { primary: '#FF6B9D', secondary: '#C44569', tertiary: '#F8B500' },
+            fitness: { primary: '#4ECDC4', secondary: '#44A08D', tertiary: '#093637' },
+            bakery: { primary: '#D4A574', secondary: '#8B4513', tertiary: '#FFE5B4' },
+            service: { primary: '#3498DB', secondary: '#2980B9', tertiary: '#5DADE2' }
         };
         
-        const colors = businessThemes[businessType] || businessThemes.retail;
+        // Style-specific color modifications
+        const styleModifiers = {
+            realistic: { brightness: 1, saturation: 0.8 },
+            artistic: { brightness: 1.1, saturation: 1.2 },
+            cartoon: { brightness: 1.2, saturation: 1.5 },
+            minimalist: { brightness: 0.9, saturation: 0.6 },
+            vintage: { brightness: 0.8, saturation: 0.7 }
+        };
         
-        // Create gradient background
-        const gradient = ctx.createLinearGradient(0, 0, width, height);
-        gradient.addColorStop(0, colors[0] + 'CC');
-        gradient.addColorStop(0.5, colors[1] + 'CC');
-        gradient.addColorStop(1, colors[2] + 'CC');
+        const businessType = this.getBusinessContext().businessType || 'retail';
+        let colors = businessColors[businessType] || businessColors.retail;
+        
+        // Apply style modifications
+        const modifier = styleModifiers[style] || styleModifiers.realistic;
+        
+        return {
+            primary: this.adjustColorBrightness(colors.primary, modifier.brightness),
+            secondary: this.adjustColorBrightness(colors.secondary, modifier.brightness),
+            tertiary: this.adjustColorBrightness(colors.tertiary, modifier.brightness)
+        };
+    }
+
+    adjustColorBrightness(color, factor) {
+        // Simple brightness adjustment
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        
+        const newR = Math.min(255, Math.floor(r * factor));
+        const newG = Math.min(255, Math.floor(g * factor));
+        const newB = Math.min(255, Math.floor(b * factor));
+        
+        return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+    }
+
+    addAITexture(ctx, width, height, style) {
+        ctx.globalAlpha = 0.1;
+        
+        // AI-like procedural texture generation
+        for (let i = 0; i < 50; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const radius = Math.random() * 30 + 5;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            
+            // Random color from palette
+            const colors = ['#FFFFFF', '#000000', '#FF6B6B', '#4ECDC4'];
+            ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+            ctx.fill();
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addAILighting(ctx, width, height, colors) {
+        // AI-like lighting effects
+        const lightGradient = ctx.createRadialGradient(
+            width * 0.3, height * 0.3, 0,
+            width * 0.3, height * 0.3, Math.max(width, height) * 0.8
+        );
+        
+        lightGradient.addColorStop(0, colors.primary + '44');
+        lightGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = lightGradient;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Add rim lighting
+        const rimGradient = ctx.createLinearGradient(0, 0, width, height);
+        rimGradient.addColorStop(0, 'transparent');
+        rimGradient.addColorStop(0.5, colors.tertiary + '22');
+        rimGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = rimGradient;
+        ctx.fillRect(0, 0, width, height);
+    }
+
+    generateAIVisuals(ctx, width, height, prompt, style) {
+        // AI-like visual element generation
+        const businessType = this.getBusinessContext().businessType || 'retail';
+        
+        // Generate AI-like shapes and patterns
+        this.generateAIPatterns(ctx, width, height, businessType, style);
+        
+        // Add AI-like business icons
+        this.addAIIcons(ctx, width, height, businessType, style);
+        
+        // Add AI-like decorative elements
+        this.addAIDecorations(ctx, width, height, style);
+    }
+
+    generateAIPatterns(ctx, width, height, businessType, style) {
+        ctx.globalAlpha = 0.15;
+        
+        // AI-like pattern generation based on business type
+        const patterns = {
+            restaurant: () => this.drawFoodPattern(ctx, width, height),
+            retail: () => this.drawShoppingPattern(ctx, width, height),
+            beauty: () => this.drawBeautyPattern(ctx, width, height),
+            fitness: () => this.drawFitnessPattern(ctx, width, height),
+            bakery: () => this.drawBakeryPattern(ctx, width, height),
+            service: () => this.drawServicePattern(ctx, width, height)
+        };
+        
+        const patternFunction = patterns[businessType] || patterns.retail;
+        patternFunction();
+        
+        ctx.globalAlpha = 1;
+    }
+
+    drawFoodPattern(ctx, width, height) {
+        // Draw food-related patterns
+        for (let i = 0; i < 8; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 20 + 10;
+            
+            // Draw circular food elements
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF6B6B';
+            ctx.fill();
+            
+            // Add highlight
+            ctx.beginPath();
+            ctx.arc(x - size/3, y - size/3, size/3, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFFFFF88';
+            ctx.fill();
+        }
+    }
+
+    drawShoppingPattern(ctx, width, height) {
+        // Draw shopping-related patterns
+        for (let i = 0; i < 6; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 30 + 15;
+            
+            // Draw bag shapes
+            ctx.fillStyle = '#667EEA';
+            ctx.fillRect(x - size/2, y - size/2, size, size);
+            
+            // Add handle
+            ctx.strokeStyle = '#667EEA';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(x, y - size/2, size/3, Math.PI, 0);
+            ctx.stroke();
+        }
+    }
+
+    drawBeautyPattern(ctx, width, height) {
+        // Draw beauty-related patterns
+        for (let i = 0; i < 10; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 15 + 8;
+            
+            // Draw circular beauty elements
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF6B9D';
+            ctx.fill();
+            
+            // Add sparkle effect
+            ctx.fillStyle = '#FFFFFFAA';
+            ctx.beginPath();
+            ctx.arc(x + size/3, y - size/3, size/4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    drawFitnessPattern(ctx, width, height) {
+        // Draw fitness-related patterns
+        for (let i = 0; i < 5; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 25 + 15;
+            
+            // Draw dumbbell shapes
+            ctx.fillStyle = '#4ECDC4';
+            ctx.fillRect(x - size/2, y - size/8, size/3, size/4);
+            ctx.fillRect(x + size/6, y - size/8, size/3, size/4);
+            ctx.fillRect(x - size/8, y - size/2, size/4, size);
+        }
+    }
+
+    drawBakeryPattern(ctx, width, height) {
+        // Draw bakery-related patterns
+        for (let i = 0; i < 8; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 20 + 10;
+            
+            // Draw bread shapes
+            ctx.fillStyle = '#D4A574';
+            ctx.fillRect(x - size/2, y - size/3, size, size/1.5);
+            
+            // Add texture lines
+            ctx.strokeStyle = '#8B4513';
+            ctx.lineWidth = 1;
+            for (let j = 0; j < 3; j++) {
+                ctx.beginPath();
+                ctx.moveTo(x - size/2 + 5, y - size/3 + j * 5);
+                ctx.lineTo(x + size/2 - 5, y - size/3 + j * 5);
+                ctx.stroke();
+            }
+        }
+    }
+
+    drawServicePattern(ctx, width, height) {
+        // Draw service-related patterns
+        for (let i = 0; i < 7; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 20 + 10;
+            
+            // Draw star shapes
+            ctx.fillStyle = '#3498DB';
+            this.drawStar(ctx, x, y, 5, size, size/2);
+        }
+    }
+
+    drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+        let rot = Math.PI / 2 * 3;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        
+        for (let i = 0; i < spikes; i++) {
+            x = cx + Math.cos(rot) * outerRadius;
+            y = cy + Math.sin(rot) * outerRadius;
+            ctx.lineTo(x, y);
+            rot += step;
+
+            x = cx + Math.cos(rot) * innerRadius;
+            y = cy + Math.sin(rot) * innerRadius;
+            ctx.lineTo(x, y);
+            rot += step;
+        }
+        
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    addAIIcons(ctx, width, height, businessType, style) {
+        ctx.globalAlpha = 0.6;
+        
+        // Business-specific AI icons
+        const iconSets = {
+            restaurant: ['🍽️', '🥘', '🍰', '☕', '🍕', '🍔'],
+            retail: ['🛍️', '📦', '🏷️', '💳', '🛒', '🎁'],
+            beauty: ['💄', '💅', '🧴', '✨', '💇', '💆'],
+            fitness: ['💪', '🏋️', '🏃', '🧘', '⚡', '🎯'],
+            bakery: ['🥐', '🍞', '🧁', '🥖', '🥨', '🍪'],
+            service: ['📞', '💼', '🤝', '⭐', '📈', '🎯']
+        };
+        
+        const icons = iconSets[businessType] || iconSets.retail;
+        
+        // Add floating icons with AI-like positioning
+        for (let i = 0; i < 6; i++) {
+            const icon = icons[i % icons.length];
+            const x = (width / 7) * (i + 1);
+            const y = height / 2 + Math.sin(i) * 50;
+            const size = 25 + Math.sin(i * 0.5) * 10;
+            
+            ctx.font = `${size}px Arial`;
+            ctx.fillText(icon, x, y);
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addAIDecorations(ctx, width, height, style) {
+        ctx.globalAlpha = 0.2;
+        
+        // Style-specific AI decorations
+        switch(style) {
+            case 'artistic':
+                this.drawArtisticElements(ctx, width, height);
+                break;
+            case 'minimalist':
+                this.drawMinimalistElements(ctx, width, height);
+                break;
+            case 'vintage':
+                this.drawVintageElements(ctx, width, height);
+                break;
+            case 'cartoon':
+                this.drawCartoonElements(ctx, width, height);
+                break;
+            case 'realistic':
+                this.drawRealisticElements(ctx, width, height);
+                break;
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    drawArtisticElements(ctx, width, height) {
+        // Abstract artistic shapes
+        for (let i = 0; i < 8; i++) {
+            ctx.beginPath();
+            ctx.moveTo(Math.random() * width, Math.random() * height);
+            
+            for (let j = 0; j < 3; j++) {
+                ctx.bezierCurveTo(
+                    Math.random() * width, Math.random() * height,
+                    Math.random() * width, Math.random() * height,
+                    Math.random() * width, Math.random() * height
+                );
+            }
+            
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+    }
+
+    drawMinimalistElements(ctx, width, height) {
+        // Clean geometric shapes
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 1;
+        
+        for (let i = 0; i < 5; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 30 + 10;
+            
+            ctx.strokeRect(x, y, size, size);
+        }
+    }
+
+    drawVintageElements(ctx, width, height) {
+        // Vintage ornamental elements
+        ctx.strokeStyle = '#8B4513';
+        ctx.lineWidth = 2;
+        
+        // Draw vintage frame corners
+        const margin = 30;
+        ctx.beginPath();
+        ctx.moveTo(margin, margin);
+        ctx.lineTo(margin + 50, margin);
+        ctx.moveTo(margin, margin);
+        ctx.lineTo(margin, margin + 50);
+        
+        ctx.moveTo(width - margin, margin);
+        ctx.lineTo(width - margin - 50, margin);
+        ctx.moveTo(width - margin, margin);
+        ctx.lineTo(width - margin, margin + 50);
+        
+        ctx.moveTo(margin, height - margin);
+        ctx.lineTo(margin + 50, height - margin);
+        ctx.moveTo(margin, height - margin);
+        ctx.lineTo(margin, height - margin - 50);
+        
+        ctx.moveTo(width - margin, height - margin);
+        ctx.lineTo(width - margin - 50, height - margin);
+        ctx.moveTo(width - margin, height - margin);
+        ctx.lineTo(width - margin, height - margin - 50);
+        
+        ctx.stroke();
+    }
+
+    drawCartoonElements(ctx, width, height) {
+        // Fun cartoon elements
+        for (let i = 0; i < 6; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const radius = Math.random() * 15 + 5;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD700';
+            ctx.fill();
+            
+            // Add cartoon eyes
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(x - radius/3, y - radius/3, 2, 0, Math.PI * 2);
+            ctx.arc(x + radius/3, y - radius/3, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    drawRealisticElements(ctx, width, height) {
+        // Realistic lighting and shadows
+        const gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/2);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
         
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
-        
-        // Add pattern overlay
-        ctx.globalAlpha = 0.1;
-        for (let i = 0; i < 20; i++) {
-            ctx.beginPath();
-            ctx.arc(
-                Math.random() * width,
-                Math.random() * height,
-                Math.random() * 50 + 10,
-                0,
-                Math.PI * 2
-            );
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        
-        return gradient;
     }
 
-    addDecorativeElements(ctx, width, height, style) {
-        // Add style-specific decorative elements
-        ctx.globalAlpha = 0.3;
-        
-        switch(style) {
-            case 'artistic':
-                // Abstract shapes
-                for (let i = 0; i < 5; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(Math.random() * width, Math.random() * height);
-                    ctx.bezierCurveTo(
-                        Math.random() * width, Math.random() * height,
-                        Math.random() * width, Math.random() * height,
-                        Math.random() * width, Math.random() * height
-                    );
-                    ctx.strokeStyle = '#FFFFFF';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                }
-                break;
-                
-            case 'minimalist':
-                // Clean lines
-                ctx.strokeStyle = '#FFFFFF';
-                ctx.lineWidth = 1;
-                for (let i = 0; i < 3; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, (height / 4) * (i + 1));
-                    ctx.lineTo(width, (height / 4) * (i + 1));
-                    ctx.stroke();
-                }
-                break;
-                
-            case 'vintage':
-                // Vintage frame
-                ctx.strokeStyle = '#8B4513';
-                ctx.lineWidth = 8;
-                ctx.strokeRect(20, 20, width - 40, height - 40);
-                break;
-        }
-        
-        ctx.globalAlpha = 1;
-    }
-
-    addContentVisuals(ctx, width, height, prompt, context) {
-        // Add business-specific icons and visuals
-        const businessType = context.businessType || 'retail';
-        
-        ctx.globalAlpha = 0.6;
-        
-        // Business-specific visual elements
-        const businessIcons = {
-            restaurant: ['🍽️', '🥘', '🍰', '☕'],
-            retail: ['🛍️', '📦', '🏷️', '💳'],
-            beauty: ['💄', '💅', '🧴', '✨'],
-            fitness: ['💪', '🏋️', '🏃', '🧘'],
-            bakery: ['🥐', '🍞', '🧁', '🥖'],
-            service: ['📞', '💼', '🤝', '⭐']
-        };
-        
-        const icons = businessIcons[businessType] || businessIcons.retail;
-        
-        // Add floating icons
-        for (let i = 0; i < 4; i++) {
-            ctx.font = `${30 + Math.random() * 20}px Arial`;
-            ctx.fillText(
-                icons[i % icons.length],
-                Math.random() * (width - 50) + 25,
-                Math.random() * (height - 50) + 25
-            );
-        }
-        
-        ctx.globalAlpha = 1;
-    }
-
-    addStyledText(ctx, width, height, prompt, style) {
-        // Style-specific typography
+    addAIText(ctx, width, height, prompt, style) {
+        // AI-like text rendering with sophisticated typography
         const textStyles = {
-            realistic: { font: 'Arial', weight: '600', size: 32 },
-            artistic: { font: 'Georgia', weight: 'italic', size: 36 },
-            cartoon: { font: 'Comic Sans MS', weight: 'bold', size: 34 },
-            minimalist: { font: 'Helvetica', weight: '300', size: 30 },
-            vintage: { font: 'Times New Roman', weight: 'bold', size: 33 }
+            realistic: { font: 'Inter', weight: '600', size: 32, color: '#FFFFFF' },
+            artistic: { font: 'Georgia', weight: 'italic', size: 36, color: '#FFFFFF' },
+            cartoon: { font: 'Comic Sans MS', weight: 'bold', size: 34, color: '#FFFFFF' },
+            minimalist: { font: 'Helvetica', weight: '300', size: 30, color: '#FFFFFF' },
+            vintage: { font: 'Times New Roman', weight: 'bold', size: 33, color: '#FFFFFF' }
         };
         
         const textStyle = textStyles[style] || textStyles.realistic;
         
-        // Add main text
-        ctx.fillStyle = '#FFFFFF';
+        // Add sophisticated text rendering
         ctx.font = `${textStyle.weight} ${textStyle.size}px ${textStyle.font}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0,0,0,0.5)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
         
-        // Word wrap for long text
+        // Add text shadow for depth
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+        
+        // Smart text wrapping
         const words = prompt.split(' ');
         const lines = [];
         let currentLine = '';
-        const maxWidth = width - 60;
+        const maxWidth = width - 80;
         
         words.forEach(word => {
             const testLine = currentLine + (currentLine ? ' ' : '') + word;
@@ -1684,11 +1988,12 @@ class MarketingContentGenerator {
         });
         lines.push(currentLine);
         
-        // Draw text lines
-        const lineHeight = textStyle.size + 10;
+        // Draw text with proper spacing
+        const lineHeight = textStyle.size + 12;
         const startY = height / 2 - (lines.length - 1) * lineHeight / 2;
         
         lines.forEach((line, index) => {
+            ctx.fillStyle = textStyle.color;
             ctx.fillText(line, width / 2, startY + index * lineHeight);
         });
         
@@ -1699,22 +2004,89 @@ class MarketingContentGenerator {
         ctx.shadowOffsetY = 0;
     }
 
-    addImageBranding(ctx, width, height, style, format) {
-        // Add LocalBoost IA branding
-        ctx.fillStyle = '#FFFFFF';
-        ctx.globalAlpha = 0.7;
-        ctx.font = 'bold 16px Arial';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
+    addAIEffects(ctx, width, height, style) {
+        // AI-like post-processing effects
         
-        const branding = `LocalBoost IA • ${style} • ${format}`;
-        ctx.fillText(branding, width - 10, height - 10);
+        // Add vignette effect
+        const vignette = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/2);
+        vignette.addColorStop(0, 'transparent');
+        vignette.addColorStop(0.7, 'transparent');
+        vignette.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
         
-        // Add timestamp
-        ctx.globalAlpha = 0.5;
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'left';
-        ctx.fillText(new Date().toLocaleDateString(), 10, height - 10);
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Add noise texture for realism
+        this.addNoiseTexture(ctx, width, height);
+        
+        // Add style-specific effects
+        switch(style) {
+            case 'vintage':
+                this.addVintageFilter(ctx, width, height);
+                break;
+            case 'artistic':
+                this.addArtisticFilter(ctx, width, height);
+                break;
+            case 'cartoon':
+                this.addCartoonFilter(ctx, width, height);
+                break;
+        }
+    }
+
+    addNoiseTexture(ctx, width, height) {
+        ctx.globalAlpha = 0.05;
+        
+        for (let i = 0; i < 100; i++) {
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+            const size = Math.random() * 2;
+            
+            ctx.fillStyle = Math.random() > 0.5 ? '#FFFFFF' : '#000000';
+            ctx.fillRect(x, y, size, size);
+        }
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addVintageFilter(ctx, width, height) {
+        ctx.globalAlpha = 0.2;
+        
+        // Add sepia tone
+        const sepia = ctx.createLinearGradient(0, 0, width, height);
+        sepia.addColorStop(0, '#8B4513');
+        sepia.addColorStop(1, '#D4A574');
+        
+        ctx.fillStyle = sepia;
+        ctx.fillRect(0, 0, width, height);
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addArtisticFilter(ctx, width, height) {
+        ctx.globalAlpha = 0.1;
+        
+        // Add color overlay
+        const overlay = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/2);
+        overlay.addColorStop(0, '#FF00FF');
+        overlay.addColorStop(1, '#00FFFF');
+        
+        ctx.fillStyle = overlay;
+        ctx.fillRect(0, 0, width, height);
+        
+        ctx.globalAlpha = 1;
+    }
+
+    addCartoonFilter(ctx, width, height) {
+        ctx.globalAlpha = 0.1;
+        
+        // Add bright color overlay
+        const overlay = ctx.createLinearGradient(0, 0, width, height);
+        overlay.addColorStop(0, '#FFD700');
+        overlay.addColorStop(0.5, '#FF69B4');
+        overlay.addColorStop(1, '#00CED1');
+        
+        ctx.fillStyle = overlay;
+        ctx.fillRect(0, 0, width, height);
         
         ctx.globalAlpha = 1;
     }
