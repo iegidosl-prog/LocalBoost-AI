@@ -160,6 +160,38 @@
                     <span>🔄</span> Generate New Content / Generar Nuevo Contenido
                 </button>
             </section>
+
+            <!-- Content Calendar Section -->
+            <section id="calendarSection" class="calendar-section" style="display: none;">
+                <div class="container">
+                    <h2>📅 Content Calendar / Calendario de Contenido</h2>
+                    
+                    <div class="calendar-controls">
+                        <div class="view-toggle">
+                            <button id="weekViewBtn" class="view-btn active">📆 Week View</button>
+                            <button id="monthViewBtn" class="view-btn">📅 Month View</button>
+                        </div>
+                        <div class="calendar-nav">
+                            <button id="prevBtn" class="nav-btn">◀</button>
+                            <span id="currentDate">Current Week</span>
+                            <button id="nextBtn" class="nav-btn">▶</button>
+                        </div>
+                    </div>
+
+                    <div id="calendarGrid" class="calendar-grid">
+                        <!-- Calendar will be generated here -->
+                    </div>
+
+                    <div class="calendar-actions">
+                        <button id="exportCalendarBtn" class="export-btn">
+                            📥 Export Calendar / Exportar Calendario
+                        </button>
+                        <button id="clearCalendarBtn" class="clear-btn">
+                            🗑️ Clear Calendar / Limpiar Calendario
+                        </button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 

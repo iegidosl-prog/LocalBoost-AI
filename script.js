@@ -1,5 +1,8 @@
 class MarketingContentGenerator {
     constructor() {
+        this.calendarData = JSON.parse(localStorage.getItem('localBoostCalendar')) || {};
+        this.currentView = 'week';
+        this.currentDate = new Date();
         this.initEventListeners();
     }
 
@@ -30,12 +33,53 @@ class MarketingContentGenerator {
             });
         }
 
+        // Calendar event listeners
+        this.initCalendarEventListeners();
+
         // Generate new content button
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'generateNewBtn') {
                 this.resetForm();
             }
         });
+    }
+
+    initCalendarEventListeners() {
+        // View toggle buttons
+        const weekViewBtn = document.getElementById('weekViewBtn');
+        const monthViewBtn = document.getElementById('monthViewBtn');
+        
+        if (weekViewBtn) {
+            weekViewBtn.addEventListener('click', () => this.switchView('week'));
+        }
+        
+        if (monthViewBtn) {
+            monthViewBtn.addEventListener('click', () => this.switchView('month'));
+        }
+
+        // Navigation buttons
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => this.navigateCalendar('prev'));
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => this.navigateCalendar('next'));
+        }
+
+        // Action buttons
+        const exportBtn = document.getElementById('exportCalendarBtn');
+        const clearBtn = document.getElementById('clearCalendarBtn');
+        
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => this.exportCalendar());
+        }
+        
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => this.clearCalendar());
+        }
     }
 
     updatePageLanguage(language) {
@@ -867,11 +911,30 @@ class MarketingContentGenerator {
             <button id="generateNewBtn" class="generate-btn">
                 <span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : language === 'ca' ? 'Generar Nou Contingut' : 'Generate New Content'}
             </button>
+            
+            <button id="toggleCalendarBtn" class="calendar-toggle-btn">
+                <span>📅</span> ${language === 'es' ? 'Ver Calendario' : language === 'ca' ? 'Veure Calendari' : 'View Calendar'}
+            </button>
         `;
 
         this.initEventListeners();
         
         resultsSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Add content to calendar
+        this.addContentToCalendar(content);
+        
+        // Add calendar toggle listener
+        this.addCalendarToggleListener();
+    }
+
+    addCalendarToggleListener() {
+        const toggleBtn = document.getElementById('toggleCalendarBtn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                this.showCalendar();
+            });
+        }
     }
 
     displayAIEnhancedResults(content, language) {
@@ -950,6 +1013,226 @@ class MarketingContentGenerator {
         setTimeout(() => {
             alertDiv.remove();
         }, 3000);
+    }
+
+    // Calendar Functions
+    switchView(view) {
+        this.currentView = view;
+        
+        // Update button states
+        const weekBtn = document.getElementById('weekViewBtn');
+        const monthBtn = document.getElementById('monthViewBtn');
+        
+        if (weekBtn && monthBtn) {
+            weekBtn.classList.toggle('active', view === 'week');
+            monthBtn.classList.toggle('active', view === 'month');
+        }
+        
+        this.renderCalendar();
+    }
+
+    navigateCalendar(direction) {
+        if (direction === 'prev') {
+            if (this.currentView === 'week') {
+                this.currentDate.setDate(this.currentDate.getDate() - 7);
+            } else {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+            }
+        } else {
+            if (this.currentView === 'week') {
+                this.currentDate.setDate(this.currentDate.getDate() + 7);
+            } else {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+            }
+        }
+        
+        this.renderCalendar();
+    }
+
+    renderCalendar() {
+        const calendarGrid = document.getElementById('calendarGrid');
+        const currentDateSpan = document.getElementById('currentDate');
+        
+        if (!calendarGrid || !currentDateSpan) return;
+        
+        if (this.currentView === 'week') {
+            this.renderWeekView(calendarGrid, currentDateSpan);
+        } else {
+            this.renderMonthView(calendarGrid, currentDateSpan);
+        }
+    }
+
+    renderWeekView(grid, dateSpan) {
+        const startOfWeek = new Date(this.currentDate);
+        const day = startOfWeek.getDay();
+        startOfWeek.setDate(startOfWeek.getDate() - day);
+        
+        dateSpan.textContent = this.formatWeekRange(startOfWeek);
+        
+        let html = '';
+        const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const weekDaysEs = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        const weekDaysCa = ['Diu', 'Dill', 'Dim', 'Dij', 'Div', 'Dis', 'Diss'];
+        
+        for (let i = 0; i < 7; i++) {
+            const currentDate = new Date(startOfWeek);
+            currentDate.setDate(startOfWeek.getDate() + i);
+            const dateKey = this.getDateKey(currentDate);
+            const dayContent = this.calendarData[dateKey] || [];
+            
+            html += `
+                <div class="calendar-day">
+                    <div class="calendar-day-header">
+                        <div class="calendar-day-title">${weekDays[i]}</div>
+                        <div class="calendar-day-date">${currentDate.getDate()}/${currentDate.getMonth() + 1}</div>
+                    </div>
+                    <div class="calendar-content">
+                        ${dayContent.map(item => this.renderContentItem(item)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        grid.innerHTML = html;
+        grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+    }
+
+    renderMonthView(grid, dateSpan) {
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDate = new Date(firstDay);
+        startDate.setDate(startDate.getDate() - firstDay.getDay());
+        
+        dateSpan.textContent = this.formatMonthYear(year, month);
+        
+        let html = '';
+        const totalDays = 42; // 6 weeks * 7 days
+        
+        for (let i = 0; i < totalDays; i++) {
+            const currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + i);
+            const dateKey = this.getDateKey(currentDate);
+            const dayContent = this.calendarData[dateKey] || [];
+            const isCurrentMonth = currentDate.getMonth() === month;
+            const opacity = isCurrentMonth ? '1' : '0.3';
+            
+            html += `
+                <div class="calendar-day" style="opacity: ${opacity}">
+                    <div class="calendar-day-header">
+                        <div class="calendar-day-title">${currentDate.getDate()}</div>
+                        <div class="calendar-day-date">${currentDate.getMonth() + 1}/${currentDate.getDate()}</div>
+                    </div>
+                    <div class="calendar-content">
+                        ${dayContent.slice(0, 2).map(item => this.renderContentItem(item)).join('')}
+                        ${dayContent.length > 2 ? `<div class="content-item">+${dayContent.length - 2} more</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        grid.innerHTML = html;
+        grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+    }
+
+    renderContentItem(item) {
+        const platformIcons = {
+            instagram: '📷',
+            facebook: '📘',
+            tiktok: '🎵',
+            linkedin: '💼',
+            twitter: '🐦',
+            blog: '🌐'
+        };
+        
+        return `
+            <div class="content-item" onclick="this.classList.toggle('expanded')">
+                <div class="content-platform">${platformIcons[item.platform] || '📱'} ${item.platform}</div>
+                <div class="content-preview">${item.content.substring(0, 60)}...</div>
+                <div class="content-time">${item.time || 'All day'}</div>
+            </div>
+        `;
+    }
+
+    formatWeekRange(startDate) {
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 6);
+        
+        return `${startDate.getDate()}/${startDate.getMonth() + 1} - ${endDate.getDate()}/${endDate.getMonth() + 1}`;
+    }
+
+    formatMonthYear(year, month) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[month] + ' ' + year;
+    }
+
+    getDateKey(date) {
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    }
+
+    addContentToCalendar(content) {
+        const today = new Date();
+        const dateKey = this.getDateKey(today);
+        
+        if (!this.calendarData[dateKey]) {
+            this.calendarData[dateKey] = [];
+        }
+        
+        this.calendarData[dateKey].push({
+            platform: content.socialMedia,
+            content: content.socialMedia.substring(0, 100),
+            time: new Date().toLocaleTimeString(),
+            fullContent: content
+        });
+        
+        this.saveCalendar();
+        this.showCalendar();
+    }
+
+    showCalendar() {
+        const calendarSection = document.getElementById('calendarSection');
+        if (calendarSection) {
+            calendarSection.style.display = 'block';
+            this.renderCalendar();
+        }
+    }
+
+    saveCalendar() {
+        localStorage.setItem('localBoostCalendar', JSON.stringify(this.calendarData));
+    }
+
+    exportCalendar() {
+        const csvContent = this.generateCalendarCSV();
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `localboost-calendar-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+    generateCalendarCSV() {
+        let csv = 'Date,Platform,Content,Time\n';
+        
+        Object.keys(this.calendarData).forEach(dateKey => {
+            this.calendarData[dateKey].forEach(item => {
+                csv += `"${dateKey}","${item.platform}","${item.content.replace(/"/g, '""')}","${item.time}"\n`;
+            });
+        });
+        
+        return csv;
+    }
+
+    clearCalendar() {
+        if (confirm('Are you sure you want to clear all calendar data? / ¿Estás seguro de que quieres limpiar todos los datos del calendario?')) {
+            this.calendarData = {};
+            this.saveCalendar();
+            this.renderCalendar();
+            this.showAlert('Calendar cleared successfully / Calendario limpiado exitosamente');
+        }
     }
 }
 
