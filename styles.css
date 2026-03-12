@@ -2005,3 +2005,397 @@ header {
         min-width: 120px;
     }
 }
+
+/* Enhanced Results Section Styles */
+.results-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.results-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.title-icon {
+    font-size: 3rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.results-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.result-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(99, 102, 241, 0.02) 100%);
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #a855f7, #3b82f6);
+}
+
+.card-header {
+    padding: 25px 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+}
+
+.card-title-group {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: var(--text-primary);
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 400;
+}
+
+.card-content {
+    padding: 25px 30px;
+}
+
+/* AI Prompts Card Specific Styles */
+.ai-prompts-card .card-icon {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.prompts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.prompt-item {
+    background: var(--input-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.prompt-item:hover {
+    border-color: #10b981;
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1);
+}
+
+.prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.platform-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.format-badge {
+    background: var(--accent-primary);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.prompt-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.prompt-text {
+    background: var(--card-bg);
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    word-break: break-all;
+    line-height: 1.5;
+}
+
+.copy-prompt-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+}
+
+.copy-prompt-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-icon {
+    font-size: 1rem;
+}
+
+.btn-text {
+    font-size: 0.9rem;
+}
+
+/* Suggestions Card Styles */
+.suggestions-card .card-icon {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.suggestions-content {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+/* Promotion Card Styles */
+.promotion-card .card-icon {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.promotion-content {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+/* Newsletter Card Styles */
+.newsletter-card .card-icon {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.newsletter-content {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+/* Campaigns Card Styles */
+.campaigns-card .card-icon {
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.campaigns-content {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+/* Results Actions */
+.results-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.action-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #3b82f6 100%);
+    color: white;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(99, 102, 246, 0.4);
+}
+
+.secondary-btn {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--border-primary);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.action-btn:hover::before {
+    left: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .results-header {
+        padding: 30px 15px;
+        margin-bottom: 30px;
+    }
+    
+    .results-title {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .title-icon {
+        font-size: 2.5rem;
+    }
+    
+    .results-subtitle {
+        font-size: 1rem;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .card-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+    }
+    
+    .card-content {
+        padding: 20px;
+    }
+    
+    .prompt-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .copy-prompt-btn {
+        align-self: stretch;
+        justify-content: center;
+    }
+    
+    .results-actions {
+        padding: 20px 15px;
+        gap: 10px;
+    }
+    
+    .action-btn {
+        min-width: 150px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}

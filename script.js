@@ -1042,86 +1042,132 @@ class MarketingContentGenerator {
 
     displayResults(content, language) {
         const resultsSection = document.getElementById('resultsSection');
-        
-        // Generate Gemini prompts
-        const geminiPrompts = this.generateGeminiPrompts(language, content.businessName, content.socialMedia, content.style, content.productsList, content.promotionsList);
+        if (!resultsSection) return;
         
         resultsSection.innerHTML = `
-            <h2>${language === 'es' ? 'Contenido de Marketing LocalBoost IA' : language === 'ca' ? 'Contingut de Marketing LocalBoost IA' : 'LocalBoost IA Marketing Content Generated'}</h2>
+            <div class="results-header">
+                <h2 class="results-title">
+                    <span class="title-icon">🚀</span>
+                    ${language === 'es' ? 'Contenido de Marketing LocalBoost IA' : language === 'ca' ? 'Contingut de Marketing LocalBoost IA' : 'LocalBoost IA Marketing Content Generated'}
+                </h2>
+                <p class="results-subtitle">
+                    ${language === 'es' ? 'Tu contenido profesional está listo para usar' : language === 'ca' ? 'El teu contingut professional està llest per usar' : 'Your professional content is ready to use'}
+                </p>
+            </div>
             
-            <div class="content-card ai-enhanced-card">
-                <h3><span>🤖</span> ${language === 'es' ? 'Prompts para LocalBoost IA' : language === 'ca' ? 'Prompts per LocalBoost IA' : 'LocalBoost IA Gemini Prompts'}</h3>
-                <div class="gemini-prompts">
-                    ${geminiPrompts.map((prompt, index) => `
-                        <div class="prompt-item">
-                            <h4>📱 ${prompt.platform} - ${prompt.format}</h4>
-                            <div class="prompt-text">${prompt.prompt}</div>
-                            <button class="copy-prompt-btn" data-prompt="${prompt.prompt.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
-                                📋 ${language === 'es' ? 'Copiar Prompt' : language === 'ca' ? 'Copiar Prompt' : 'Copy Prompt'}
-                            </button>
+            <div class="results-grid">
+                <div class="result-card ai-prompts-card">
+                    <div class="card-header">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title-group">
+                            <h3 class="card-title">${language === 'es' ? 'Prompts IA para Gemini' : language === 'ca' ? 'Prompts IA per Gemini' : 'AI Prompts for Gemini'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Optimiza tu contenido con IA' : language === 'ca' ? 'Optimitza el teu contingut amb IA' : 'Optimize your content with AI'}</p>
                         </div>
-                    `).join('')}
+                    </div>
+                    <div class="card-content">
+                        <div class="prompts-list">
+                            ${content.geminiPrompts.map((prompt, index) => `
+                                <div class="prompt-item">
+                                    <div class="prompt-header">
+                                        <span class="platform-badge">
+                                            ${this.getPlatformIcon(prompt.platform)}
+                                            ${prompt.platform}
+                                        </span>
+                                        <span class="format-badge">${prompt.format}</span>
+                                    </div>
+                                    <div class="prompt-content">
+                                        <div class="prompt-text">${prompt.prompt}</div>
+                                        <button class="copy-prompt-btn" data-prompt="${prompt.prompt.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}">
+                                            <span class="btn-icon">📋</span>
+                                            <span class="btn-text">${language === 'es' ? 'Copiar' : language === 'ca' ? 'Copiar' : 'Copy'}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card suggestions-card">
+                    <div class="card-header">
+                        <div class="card-icon">🖼️</div>
+                        <div class="card-title-group">
+                            <h3 class="card-title">${language === 'es' ? 'Sugerencias de Imágenes' : language === 'ca' ? 'Suggeriments d\'Imatges' : 'Image Suggestions'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Ideas visuales para tu contenido' : language === 'ca' ? 'Idees visuals per al teu contingut' : 'Visual ideas for your content'}</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="suggestions-content">
+                            ${content.imageSuggestions}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card promotion-card">
+                    <div class="card-header">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-title-group">
+                            <h3 class="card-title">${language === 'es' ? 'Texto de Promoción' : language === 'ca' ? 'Text de Promoció' : 'Promotion Text'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Contenido para promociones especiales' : language === 'ca' ? 'Contingut per promocions especials' : 'Content for special promotions'}</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="promotion-content">
+                            ${content.productPromotion}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card newsletter-card">
+                    <div class="card-header">
+                        <div class="card-icon">📧</div>
+                        <div class="card-title-group">
+                            <h3 class="card-title">${language === 'es' ? 'Newsletter' : language === 'ca' ? 'Newsletter' : 'Newsletter'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Contenido para email marketing' : language === 'ca' ? 'Contingut per email marketing' : 'Content for email marketing'}</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="newsletter-content">
+                            ${content.newsletter}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card campaigns-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-title-group">
+                            <h3 class="card-title">${language === 'es' ? 'Ideas de Campaña' : language === 'ca' ? 'Idees de Campanya' : 'Campaign Ideas'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Estrategias de marketing creativas' : language === 'ca' ? 'Estratègies de màrqueting creatives' : 'Creative marketing strategies'}</p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="campaigns-content">
+                            ${content.campaignIdeas}
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="content-card">
-                <h3><span>🖼️</span> ${language === 'es' ? 'Sugerencias de Imágenes' : language === 'ca' ? 'Suggeriments d\'Imatges' : 'Image Suggestions'}</h3>
-                <div>${content.imageSuggestions}</div>
-            </div>
-
-            <div class="content-card">
-                <h3><span>🏆</span> ${language === 'es' ? 'Texto de Promoción de Productos' : language === 'ca' ? 'Text de Promoció de Productes' : 'Product Promotion Text'}</h3>
-                <div>${content.productPromotion}</div>
-            </div>
-
-            <div class="content-card">
-                <h3><span>📧</span> ${language === 'es' ? 'Mensaje para Boletín de Clientes' : language === 'ca' ? 'Missatge per Butlletí de Clients' : 'Customer Newsletter Message'}</h3>
-                <div>${content.newsletter}</div>
-            </div>
-
-            <div class="content-card">
-                <h3><span>🎯</span> ${language === 'es' ? 'Ideas de Campaña Promocional' : language === 'ca' ? 'Idees de Campanya Promocional' : 'Promotional Campaign Ideas'}</h3>
-                <div>${content.campaigns}</div>
-            </div>
-
-            <button id="generateNewBtn" class="generate-btn">
-                <span>🔄</span> ${language === 'es' ? 'Generar Nuevo Contenido' : language === 'ca' ? 'Generar Nou Contingut' : 'Generate New Content'}
-            </button>
             
-            <button id="toggleCalendarBtn" class="calendar-toggle-btn">
-                <span>📅</span> ${language === 'es' ? 'Ver Calendario' : language === 'ca' ? 'Veure Calendari' : 'View Calendar'}
-            </button>
-            
-            <button id="toggleImageGeneratorBtn" class="image-generator-toggle-btn">
-                <span>🎨</span> ${language === 'es' ? 'Generar Imagen' : language === 'ca' ? 'Generar Imatge' : 'Generate Image'}
-            </button>
+            <div class="results-actions">
+                <button id="generateNewBtn" class="action-btn primary-btn">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">${language === 'es' ? 'Generar Nuevo Contenido' : language === 'ca' ? 'Generar Nou Contingut' : 'Generate New Content'}</span>
+                </button>
+                <button id="toggleCalendarBtn" class="action-btn secondary-btn">
+                    <span class="btn-icon">📅</span>
+                    <span class="btn-text">${language === 'es' ? 'Ver Calendario' : language === 'ca' ? 'Veure Calendari' : 'View Calendar'}</span>
+                </button>
+                <button id="toggleImageGeneratorBtn" class="action-btn secondary-btn">
+                    <span class="btn-icon">🎨</span>
+                    <span class="btn-text">${language === 'es' ? 'Generador de Imágenes' : language === 'ca' ? 'Generador d\'Imatges' : 'Image Generator'}</span>
+                </button>
+            </div>
         `;
-
-        this.initEventListeners();
         
         resultsSection.scrollIntoView({ behavior: 'smooth' });
-        
-        // Add content to calendar
         this.addContentToCalendar(content);
-        
-        // Add calendar toggle listener
-        this.addCalendarToggleListener();
-    }
-
-    addCalendarToggleListener() {
-        const toggleBtn = document.getElementById('toggleCalendarBtn');
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => {
-                this.showCalendar();
-            });
-        }
-        
-        const imageGeneratorBtn = document.getElementById('toggleImageGeneratorBtn');
-        if (imageGeneratorBtn) {
-            imageGeneratorBtn.addEventListener('click', () => {
-                this.showImageGenerator();
-            });
-        }
+        this.addImageToGallery(content);
     }
 
     displayAIEnhancedResults(content, language) {
