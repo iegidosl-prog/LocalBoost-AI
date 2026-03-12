@@ -192,6 +192,87 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Image Generator Section -->
+            <section id="imageGeneratorSection" class="image-generator-section" style="display: none;">
+                <div class="container">
+                    <h2>🎨 AI Image Generator / Generador de Imágenes IA</h2>
+                    
+                    <div class="generator-controls">
+                        <div class="prompt-input-group">
+                            <label for="imagePrompt">
+                                <span>💭</span> Image Prompt / Prompt de Imagen:
+                            </label>
+                            <textarea id="imagePrompt" rows="4" placeholder="Describe the image you want to generate... / Describe la imagen que quieres generar..."></textarea>
+                        </div>
+                        
+                        <div class="image-options">
+                            <div class="option-group">
+                                <label for="imageStyle">
+                                    <span>🎨</span> Style / Estilo:
+                                </label>
+                                <select id="imageStyle">
+                                    <option value="realistic">📸 Realistic / Realista</option>
+                                    <option value="artistic">🖼️ Artistic / Artístico</option>
+                                    <option value="cartoon">🎨 Cartoon / Dibujo</option>
+                                    <option value="minimalist">⚡ Minimalist / Minimalista</option>
+                                    <option value="vintage">📷 Vintage / Retro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="option-group">
+                                <label for="imageFormat">
+                                    <span>📐</span> Format / Formato:
+                                </label>
+                                <select id="imageFormat">
+                                    <option value="square">⬜ Square (1:1)</option>
+                                    <option value="portrait">📱 Portrait (9:16)</option>
+                                    <option value="landscape">🖥️ Landscape (16:9)</option>
+                                    <option value="wide">🌐 Wide (21:9)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="generate-actions">
+                            <button id="generateImageBtn" class="generate-image-btn">
+                                <span>🎨</span> Generate Image / Generar Imagen
+                            </button>
+                            <button id="clearImageBtn" class="clear-image-btn">
+                                <span>🗑️</span> Clear / Limpiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="image-result">
+                        <div class="loading-spinner" id="imageLoadingSpinner" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Generating image... / Generando imagen...</p>
+                        </div>
+                        
+                        <div class="generated-image" id="generatedImageContainer" style="display: none;">
+                            <img id="generatedImage" src="" alt="Generated image">
+                            <div class="image-actions">
+                                <button id="downloadImageBtn" class="download-btn">
+                                    <span>📥</span> Download / Descargar
+                                </button>
+                                <button id="addToCalendarBtn" class="add-to-calendar-btn">
+                                    <span>📅</span> Add to Calendar / Agregar al Calendario
+                                </button>
+                                <button id="regenerateImageBtn" class="regenerate-btn">
+                                    <span>🔄</span> Regenerate / Regenerar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-gallery">
+                        <h3>🖼️ Image Gallery / Galería de Imágenes</h3>
+                        <div id="imageGalleryGrid" class="gallery-grid">
+                            <!-- Generated images will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 

@@ -3,6 +3,8 @@ class MarketingContentGenerator {
         this.calendarData = JSON.parse(localStorage.getItem('localBoostCalendar')) || {};
         this.currentView = 'week';
         this.currentDate = new Date();
+        this.imageGallery = JSON.parse(localStorage.getItem('localBoostImageGallery')) || [];
+        this.currentGeneratedImage = null;
         this.initEventListeners();
     }
 
@@ -36,12 +38,43 @@ class MarketingContentGenerator {
         // Calendar event listeners
         this.initCalendarEventListeners();
 
+        // Image generator event listeners
+        this.initImageGeneratorEventListeners();
+
         // Generate new content button
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'generateNewBtn') {
                 this.resetForm();
             }
         });
+    }
+
+    initImageGeneratorEventListeners() {
+        const generateImageBtn = document.getElementById('generateImageBtn');
+        const clearImageBtn = document.getElementById('clearImageBtn');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const addToCalendarBtn = document.getElementById('addToCalendarBtn');
+        const regenerateImageBtn = document.getElementById('regenerateImageBtn');
+        
+        if (generateImageBtn) {
+            generateImageBtn.addEventListener('click', () => this.generateImage());
+        }
+        
+        if (clearImageBtn) {
+            clearImageBtn.addEventListener('click', () => this.clearImageGenerator());
+        }
+        
+        if (downloadImageBtn) {
+            downloadImageBtn.addEventListener('click', () => this.downloadGeneratedImage());
+        }
+        
+        if (addToCalendarBtn) {
+            addToCalendarBtn.addEventListener('click', () => this.addImageToCalendar());
+        }
+        
+        if (regenerateImageBtn) {
+            regenerateImageBtn.addEventListener('click', () => this.regenerateImage());
+        }
     }
 
     initCalendarEventListeners() {
@@ -915,6 +948,10 @@ class MarketingContentGenerator {
             <button id="toggleCalendarBtn" class="calendar-toggle-btn">
                 <span>📅</span> ${language === 'es' ? 'Ver Calendario' : language === 'ca' ? 'Veure Calendari' : 'View Calendar'}
             </button>
+            
+            <button id="toggleImageGeneratorBtn" class="image-generator-toggle-btn">
+                <span>🎨</span> ${language === 'es' ? 'Generar Imagen' : language === 'ca' ? 'Generar Imatge' : 'Generate Image'}
+            </button>
         `;
 
         this.initEventListeners();
@@ -933,6 +970,13 @@ class MarketingContentGenerator {
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 this.showCalendar();
+            });
+        }
+        
+        const imageGeneratorBtn = document.getElementById('toggleImageGeneratorBtn');
+        if (imageGeneratorBtn) {
+            imageGeneratorBtn.addEventListener('click', () => {
+                this.showImageGenerator();
             });
         }
     }
@@ -1233,6 +1277,243 @@ class MarketingContentGenerator {
             this.renderCalendar();
             this.showAlert('Calendar cleared successfully / Calendario limpiado exitosamente');
         }
+    }
+
+    // Image Generator Functions
+    showImageGenerator() {
+        const imageGeneratorSection = document.getElementById('imageGeneratorSection');
+        if (imageGeneratorSection) {
+            imageGeneratorSection.style.display = 'block';
+            this.renderImageGallery();
+        }
+    }
+
+    generateImage() {
+        const prompt = document.getElementById('imagePrompt').value.trim();
+        const style = document.getElementById('imageStyle').value;
+        const format = document.getElementById('imageFormat').value;
+        
+        if (!prompt) {
+            this.showAlert('Please enter an image prompt / Por favor ingresa un prompt de imagen');
+            return;
+        }
+        
+        this.showImageLoadingSpinner();
+        
+        // Simulate image generation (in real implementation, this would call Gemini API)
+        setTimeout(() => {
+            this.generateMockImage(prompt, style, format);
+        }, 2000);
+    }
+
+    showImageLoadingSpinner() {
+        const spinner = document.getElementById('imageLoadingSpinner');
+        const resultContainer = document.getElementById('generatedImageContainer');
+        
+        if (spinner) spinner.style.display = 'block';
+        if (resultContainer) resultContainer.style.display = 'none';
+    }
+
+    hideImageLoadingSpinner() {
+        const spinner = document.getElementById('imageLoadingSpinner');
+        if (spinner) spinner.style.display = 'none';
+    }
+
+    generateMockImage(prompt, style, format) {
+        // Create a canvas-based placeholder image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size based on format
+        const sizes = {
+            square: [512, 512],
+            portrait: [512, 912],
+            landscape: [912, 512],
+            wide: [1072, 512]
+        };
+        
+        const [width, height] = sizes[format] || sizes.square;
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Create gradient background
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        const colors = this.getStyleColors(style);
+        gradient.addColorStop(0, colors[0]);
+        gradient.addColorStop(1, colors[1]);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+        
+        // Add text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Add prompt text (wrapped)
+        const words = prompt.split(' ');
+        const lines = [];
+        let currentLine = '';
+        
+        words.forEach(word => {
+            const testLine = currentLine + (currentLine ? ' ' : '') + word;
+            const metrics = ctx.measureText(testLine);
+            if (metrics.width > width - 40 && currentLine) {
+                lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = testLine;
+            }
+        });
+        lines.push(currentLine);
+        
+        const lineHeight = 30;
+        const startY = height / 2 - (lines.length - 1) * lineHeight / 2;
+        
+        lines.forEach((line, index) => {
+            ctx.fillText(line, width / 2, startY + index * lineHeight);
+        });
+        
+        // Add style and format labels
+        ctx.font = '16px Arial';
+        ctx.fillText(`${style} • ${format}`, width / 2, height - 30);
+        
+        // Convert to data URL
+        const imageUrl = canvas.toDataURL('image/png');
+        
+        this.displayGeneratedImage(imageUrl, prompt, style, format);
+        this.hideImageLoadingSpinner();
+    }
+
+    getStyleColors(style) {
+        const colorPalettes = {
+            realistic: ['#4F46E5', '#7C3AED'],
+            artistic: ['#EC4899', '#F59E0B'],
+            cartoon: ['#10B981', '#3B82F6'],
+            minimalist: ['#6B7280', '#374151'],
+            vintage: ['#DC2626', '#EA580C']
+        };
+        
+        return colorPalettes[style] || colorPalettes.realistic;
+    }
+
+    displayGeneratedImage(imageUrl, prompt, style, format) {
+        const resultContainer = document.getElementById('generatedImageContainer');
+        const generatedImage = document.getElementById('generatedImage');
+        
+        if (generatedImage && resultContainer) {
+            generatedImage.src = imageUrl;
+            resultContainer.style.display = 'block';
+            
+            // Store current image data
+            this.currentGeneratedImage = {
+                url: imageUrl,
+                prompt,
+                style,
+                format,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Add to gallery
+            this.addToImageGallery(this.currentGeneratedImage);
+        }
+    }
+
+    addToImageGallery(imageData) {
+        this.imageGallery.unshift(imageData);
+        
+        // Keep only last 12 images
+        if (this.imageGallery.length > 12) {
+            this.imageGallery = this.imageGallery.slice(0, 12);
+        }
+        
+        this.saveImageGallery();
+        this.renderImageGallery();
+    }
+
+    saveImageGallery() {
+        localStorage.setItem('localBoostImageGallery', JSON.stringify(this.imageGallery));
+    }
+
+    renderImageGallery() {
+        const galleryGrid = document.getElementById('imageGalleryGrid');
+        if (!galleryGrid) return;
+        
+        if (this.imageGallery.length === 0) {
+            galleryGrid.innerHTML = '<div class="empty-gallery">No images generated yet / No hay imágenes generadas aún</div>';
+            return;
+        }
+        
+        galleryGrid.innerHTML = this.imageGallery.map((image, index) => `
+            <div class="gallery-item" onclick="this.selectImage(${index})">
+                <img src="${image.url}" alt="Generated image ${index + 1}">
+                <div class="gallery-item-info">
+                    ${image.prompt.substring(0, 30)}...
+                </div>
+            </div>
+        `).join('');
+    }
+
+    clearImageGenerator() {
+        const promptInput = document.getElementById('imagePrompt');
+        const resultContainer = document.getElementById('generatedImageContainer');
+        
+        if (promptInput) promptInput.value = '';
+        if (resultContainer) resultContainer.style.display = 'none';
+        
+        this.currentGeneratedImage = null;
+    }
+
+    downloadGeneratedImage() {
+        if (!this.currentGeneratedImage) {
+            this.showAlert('No image to download / No hay imagen para descargar');
+            return;
+        }
+        
+        const link = document.createElement('a');
+        link.href = this.currentGeneratedImage.url;
+        link.download = `localboost-image-${Date.now()}.png`;
+        link.click();
+    }
+
+    addImageToCalendar() {
+        if (!this.currentGeneratedImage) {
+            this.showAlert('No image to add to calendar / No hay imagen para agregar al calendario');
+            return;
+        }
+        
+        const today = new Date();
+        const dateKey = this.getDateKey(today);
+        
+        if (!this.calendarData[dateKey]) {
+            this.calendarData[dateKey] = [];
+        }
+        
+        this.calendarData[dateKey].push({
+            platform: 'image',
+            content: `Generated Image: ${this.currentGeneratedImage.prompt}`,
+            time: new Date().toLocaleTimeString(),
+            fullContent: this.currentGeneratedImage,
+            type: 'image'
+        });
+        
+        this.saveCalendar();
+        this.showCalendar();
+        this.showAlert('Image added to calendar / Imagen agregada al calendario');
+    }
+
+    regenerateImage() {
+        if (!this.currentGeneratedImage) {
+            this.showAlert('No image to regenerate / No hay imagen para regenerar');
+            return;
+        }
+        
+        // Use the same prompt, style, and format
+        document.getElementById('imagePrompt').value = this.currentGeneratedImage.prompt;
+        document.getElementById('imageStyle').value = this.currentGeneratedImage.style;
+        document.getElementById('imageFormat').value = this.currentGeneratedImage.format;
+        
+        this.generateImage();
     }
 }
 
