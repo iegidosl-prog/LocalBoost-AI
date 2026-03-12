@@ -5,6 +5,8 @@ class MarketingContentGenerator {
         this.currentDate = new Date();
         this.imageGallery = JSON.parse(localStorage.getItem('localBoostImageGallery')) || [];
         this.currentGeneratedImage = null;
+        this.currentTheme = localStorage.getItem('localBoostTheme') || 'light';
+        this.initTheme();
         this.initEventListeners();
     }
 
@@ -41,12 +43,50 @@ class MarketingContentGenerator {
         // Image generator event listeners
         this.initImageGeneratorEventListeners();
 
+        // Theme toggle listener
+        this.initThemeToggleListener();
+
         // Generate new content button
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'generateNewBtn') {
                 this.resetForm();
             }
         });
+    }
+
+    initTheme() {
+        document.documentElement.setAttribute('data-theme', this.currentTheme);
+        this.updateThemeToggleUI();
+    }
+
+    initThemeToggleListener() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+        }
+    }
+
+    toggleTheme() {
+        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', this.currentTheme);
+        localStorage.setItem('localBoostTheme', this.currentTheme);
+        this.updateThemeToggleUI();
+    }
+
+    updateThemeToggleUI() {
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
+        const themeText = themeToggleBtn?.querySelector('.theme-text');
+        
+        if (themeIcon && themeText) {
+            if (this.currentTheme === 'dark') {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
     }
 
     initImageGeneratorEventListeners() {
