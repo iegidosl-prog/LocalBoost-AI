@@ -6,14 +6,52 @@ class MarketingContentGenerator {
     initEventListeners() {
         const form = document.getElementById('businessForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
+        const languageSelect = document.getElementById('language');
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.generateContent();
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.generateContent();
+            });
+        }
+
+        if (generateNewBtn) {
+            generateNewBtn.addEventListener('click', () => {
+                this.generateContent();
+            });
+        }
+
+        // Language change handler
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                const selectedLang = e.target.value;
+                document.body.setAttribute('lang', selectedLang);
+                this.updatePageLanguage(selectedLang);
+            });
+        }
+
+        // Generate new content button
+        document.addEventListener('click', (e) => {
+            if (e.target && e.target.id === 'generateNewBtn') {
+                this.resetForm();
+            }
         });
+    }
 
-        generateNewBtn.addEventListener('click', () => {
-            this.generateContent();
+    updatePageLanguage(language) {
+        // Update any page elements that need language switching
+        const html = document.documentElement;
+        html.setAttribute('lang', language);
+        
+        // Update form labels and placeholders if needed
+        this.updateFormLabels(language);
+    }
+
+    updateFormLabels(language) {
+        // This can be expanded to update other UI elements
+        const labels = document.querySelectorAll('label');
+        labels.forEach(label => {
+            // Add dynamic label updates if needed
         });
     }
 

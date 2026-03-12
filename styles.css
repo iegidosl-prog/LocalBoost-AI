@@ -76,6 +76,44 @@ header h1 {
     letter-spacing: -0.02em;
 }
 
+.header-description {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.header-description span {
+    display: none;
+}
+
+.header-description .es-desc {
+    display: inline;
+}
+
+.header-subtitle {
+    font-size: 1rem;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Language-specific visibility */
+body[lang="es"] .header-description .es-desc,
+body[lang="ca"] .header-description .ca-desc,
+body[lang="en"] .header-description .en-desc {
+    display: inline;
+}
+
+body[lang="es"] .header-description .ca-desc,
+body[lang="es"] .header-description .en-desc,
+body[lang="ca"] .header-description .es-desc,
+body[lang="ca"] .header-description .en-desc,
+body[lang="en"] .header-description .es-desc,
+body[lang="en"] .header-description .ca-desc {
+    display: none;
+}
+
 header p {
     color: #64748b;
     font-size: 1.2rem;
