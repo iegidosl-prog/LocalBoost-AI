@@ -287,6 +287,8 @@ class MarketingContentGenerator {
     }
 
     generateContent() {
+        console.log('🚀 generateContent() called');
+        
         const language = document.getElementById('language').value;
         const businessType = document.getElementById('businessType').value;
         const socialMedia = document.getElementById('socialMedia').value;
@@ -295,15 +297,21 @@ class MarketingContentGenerator {
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
+        console.log('📋 Form values:', { language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions });
+
         if (!language || !businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
+            console.log('❌ Validation failed - missing fields');
             this.showAlert(language === 'es' ? 'Por favor complete todos los campos' : language === 'ca' ? 'Si us plau, completeu tots els camps' : 'Please fill in all fields');
             return;
         }
 
+        console.log('✅ Validation passed - showing loading state');
         this.showLoadingState();
 
         setTimeout(() => {
+            console.log('⏰ Timeout reached - creating content');
             const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
+            console.log('📝 Content created:', content);
             this.displayResults(content, language);
         }, 1000);
     }
@@ -342,6 +350,7 @@ class MarketingContentGenerator {
         const selectedFormat = format || this.recommendFormat(socialMedia);
 
         return {
+            geminiPrompts: this.generateGeminiPrompts(language, businessName, socialMedia, this.getStyleTemplates(communicationStyle, language), productsList, promotionsList, 'professional'),
             socialMedia: this.generateSocialMediaContent(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList, promotionsList),
             imageSuggestions: this.generateImageSuggestions(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList),
             productPromotion: this.generateProductPromotion(language, businessName, communicationStyle, productsList, promotionsList),
@@ -1031,6 +1040,9 @@ class MarketingContentGenerator {
 
     showLoadingState() {
         const resultsSection = document.getElementById('resultsSection');
+        if (!resultsSection) return;
+        
+        const language = document.getElementById('language')?.value || 'es';
         resultsSection.style.display = 'block';
         resultsSection.innerHTML = `
             <div class="loading">
@@ -1041,9 +1053,15 @@ class MarketingContentGenerator {
     }
 
     displayResults(content, language) {
-        const resultsSection = document.getElementById('resultsSection');
-        if (!resultsSection) return;
+        console.log('🎨 displayResults() called with:', { content, language });
         
+        const resultsSection = document.getElementById('resultsSection');
+        if (!resultsSection) {
+            console.log('❌ resultsSection not found');
+            return;
+        }
+        
+        console.log('✅ resultsSection found - updating HTML');
         resultsSection.innerHTML = `
             <div class="results-header">
                 <h2 class="results-title">
@@ -1143,7 +1161,7 @@ class MarketingContentGenerator {
                     </div>
                     <div class="card-content">
                         <div class="campaigns-content">
-                            ${content.campaignIdeas}
+                            ${content.campaigns}
                         </div>
                     </div>
                 </div>
