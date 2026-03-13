@@ -387,93 +387,37 @@ class MarketingContentGenerator {
 
     getStyleTemplates(style, language) {
         const templates = {
-            elegant: language === 'es' ? {
-                greeting: 'Estimado',
-                closing: 'Con mayor consideración',
-                tone: 'sofisticado',
-                adjectives: ['exquisito', 'premium', 'refinado', 'lujoso', 'excepcional'],
-                callsToAction: ['Le invitamos a experimentar', 'Permítanos presentarle', 'Descubra la elegancia de'],
-                hashtags: ['#Lujo', '#Elegancia', '#Sofisticado', '#CalidadPremium']
-            } : language === 'ca' ? {
+            elegant: {
                 greeting: 'Estimat',
                 closing: 'Amb la màxima consideració',
                 tone: 'sofisticat',
-                adjectives: ['exquisit', 'premium', 'refinat', 'de luxe', 'excepcional'],
+                adjectives: ['exquisit', 'premium', 'refinat', 'luxós', 'excepcional'],
                 callsToAction: ['Us convidem a experimentar', 'Permeteu-nos presentar-vos', 'Descobriu l\'elegància de'],
-                hashtags: ['#Lux', '#Elegància', '#Sofisticat', '#QualitatPremium']
-            } : {
-                greeting: 'Esteemed',
-                closing: 'With utmost regards',
-                tone: 'sophisticated',
-                adjectives: ['exquisite', 'premium', 'refined', 'luxurious', 'exceptional'],
-                callsToAction: ['We invite you to experience', 'Allow us to present', 'Discover the elegance of'],
-                hashtags: ['#Luxury', '#Elegance', '#Sophisticated', '#PremiumQuality']
+                hashtags: ['#Luxos', '#Elegància', '#Sofisticat', '#QualitatPremium']
             },
-            friendly: language === 'es' ? {
-                greeting: 'Hola',
-                closing: 'Calurosamente',
-                tone: 'acogedor',
-                adjectives: ['increíble', 'maravilloso', 'fantástico', 'genial', 'increíble'],
-                callsToAction: ['Ven a pasar el rato', 'Únete a nosotros para', 'Disfrutemos juntos'],
-                hashtags: ['#Familia', '#Comunidad', '#Amigable', '#Juntos']
-            } : language === 'ca' ? {
+            friendly: {
                 greeting: 'Hola',
                 closing: 'Cordialment',
                 tone: 'acollidor',
                 adjectives: ['increïble', 'meravellós', 'fantàstic', 'genial', 'increïble'],
-                callsToAction: ['Vine a passar l\'estona', 'Uneix-te a nosaltres per', 'Gaudim junts'],
-                hashtags: ['#Familia', '#Comunitat', '#Amigable', '#Junts']
-            } : {
-                greeting: 'Hey there',
-                closing: 'Warmly',
-                tone: 'welcoming',
-                adjectives: ['amazing', 'wonderful', 'fantastic', 'great', 'awesome'],
-                callsToAction: ['Come hang out', 'Join us for', 'Let\'s enjoy'],
-                hashtags: ['#Family', '#Community', '#Friendly', '#Together']
+                callsToAction: ['Vine a passar l\'estona', 'Uneix-te a nosaltres per a', 'Gaudim junts'],
+                hashtags: ['#Família', '#Comunitat', '#Amistós', '#Junts']
             },
-            simple: language === 'es' ? {
-                greeting: 'Hola',
-                closing: 'Gracias',
-                tone: 'directo',
-                adjectives: ['bueno', 'agradable', 'calidad', 'fresco', 'local'],
-                callsToAction: ['Visítanos', 'Prueba nuestro', 'Consigue tu'],
-                hashtags: ['#Simple', '#Directo', '#SinComplicaciones', '#Calidad']
-            } : language === 'ca' ? {
+            simple: {
                 greeting: 'Hola',
                 closing: 'Gràcies',
                 tone: 'directe',
                 adjectives: ['bo', 'agradable', 'qualitat', 'fresc', 'local'],
-                callsToAction: ['Visita\'ns', 'Prova el nostre', 'Aconsegueix el teu'],
+                callsToAction: ['Visita\'ns', 'Prova el nostre', 'Consigueix el teu'],
                 hashtags: ['#Simple', '#Directe', '#SenseComplicacions', '#Qualitat']
-            } : {
-                greeting: 'Hello',
-                closing: 'Thanks',
-                tone: 'direct',
-                adjectives: ['good', 'nice', 'quality', 'fresh', 'local'],
-                callsToAction: ['Visit us', 'Try our', 'Get your'],
-                hashtags: ['#Simple', '#Direct', '#NoFrills', '#Quality']
             },
-            modern: language === 'es' ? {
-                greeting: 'Qué tal',
-                closing: 'Saludos',
-                tone: 'trendy',
-                adjectives: ['tendencia', 'viral', 'épico', 'genial', 'increíble'],
-                callsToAction: ['Sube de nivel con', 'Experimenta el vibe', 'Entérate de'],
-                hashtags: ['#Tendencia', '#Moderno', '#Viral', '#SiguienteNivel']
-            } : language === 'ca' ? {
+            modern: {
                 greeting: 'Com va',
                 closing: 'Salutacions',
                 tone: 'trendy',
                 adjectives: ['tendència', 'viral', 'èpic', 'genial', 'increïble'],
-                callsToAction: ['Puja de nivell amb', 'Experimenta el vibe', 'Assabenta\'t de'],
+                callsToAction: ['Puji de nivell amb', 'Experimenta el vibe', 'Assabenta\'t de'],
                 hashtags: ['#Tendència', '#Modern', '#Viral', '#SegüentNivell']
-            } : {
-                greeting: 'Hi',
-                closing: 'Cheers',
-                tone: 'trendy',
-                adjectives: ['trending', 'viral', 'epic', 'lit', 'fire'],
-                callsToAction: ['Level up with', 'Experience the vibe', 'Get in on'],
-                hashtags: ['#Trending', '#Modern', '#Viral', '#NextLevel']
             }
         };
         
@@ -1066,10 +1010,10 @@ class MarketingContentGenerator {
             <div class="results-header">
                 <h2 class="results-title">
                     <span class="title-icon">🚀</span>
-                    ${language === 'es' ? 'Contenido de Marketing LocalBoost IA' : language === 'ca' ? 'Contingut de Marketing LocalBoost IA' : 'LocalBoost IA Marketing Content Generated'}
+                    Contingut de Marketing MarketBarri
                 </h2>
                 <p class="results-subtitle">
-                    ${language === 'es' ? 'Tu contenido profesional está listo para usar' : language === 'ca' ? 'El teu contingut professional està llest per usar' : 'Your professional content is ready to use'}
+                    El teu contingut professional està llest per usar
                 </p>
             </div>
             
@@ -1078,8 +1022,8 @@ class MarketingContentGenerator {
                     <div class="card-header">
                         <div class="card-icon">🤖</div>
                         <div class="card-title-group">
-                            <h3 class="card-title">${language === 'es' ? 'Prompts IA para Gemini' : language === 'ca' ? 'Prompts IA per Gemini' : 'AI Prompts for Gemini'}</h3>
-                            <p class="card-subtitle">${language === 'es' ? 'Optimiza tu contenido con IA' : language === 'ca' ? 'Optimitza el teu contingut amb IA' : 'Optimize your content with AI'}</p>
+                            <h3 class="card-title">Prompts IA per Gemini</h3>
+                            <p class="card-subtitle">Optimitza el teu contingut amb IA</p>
                         </div>
                     </div>
                     <div class="card-content">
