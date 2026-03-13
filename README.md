@@ -1,141 +1,176 @@
-# LocalBoost-AI
-AI-powered tool that helps local and traditional shops create social media content easily, improving their online presence and helping them reach more customers.
-## Problem
-Today, having a digital presence is essential for any business. Platforms like Instagram or Facebook allow businesses to reach new customers and stay connected with existing ones.
-However, many traditional neighborhood shops such as butchers, fruit stores, fishmongers, and small local businesses do not take advantage of these digital tools.
+# 🏪 MarketBarri - IA per a Botigues de Barri
 
-The main reasons are:
-- Lack of time
+**Eina de intel·ligència artificial per ajudar botigues de barri a crear contingut professional de xarxes socials fàcilment.**
 
-Generador de contenido de marketing con IA para negocios locales.
+## 🌟 Característiques
 
-## 🌟 Features
+- 🌍 **Multilingüe**: Català, Español, English
+- 🏪 **22+ Tipus de Botigues**: Restaurants, botigues minoristes, serveis, bellesa, fitness, forns, supermercats, farmàcies, botigues de mascotes, ferreteries, floristeries, carnisseries, peixateries, fruiteries, papeteries, bugaderies, sabateries, llibreries, joguines, joieries, òptiques
+- 🤖 **Integració IA**: Prompts directes per a Google Gemini
+- 📱 **Multiplataforma**: Instagram, Facebook, TikTok, LinkedIn, X/Twitter, Blog
+- 🎨 **Múltiples Formats**: Stories, Publicacions, Reels, Carrusels
+- 💬 **Estils de Comunicació**: Elegant, Amistós, Simple, Modern
+- 📅 **Calendari de Contingut**: Planificació setmanal i mensual
+- 🎨 **Generador d'Imatges IA**: Creació d'imatges professionals amb múltiples estils
+- 💾 **PWA Completa**: Instal·lable i funciona offline
 
-- **🌍 Multilingual Support**: Spanish, Catalan, and English
-- **🏪 22+ Business Types**: Including fruit stores, butcher shops, supermarkets, and more
-- **🤖 AI Integration**: Direct prompts for Google Gemini
-- **📱 Multi-Platform**: Instagram, Facebook, TikTok, LinkedIn, X/Twitter, Blog
-- **🎨 Multiple Formats**: Stories, Posts, Reels, Carousels
-- **🎯 Communication Styles**: Elegant, Friendly, Simple, Modern
+## 🎯 Propòsit
 
-## 🎯 Purpose
+- Generar publicacions per a Instagram i Facebook
+- Promocionar productes fàcilment
+- Mantenir una presència activa en línia
+- Atraure més clients locals
+- Crear contingut de màrqueting professional amb assistència d'IA
 
-- Generate posts for Instagram and Facebook
-- Promote their products easily  
-- Maintain an active online presence
-- Attract more local customers
-- Create professional marketing content with AI assistance
+## 🚀 Com Funciona
 
-## 🚀 How It Works
+1. **Selecciona Idioma**: Trieu el vostre idioma preferit (Català, Español, English)
+2. **Trieu el Tipus de Botiga**: Seleccioneu entre 22+ categories de negoci locals
+3. **Trieu Xarxes Socials**: Trieu la vostra plataforma objectiu
+4. **Descrigueu Productes**: Afegiu els productes o serveis diaris
+5. **Configureu Promocions**: Incloeu ofertes i descomptes actuals
+6. **Genereu Contingut**: Obteniu contingut de màrqueting amb IA
+7. **Copieu Prompts**: Accés directe a Google Gemini per a la generació d'imatges
 
-1. **Select Language**: Choose your preferred language (Spanish, Catalan, English)
-2. **Choose Business Type**: Select from 22+ local business categories
-3. **Pick Social Media**: Choose your target platform
-4. **Describe Products**: Add your daily products/services
-5. **Set Promotions**: Include current offers and discounts
-6. **Generate Content**: Get AI-powered marketing content
-7. **Copy Prompts**: Direct integration with Google Gemini for image generation
+## 🤖 Integració IA
 
-## 💙 AI Integration
+L'aplicació genera prompts detallats per a Google Gemini per crear imatges professionals:
+- Prompts específics per a cada plataforma de xarxes socials
+- Instruccions optimitzades per format (1:1, 9:16, 16:9)
+- Descripcions adaptades a l'estil segons el tipus de negoci
+- Accés d'un sol clic directe a Gemini IA
 
-The application generates detailed prompts for **Google Gemini** to create professional images:
-- **Platform-specific prompts** for each social media network
-- **Format-optimized** instructions (1:1, 9:16, 16:9)
-- **Style-adapted** descriptions based on your business type
-- **One-click access** directly to Gemini AI
+## 🏪 Categories de Negocis
 
-## 🏪 Business Categories
+- 🍽️ **Restaurants i Cafès**
+- 🛍️ **Botigues Minoristes**
+- 💼 **Negocis de Serveis**
+- 💈 **Bellesa i Salons**
+- 💪 **Fitness i Gimnasos**
+- 🥐 **Forns i Pastisseries**
+- 🛒 **Supermercats i Alimentació**
+- 💊 **Farmàcies**
+- 🐾 **Botigues de Mascotes i Veterinaris**
+- 🔧 **Ferreteries**
+- 💐 **Floristeries**
+- 🥩 **Carnisseries**
+- 🐟 **Peixateries**
+- 🍎 **Fruiteries**
+- 📝 **Papeteries**
+- 👕 **Bugaderies**
+- 👟 **Sabateries**
+- 📚 **Llibreries**
+- 🧸 **Joguines**
+- 💍 **Joieries**
+- 👓 **Òptiques**
 
-- 🍽️ Restaurants & Cafés
-- 🛍️ Retail Stores
-- 💼 Service Businesses
-- 💇 Beauty & Salons
-- 💪 Fitness & Gyms
-- 🥐 Bakeries & Pastries
-- 🛒 **Supermarkets & Groceries**
-- 💊 Pharmacies
-- 🐾 Pet Shops & Veterinaries
-- 🔧 Hardware Stores
-- 💐 Flower Shops
-- 🥩 **Butcher Shops**
-- 🐟 Fishmongers
-- 🍎 **Fruit Stores**
-- 📝 Stationery Stores
-- 👕 Laundries
-- 👟 Shoe Stores
-- 📚 Bookstores
-- 🧸 Toy Stores
-- 💍 Jewelry Stores
-- 👓 Optics Stores
+## 🌍 Idiomes Suportats
 
-## 🎨 Content Generated
+- **Català**: Idioma principal i per defecte
+- **Español**: Suport complet
+- **English**: Suport complet
 
-### 📱 Social Media Content
-- Platform-specific posts and stories
-- Optimized captions and hashtags
-- Interactive elements for stories
-- Professional formatting
+## 📱 Plataformes de Xarxes Socials
 
-### 🖼️ Image Suggestions
-- Detailed prompts for Gemini AI
-- Format-specific instructions
-- Style recommendations
-- Visual guidelines
+- **Instagram**: Publicacions, Stories, Reels, Carrusels
+- **Facebook**: Publicacions i Stories
+- **TikTok**: Videos verticals i trends
+- **LinkedIn**: Contingut professional i corporatiu
+- **X/Twitter**: Publicacions breus i interactives
+- **Blog**: Articles de blog optimitzats per SEO
 
-### 🏆 Product Promotions
-- Compelling product descriptions
-- Special offer announcements
-- Call-to-action messages
-- Professional copywriting
+## 🎨 Formats de Contingut
 
-### 📧 Newsletter Messages
-- Customer engagement content
-- Product highlights
-- Promotional announcements
-- Brand storytelling
+- **Publicació**: Contingut estàndard per a feeds
+- **Story**: Contingut vertical de 24 hores
+- **Reel**: Video curt amb música i efectes
+- **Carrusel**: Múltiples imatges o diapositives
 
-### 🎯 Campaign Ideas
-- Creative marketing strategies
-- Seasonal campaign concepts
-- Community engagement ideas
-- Growth hacking tips
+## 💬 Estils de Comunicació
 
-## 🌍 Languages Supported
+- ✨ **Elegant**: To sofisticat i professional
+- 😊 **Amistós**: Proper i accessible
+- ⚡ **Simple**: Directe i clar
+- 🚀 **Modern**: Contemporani i innovador
 
-- **🇪🇸 Spanish**: Contenido completo en español
-- **🏴󠁥󠁳󠁣󠁴󠁿 Catalan**: Contingut complet en català  
-- **🇺🇸 English**: Full English content
+## 🎨 Generador d'Imatges IA
 
-## 💻 Technologies
+Crea imatges professionals amb:
+- **Estils**: Realista, Artístic, Dibuix animat, Minimalista, Vintage
+- **Formats**: Quadrat (1:1), Retrat (9:16), Paisatge (16:9), Panoràmic (21:9)
+- **Qualitat**: Alta resolució optimitzada per a xarxes socials
+- **Personalització**: Basada en el tipus de negoci i productes
 
-- **🤖 Artificial Intelligence**: Google Gemini integration
-- **🌐 Frontend**: HTML5, CSS3, JavaScript ES6+
-- **🎨 Design**: Responsive, modern UI/UX
-- **📱 Mobile-First**: Optimized for all devices
+## 📅 Calendari de Contingut
 
-## 🚀 Getting Started
+- **Vista Setmanal**: Planificació dia a dia
+- **Vista Mensual**: Visió general del mes
+- **Exportació**: Descàrrega en format CSV
+- **Sincronització**: Emmagatzematge local
 
-1. Clone the repository
-2. Open `index.html` in your browser
-3. Fill in your business information
-4. Generate marketing content
-5. Use Gemini prompts for image creation
+## 💻 Tecnologies Utilitzades
 
-## 📞 Contact & Support
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **PWA**: Service Worker, Manifest, Cache API
+- **Fonts**: Google Fonts (Inter, Space Grotesk)
+- **Icons**: Emoji natius i SVG
+- **Responsive**: Mobile-first design
+- **Algoritmes IA**: Generació procedural de contingut
 
-**GitHub Repository**: https://github.com/iegidosl-prog/LocalBoost-AI
+## 🚀 Començar Ràpidament
+
+1. **Clona el repositori**:
+   ```bash
+   git clone https://github.com/iegidosl-prog/LocalBoost-AI.git
+   ```
+
+2. **Navega al directori**:
+   ```bash
+   cd LocalBoost-AI
+   ```
+
+3. **Obre l'aplicació**:
+   - Doble clic a `index.html`
+   - O serveix amb un servidor local:
+     ```bash
+     # Amb Python
+     python -m http.server 8000
+     
+     # Amb Node.js
+     npx serve
+     
+     # Amb PHP
+     php -S localhost:8000
+     ```
+
+4. **Accedeix a l'aplicació**:
+   - Obre el navegador a `http://localhost:8000`
+
+## 📞 Contacte i Suport
+
+- **Issues de GitHub**: [Reportar problemes](https://github.com/iegidosl-prog/LocalBoost-AI/issues)
+- **Suggeriments**: [Proposar millores](https://github.com/iegidosl-prog/LocalBoost-AI/issues/new?template=feature_request.md)
+- **Email**: support@marketbarri.cat
+
+## 🎉 Millores Futurs
+
+- 🤖 **IA Avançada**: Integració amb models d'IA més potents
+- 📊 **Anàlisi**: Mètriques de rendiment de contingut
+- 🔄 **Programació**: Publicació automàtica programada
+- 🎯 **Personalització**: Perfils d'usuari i preferències
+- 📱 **App Mòbil**: Versió nativa per iOS i Android
+- 🌐 **API Pública**: API per a integracions de tercers
+- 🤝 **Col·laboració**: Sistema de col·laboració d'equip
+
+## 📄 Llicència
+
+Aquest projecte està sota la llicència MIT - veu l'arxiu [LICENSE](LICENSE) per a més detalls.
+
+## 🤝 Col·laboradors
+
+- **Desenvolupador Principal**: [iegidosl](https://github.com/iegidosl-prog)
+- **Contribuïdors**: Tots els [contribuïdors](https://github.com/iegidosl-prog/LocalBoost-AI/graphs/contributors) són benvinguts
 
 ---
 
-## 🎉 Future Enhancements
-
-- [ ] Direct image generation integration
-- [ ] Social media auto-posting
-- [ ] Content scheduling
-- [ ] Analytics dashboard
-- [ ] Multi-language AI responses
-- [ ] Template customization
-
----
-
-**Made with � for local businesses everywhere**
+**🏪 MarketBarri** - *Fent que les botigues de barri brillin a les xarxes socials amb IA* 🚀✨
