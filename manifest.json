@@ -1,21 +1,16 @@
 {
-  "name": "MarketBarri - IA per a Botigues de Barri",
-  "short_name": "MarketBarri",
-  "description": "Eina de IA per ajudar botigues de barri a crear contingut de xarxes socials fàcilment",
+  "name": "LocalBoost IA - Marketing Content Generator",
+  "short_name": "LocalBoost IA",
+  "description": "AI-powered marketing content generator for local businesses",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#6366f1",
-  "theme_color": "#6366f1",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "ca",
-  "categories": ["business", "productivity", "social"],
+  "lang": "es",
+  "categories": ["business", "productivity", "marketing"],
   "icons": [
-    {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj48cGF0aCBkPSJNMTIgMkM2LjYgNi42IDBjMS4yIDAgMi40LjYgMi40LjYgMi40djIuNmMwLjYtMS4yLTEuMi0xLjItMS4yQzEwLjUgMCAxLjIgMCAxLjZoIiBmaWxsPSIjNmMzNmYxIi8+PC9wYXRoPjwvc3ZnPg==",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
-    },
     {
       "src": "icons/icon-72x72.png",
       "sizes": "72x72",

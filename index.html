@@ -1,319 +1,464 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MarketBarri - Eina de IA per ajudar botigues de barri a crear contingut de xarxes socials fàcilment, millorant la seva presència en línia i arribant a més clients.">
-    <meta name="keywords" content="MarketBarri, IA, màrqueting, xarxes socials, botigues locals, contingut digital, català">
-    <meta name="author" content="MarketBarri">
-    <meta name="theme-color" content="#6366f1">
-    
-    <title>MarketBarri - IA per a Botigues de Barri</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQABAAAAAAAAAAAAAAAAAAAAA==">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LocalBoost IA - Marketing Content Generator</title>
+    <meta name="description" content="Generate marketing content with AI for local businesses - Genera contenido de marketing con IA para negocios locales">
+    <meta name="keywords" content="marketing, AI, local business, social media, content generator, marketing digital">
+    <meta name="author" content="LocalBoost IA">
     
     <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="background-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="MarketBarri">
-    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77ygAAAABJRU5ErkJggg==">
+    <meta name="apple-mobile-web-app-title" content="LocalBoost IA">
+    <meta name="application-name" content="LocalBoost IA">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+    <meta name="msapplication-config" content="/browserconfig.xml">
     
-    <!-- Styles -->
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="384x384" href="/icons/icon-384x384.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512x512.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="shortcut icon" href="/icons/icon-192x192.png">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="header-content">
-                <div class="logo-section">
-                    <h1 class="app-title">
-                        <span class="logo-icon">🏪</span>
-                        MarketBarri
-                    </h1>
-                    <p class="app-subtitle">IA per a Botigues de Barri</p>
-                </div>
-                <div class="header-controls">
-                    <button id="themeToggle" class="theme-toggle-btn" aria-label="Canviar tema">
-                        <span class="theme-icon">🌙</span>
-                    </button>
-                </div>
+    <div class="container">
+        <header>
+            <h1>LocalBoost IA</h1>
+            <p class="header-description">
+                <span class="es-desc">Crea contenido de marketing con IA para tu pequeño negocio</span>
+                <span class="ca-desc">Crea contingut de màrqueting amb IA per al teu petit negoci</span>
+                <span class="en-desc">Create AI-powered marketing content for your small business</span>
+            </p>
+            <p class="header-subtitle">🤖 Genera contenido profesional para redes sociales con inteligencia artificial</p>
+            
+            <div class="theme-toggle">
+                <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                    <span class="theme-text">Dark Mode</span>
+                </button>
             </div>
         </header>
 
-        <main class="main-content">
-            <div class="form-container">
-                <div class="form-header">
-                    <h2 class="form-title">Crea Contingut de Màrqueting</h2>
-                    <p class="form-subtitle">Genera contingut professional per a les teves xarxes socials en segons</p>
-                </div>
-                
-                <form id="marketingForm" class="marketing-form">
-                    <!-- Business Type -->
+        <main>
+            <section class="input-section">
+                <h2>Business Information</h2>
+                <form id="businessForm">
                     <div class="form-group">
-                        <label for="businessType" class="form-label">
-                            <span class="label-icon">🏪</span>
-                            Tipus de Botiga
+                        <label for="language">
+                            <span>🌍</span> Language / Idioma:
                         </label>
-                        <select id="businessType" name="businessType" class="form-select">
-                            <option value="">Selecciona el teu tipus de negoci...</option>
-                            <option value="restaurant">🍽️ Restaurant / Cafè</option>
-                            <option value="retail">🛍️ Botiga Minorista</option>
-                            <option value="service">💼 Serveis</option>
-                            <option value="beauty">💈 Bellesa / Saló</option>
-                            <option value="fitness">💪 Fitness / Gimnàs</option>
-                            <option value="bakery">🥐 Forn / Pastisseria</option>
-                            <option value="grocery">🛒 Supermercat / Alimentació</option>
-                            <option value="pharmacy">💊 Farmàcia</option>
-                            <option value="petshop">🐾 Botiga de Mascotes / Veterinari</option>
-                            <option value="hardware">🔧 Ferreteria</option>
-                            <option value="flowers">💐 Floristeria</option>
-                            <option value="butcher">🥩 Carnisseria</option>
-                            <option value="fishmonger">🐟 Peixateria</option>
-                            <option value="fruitstore">🍎 Fruiteria</option>
-                            <option value="stationery">📝 Papeteria</option>
-                            <option value="laundry">👕 Bugaderia</option>
-                            <option value="shoes">👟 Sabateria</option>
-                            <option value="books">📚 Llibreria</option>
-                            <option value="toys">🧸 Joguina</option>
-                            <option value="jewelry">💍 Joieria</option>
-                            <option value="optics">👓 Òptica</option>
-                            <option value="other">🏪 Altres</option>
+                        <select id="language" required>
+                            <option value="">Select language / Seleccione idioma</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
                         </select>
                     </div>
 
-                    <!-- Social Media Platform -->
                     <div class="form-group">
-                        <label for="socialMedia" class="form-label">
-                            <span class="label-icon">📱</span>
-                            Xarxes Socials
+                        <label for="businessType">
+                            <span>🏢</span> Type of Business / Tipo de Negocio:
                         </label>
-                        <select id="socialMedia" name="socialMedia" class="form-select">
-                            <option value="">Selecciona la plataforma...</option>
+                        <select id="businessType" required>
+                            <option value="">Select your business type / Seleccione su tipo de negocio</option>
+                            <option value="restaurant">🍽️ Restaurant/Café / Restaurante/Café</option>
+                            <option value="retail">🛍️ Retail Store / Tienda Minorista</option>
+                            <option value="service">💼 Service Business / Negocio de Servicios</option>
+                            <option value="beauty">💇 Beauty/Salon / Belleza/Salón</option>
+                            <option value="fitness">💪 Fitness/Gym / Fitness/Gimnasio</option>
+                            <option value="bakery">🥐 Bakery / Forn / Pastisseria</option>
+                            <option value="grocery">🛒 Grocery Store / Supermercat / Tienda de Alimentos</option>
+                            <option value="pharmacy">💊 Pharmacy / Farmàcia / Farmacia</option>
+                            <option value="petshop">🐾 Pet Shop / Veterinari / Tienda de Mascotas</option>
+                            <option value="hardware">🔧 Hardware Store / Ferreteria / Tienda de Herramientas</option>
+                            <option value="flowers">💐 Flower Shop / Floristeria / Tienda de Flores</option>
+                            <option value="butcher">🥩 Butcher / Carnisseria / Carnicería</option>
+                            <option value="fishmonger">🐟 Fishmonger / Peixateria / Pescadería</option>
+                            <option value="fruitstore">🍎 Fruit Store / Fruiteria / Frutería</option>
+                            <option value="stationery">📝 Stationery / Papeleria / Tienda de Papelería</option>
+                            <option value="laundry">👕 Laundry / Bugaderia / Lavandería</option>
+                            <option value="shoes">👟 Shoe Store / Sabateria / Zapatería</option>
+                            <option value="books">📚 Bookstore / Llibreria / Librería</option>
+                            <option value="toys">🧸 Toy Store / Joguina / Tienda de Juguetes</option>
+                            <option value="jewelry">💍 Jewelry Store / Joieria / Joyería</option>
+                            <option value="optics">👓 Optics / Òptica / Óptica</option>
+                            <option value="other">🏪 Other / Altres / Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="socialMedia">
+                            <span>📱</span> Social Media Platform / Plataforma de Red Social:
+                        </label>
+                        <select id="socialMedia" required>
+                            <option value="">Select platform / Seleccione plataforma</option>
                             <option value="instagram">📷 Instagram</option>
-                            <option value="tiktok">🎵 TikTok</option>
                             <option value="facebook">📘 Facebook</option>
+                            <option value="tiktok">🎵 TikTok</option>
                             <option value="linkedin">💼 LinkedIn</option>
-                            <option value="twitter">🐦 X/Twitter</option>
-                            <option value="blog">📝 Blog</option>
-                            <option value="all">🌐 Totes les plataformes</option>
+                            <option value="twitter">🐦 X / Twitter</option>
+                            <option value="blog">🌐 Blog / Web</option>
                         </select>
                     </div>
 
-                    <!-- Content Format -->
                     <div class="form-group">
-                        <label for="format" class="form-label">
-                            <span class="label-icon">🎨</span>
-                            Format
+                        <label for="format">
+                            <span>📋</span> Content Format / Formato de Contenido:
                         </label>
-                        <select id="format" name="format" class="form-select">
-                            <option value="">Format automàtic</option>
-                            <option value="post">📝 Publicació</option>
+                        <select id="format">
+                            <option value="">Auto-recommend / Auto-recomendar</option>
                             <option value="story">📱 Story</option>
-                            <option value="reel">🎞 Reel</option>
-                            <option value="carousel">🎠 Carrusel</option>
+                            <option value="post">📝 Post / Publicación</option>
+                            <option value="reel">🎥 Reel / Short Video</option>
+                            <option value="carousel">🎠 Carousel / Carrusel</option>
                         </select>
                     </div>
 
-                    <!-- Communication Style -->
                     <div class="form-group">
-                        <label for="communicationStyle" class="form-label">
-                            <span class="label-icon">💬</span>
-                            Estil de Comunicació
+                        <label for="dailyProducts">
+                            <span>📦</span> Daily Products/Services / Productos/Servicios Diarios:
                         </label>
-                        <select id="communicationStyle" name="communicationStyle" class="form-select">
-                            <option value="">Selecciona l'estil...</option>
-                            <option value="elegant">✨ Elegant</option>
-                            <option value="friendly">😊 Amistós</option>
-                            <option value="simple">🎯 Simple</option>
-                            <option value="modern">🚀 Modern</option>
+                        <textarea id="dailyProducts" rows="3" placeholder="e.g., Fresh coffee, pastries, sandwiches, specialty drinks / ej., café fresco, pasteles, sándwiches, bebidas especiales" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="promotions">
+                            <span>🎉</span> Current Promotions / Promociones Actuales:
+                        </label>
+                        <textarea id="promotions" rows="3" placeholder="e.g., 20% off on weekends, Buy one get one free, Happy hour 3-6 PM / ej., 20% de descuento los fines de semana, Compre uno lléve dos, Happy hour 3-6 PM" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="communicationStyle">
+                            <span>🎨</span> Communication Style / Estilo de Comunicación:
+                        </label>
+                        <select id="communicationStyle" required>
+                            <option value="">Select style / Seleccione estilo</option>
+                            <option value="elegant">🌟 Elegant / Elegante</option>
+                            <option value="friendly">👨‍👩‍👧‍👦 Friendly / Familiar</option>
+                            <option value="simple">⚡ Simple / Sencillo</option>
+                            <option value="modern">🚀 Modern / Moderno</option>
                         </select>
                     </div>
 
-                    <!-- Daily Products -->
-                    <div class="form-group">
-                        <label for="dailyProducts" class="form-label">
-                            <span class="label-icon">📦</span>
-                            Productes Diaris (separats per comes)
-                        </label>
-                        <textarea 
-                            id="dailyProducts" 
-                            name="dailyProducts" 
-                            class="form-textarea" 
-                            placeholder="Ex: Pa fresc, croissants, cafè especial, pastissos de temporada..."
-                            rows="3"
-                            required
-                        ></textarea>
-                    </div>
-
-                    <!-- Promotions -->
-                    <div class="form-group">
-                        <label for="promotions" class="form-label">
-                            <span class="label-icon">🏷️</span>
-                            Promocions Actuals (separades per comes)
-                        </label>
-                        <textarea 
-                            id="promotions" 
-                            name="promotions" 
-                            class="form-textarea" 
-                            placeholder="Ex: 20% de descompte en productes locals, 2x1 en cafès, descompte per a estudiants..."
-                            rows="3"
-                            required
-                        ></textarea>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="form-actions">
-                        <!-- Test Button -->
-                        <button type="button" id="testBtn" class="generate-btn" style="background: red; margin-bottom: 10px;">
-                            <span class="btn-icon">🧪</span>
-                            <span class="btn-text">TEST</span>
-                        </button>
-                        
-                        <button type="button" id="generateBtn" class="generate-btn" onclick="window.generator.generateContent()">
-                            <span class="btn-icon">🚀</span>
-                            <span class="btn-text">Generar Contingut</span>
-                        </button>
-                    </div>
+                    <button type="submit" class="generate-btn">
+                        <span>✨</span> Generate Marketing Content / Generar Contenido de Marketing
+                    </button>
                 </form>
-            </div>
-
-            <!-- Results Section -->
-            <section id="resultsSection" class="results-section" style="display: none;">
-                <!-- Results will be dynamically inserted here -->
             </section>
 
-            <!-- Calendar Section -->
-            <section id="calendarSection" class="calendar-section" style="display: none;">
-                <div class="calendar-header">
-                    <h2 class="calendar-title">
-                        <span class="calendar-icon">📅</span>
-                        Calendari de Contingut
-                    </h2>
-                    <p class="calendar-subtitle">Planifica el teu contingut setmanal</p>
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <h2>Generated Marketing Content / Contenido de Marketing Generado</h2>
+                
+                <div class="content-card">
+                    <h3><span>📱</span> Social Media Content / Contenido para Redes Sociales</h3>
+                    <div id="socialMediaPosts"></div>
                 </div>
-                <div class="calendar-grid" id="calendarGrid">
-                    <!-- Calendar will be dynamically generated -->
+
+                <div class="content-card">
+                    <h3><span>🖼️</span> Image Suggestions / Sugerencias de Imágenes</h3>
+                    <div id="imageSuggestions"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>🛍️</span> Product Promotion Text / Texto de Promoción de Productos</h3>
+                    <div id="productPromotion"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>📧</span> Customer Newsletter Message / Mensaje para Boletín de Clientes</h3>
+                    <div id="newsletterMessage"></div>
+                </div>
+
+                <div class="content-card">
+                    <h3><span>🎯</span> Promotional Campaign Ideas / Ideas de Campaña Promocional</h3>
+                    <div id="campaignIdeas"></div>
+                </div>
+
+                <button id="generateNewBtn" class="generate-btn">
+                    <span>🔄</span> Generate New Content / Generar Nuevo Contenido
+                </button>
+            </section>
+
+            <!-- Content Calendar Section -->
+            <section id="calendarSection" class="calendar-section" style="display: none;">
+                <div class="container">
+                    <h2>📅 Content Calendar / Calendario de Contenido</h2>
+                    
+                    <div class="calendar-controls">
+                        <div class="view-toggle">
+                            <button id="weekViewBtn" class="view-btn active">📆 Week View</button>
+                            <button id="monthViewBtn" class="view-btn">📅 Month View</button>
+                        </div>
+                        <div class="calendar-nav">
+                            <button id="prevBtn" class="nav-btn">◀</button>
+                            <span id="currentDate">Current Week</span>
+                            <button id="nextBtn" class="nav-btn">▶</button>
+                        </div>
+                    </div>
+
+                    <div id="calendarGrid" class="calendar-grid">
+                        <!-- Calendar will be generated here -->
+                    </div>
+
+                    <div class="calendar-actions">
+                        <button id="exportCalendarBtn" class="export-btn">
+                            📥 Export Calendar / Exportar Calendario
+                        </button>
+                        <button id="clearCalendarBtn" class="clear-btn">
+                            🗑️ Clear Calendar / Limpiar Calendario
+                        </button>
+                    </div>
                 </div>
             </section>
 
             <!-- Image Generator Section -->
             <section id="imageGeneratorSection" class="image-generator-section" style="display: none;">
-                <div class="generator-header">
-                    <h2 class="generator-title">
-                        <span class="generator-icon">🎨</span>
-                        Generador d'Imatges IA
-                    </h2>
-                    <p class="generator-subtitle">Crea imatges professionals amb intel·ligència artificial</p>
-                </div>
-                
-                <div class="generator-form">
-                    <div class="form-group">
-                        <label for="imagePrompt" class="form-label">
-                            <span class="label-icon">💭</span>
-                            Descripció de la Imatge
-                        </label>
-                        <textarea 
-                            id="imagePrompt" 
-                            class="form-textarea" 
-                            placeholder="Descriu la imatge que vols generar..."
-                            rows="3"
-                        ></textarea>
-                    </div>
+                <div class="container">
+                    <h2>🎨 AI Image Generator / Generador de Imágenes IA</h2>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="imageStyle" class="form-label">
-                                <span class="label-icon">🎭</span>
-                                Estil
+                    <div class="generator-controls">
+                        <div class="prompt-input-group">
+                            <label for="imagePrompt">
+                                <span>💭</span> Image Prompt / Prompt de Imagen:
                             </label>
-                            <select id="imageStyle" class="form-select">
-                                <option value="realistic">📸 Realista</option>
-                                <option value="artistic">🎨 Artístic</option>
-                                <option value="cartoon">😊 Dibuix animat</option>
-                                <option value="minimalist">⚪ Minimalista</option>
-                                <option value="vintage">📜 Vintage</option>
-                            </select>
+                            <textarea id="imagePrompt" rows="4" placeholder="Describe the image you want to generate... / Describe la imagen que quieres generar..."></textarea>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="imageFormat" class="form-label">
-                                <span class="label-icon">📐</span>
-                                Format
-                            </label>
-                            <select id="imageFormat" class="form-select">
-                                <option value="square">⬜ Quadrat (1:1)</option>
-                                <option value="portrait">📱 Retrat (9:16)</option>
-                                <option value="landscape">🏞 Paisatge (16:9)</option>
-                                <option value="wide">🌆 Panoràmic (21:9)</option>
-                            </select>
+                        <div class="image-options">
+                            <div class="option-group">
+                                <label for="imageStyle">
+                                    <span>🎨</span> Style / Estilo:
+                                </label>
+                                <select id="imageStyle">
+                                    <option value="realistic">📸 Realistic / Realista</option>
+                                    <option value="artistic">🖼️ Artistic / Artístico</option>
+                                    <option value="cartoon">🎨 Cartoon / Dibujo</option>
+                                    <option value="minimalist">⚡ Minimalist / Minimalista</option>
+                                    <option value="vintage">📷 Vintage / Retro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="option-group">
+                                <label for="imageFormat">
+                                    <span>📐</span> Format / Formato:
+                                </label>
+                                <select id="imageFormat">
+                                    <option value="square">⬜ Square (1:1)</option>
+                                    <option value="portrait">📱 Portrait (9:16)</option>
+                                    <option value="landscape">🖥️ Landscape (16:9)</option>
+                                    <option value="wide">🌐 Wide (21:9)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="generate-actions">
+                            <button id="generateImageBtn" class="generate-image-btn">
+                                <span>🎨</span> Generate Image / Generar Imagen
+                            </button>
+                            <button id="clearImageBtn" class="clear-image-btn">
+                                <span>🗑️</span> Clear / Limpiar
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="form-actions">
-                        <button id="generateImageBtn" class="generate-btn">
-                            <span class="btn-icon">🎨</span>
-                            <span class="btn-text">Generar Imatge</span>
-                        </button>
+
+                    <div class="image-result">
+                        <div class="loading-spinner" id="imageLoadingSpinner" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Generating image... / Generando imagen...</p>
+                        </div>
+                        
+                        <div class="generated-image" id="generatedImageContainer" style="display: none;">
+                            <img id="generatedImage" src="" alt="Generated image">
+                            <div class="image-actions">
+                                <button id="downloadImageBtn" class="download-btn">
+                                    <span>📥</span> Download / Descargar
+                                </button>
+                                <button id="addToCalendarBtn" class="add-to-calendar-btn">
+                                    <span>📅</span> Add to Calendar / Agregar al Calendario
+                                </button>
+                                <button id="regenerateImageBtn" class="regenerate-btn">
+                                    <span>🔄</span> Regenerate / Regenerar
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div id="imageResult" class="image-result" style="display: none;">
-                    <!-- Generated image will be displayed here -->
+
+                    <div class="image-gallery">
+                        <h3>🖼️ Image Gallery / Galería de Imágenes</h3>
+                        <div id="imageGalleryGrid" class="gallery-grid">
+                            <!-- Generated images will appear here -->
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
+    </div>
 
-        <!-- PWA Install Prompt -->
-        <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display: none;">
-            <div class="prompt-content">
-                <div class="prompt-header">
-                    <span class="prompt-icon">📱</span>
-                    <h3>Instal·lar MarketBarri</h3>
-                </div>
-                <div class="prompt-body">
-                    <p>Instal·la MarketBarri per accedir ràpidament i sense connexió a internet!</p>
-                </div>
-                <div class="prompt-actions">
-                    <button id="acceptPWAInstall" class="pwa-btn pwa-accept-btn">Instal·lar</button>
-                    <button id="declinePWAInstall" class="pwa-btn pwa-decline-btn">Ara no</button>
-                </div>
+    <!-- PWA Install Button -->
+    <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display: none;">
+        <div class="pwa-install-content">
+            <div class="pwa-install-icon">📱</div>
+            <div class="pwa-install-text">
+                <h4>Install LocalBoost IA</h4>
+                <p>Get the full experience with our mobile app</p>
             </div>
-        </div>
-
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-            <div class="loading-content">
-                <div class="loading-spinner"></div>
-                <p class="loading-text">Generant contingut...</p>
+            <div class="pwa-install-actions">
+                <button id="pwaInstallBtn" class="pwa-install-btn">Install App</button>
+                <button id="pwaDismissBtn" class="pwa-dismiss-btn">Not Now</button>
             </div>
         </div>
     </div>
 
-    <!-- Service Worker Registration -->
+    <!-- Conversational AI Chatbot -->
+    <div id="chatbotContainer" class="chatbot-container">
+        <div id="chatbotToggle" class="chatbot-toggle">
+            <span class="chatbot-icon">🤖</span>
+            <span class="chatbot-badge">AI Assistant</span>
+        </div>
+        
+        <div id="chatbotWindow" class="chatbot-window">
+            <div class="chatbot-header">
+                <div class="chatbot-title">
+                    <span class="chatbot-avatar">🤖</span>
+                    <div class="chatbot-info">
+                        <h4>LocalBoost IA Assistant</h4>
+                        <span class="chatbot-status">Online • Ready to help</span>
+                    </div>
+                </div>
+                <button id="minimizeChatbot" class="minimize-btn">−</button>
+            </div>
+            
+            <div id="chatbotMessages" class="chatbot-messages">
+                <div class="welcome-message">
+                    <div class="bot-message">
+                        <span class="bot-avatar">🤖</span>
+                        <div class="message-content">
+                            <p>¡Hola! Soy tu asistente de LocalBoost IA. 👋</p>
+                            <p>Puedo ayudarte a:</p>
+                            <ul>
+                                <li>🎨 Ajustar el contenido generado</li>
+                                <li>📱 Recomendar mejores prácticas</li>
+                                <li>🔄 Optimizar para diferentes plataformas</li>
+                                <li>💡 Sugerir ideas creativas</li>
+                            </ul>
+                            <p>¿En qué puedo ayudarte hoy?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chatbot-input-container">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-action="improve">✨ Improve Content</button>
+                    <button class="quick-action-btn" data-action="optimize">📱 Optimize Platform</button>
+                    <button class="quick-action-btn" data-action="ideas">💡 Get Ideas</button>
+                </div>
+                <div class="input-group">
+                    <textarea id="chatbotInput" placeholder="Ask me anything about your marketing content..." rows="1"></textarea>
+                    <button id="sendMessageBtn" class="send-btn">
+                        <span>➤</span>
+                    </button>
+                </div>
+                <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                    <span class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span class="typing-text">LocalBoost IA is thinking...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
+                    .then((registration) => {
                         console.log('SW registered: ', registration);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New content is available
+                                    if (confirm('New version available! Reload to update?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
                     })
-                    .catch(registrationError => {
+                    .catch((registrationError) => {
                         console.log('SW registration failed: ', registrationError);
                     });
             });
         }
-    </script>
 
-    <!-- Main JavaScript -->
+        // PWA Install Prompt
+        let deferredPrompt;
+        const pwaInstallPrompt = document.getElementById('pwaInstallPrompt');
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        const pwaDismissBtn = document.getElementById('pwaDismissBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt after 3 seconds
+            setTimeout(() => {
+                if (pwaInstallPrompt && !localStorage.getItem('pwaInstallDismissed')) {
+                    pwaInstallPrompt.style.display = 'block';
+                }
+            }, 3000);
+        });
+
+        pwaInstallBtn?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+                pwaInstallPrompt.style.display = 'none';
+            }
+        });
+
+        pwaDismissBtn?.addEventListener('click', () => {
+            pwaInstallPrompt.style.display = 'none';
+            localStorage.setItem('pwaInstallDismissed', 'true');
+        });
+
+        // Hide install prompt when app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            pwaInstallPrompt.style.display = 'none';
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

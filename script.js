@@ -13,29 +13,12 @@ class MarketingContentGenerator {
     }
 
     initEventListeners() {
-        // Simple test button
-        const testBtn = document.getElementById('testBtn');
-        if (testBtn) {
-            testBtn.addEventListener('click', () => {
-                alert('TEST BUTTON WORKS! JavaScript is loaded and working.');
-            });
-        }
-
-        const form = document.getElementById('marketingForm');
+        const form = document.getElementById('businessForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
-        const generateBtn = document.getElementById('generateBtn');
+        const languageSelect = document.getElementById('language');
 
         if (form) {
             form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.generateContent();
-            });
-        }
-
-        // Fallback: Direct button click listener
-        if (generateBtn) {
-            generateBtn.addEventListener('click', (e) => {
-                console.log('Generate button clicked!');
                 e.preventDefault();
                 this.generateContent();
             });
@@ -47,6 +30,15 @@ class MarketingContentGenerator {
             });
         }
 
+        // Language change handler
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                const selectedLang = e.target.value;
+                document.body.setAttribute('lang', selectedLang);
+                this.updatePageLanguage(selectedLang);
+            });
+        }
+
         // Calendar event listeners
         this.initCalendarEventListeners();
 
@@ -55,6 +47,9 @@ class MarketingContentGenerator {
 
         // Theme toggle listener
         this.initThemeToggleListener();
+
+        // Chatbot event listeners
+        this.initChatbotEventListeners();
 
         // Generate new content button
         document.addEventListener('click', (e) => {
@@ -179,7 +174,7 @@ class MarketingContentGenerator {
     }
 
     initThemeToggleListener() {
-        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', () => this.toggleTheme());
         }
@@ -193,14 +188,17 @@ class MarketingContentGenerator {
     }
 
     updateThemeToggleUI() {
-        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
         const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
+        const themeText = themeToggleBtn?.querySelector('.theme-text');
         
-        if (themeIcon) {
+        if (themeIcon && themeText) {
             if (this.currentTheme === 'dark') {
                 themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
             } else {
                 themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
             }
         }
     }
@@ -289,8 +287,7 @@ class MarketingContentGenerator {
     }
 
     generateContent() {
-        console.log('generateContent() called');
-        const language = 'ca'; // Fixed to Catalan
+        const language = document.getElementById('language').value;
         const businessType = document.getElementById('businessType').value;
         const socialMedia = document.getElementById('socialMedia').value;
         const format = document.getElementById('format').value;
@@ -298,68 +295,53 @@ class MarketingContentGenerator {
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
-        console.log('Form values:', { businessType, socialMedia, communicationStyle, dailyProducts, promotions });
-
-        if (!businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
-            console.log('Validation failed - missing fields');
-            this.showAlert('Si us plau, completa tots els camps');
+        if (!language || !businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
+            this.showAlert(language === 'es' ? 'Por favor complete todos los campos' : language === 'ca' ? 'Si us plau, completeu tots els camps' : 'Please fill in all fields');
             return;
         }
 
-        console.log('Validation passed - showing loading state');
         this.showLoadingState();
 
         setTimeout(() => {
-            console.log('Timeout reached - creating content');
-            try {
-                const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
-                console.log('Content created successfully:', content);
-                this.displayResults(content, language);
-            } catch (error) {
-                console.error('Error creating content:', error);
-                this.showAlert('Error en generar contingut. Revisa la consola.');
-            }
+            const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
+            this.displayResults(content, language);
         }, 1000);
     }
 
     createMarketingContent(language, businessType, socialMedia, format, communicationStyle, products, promotions) {
         const businessTypeNames = {
-            restaurant: 'Restaurant/Cafè',
-            retail: 'Botiga Minorista',
-            service: 'Negoci de Serveis',
-            beauty: 'Bellesa/Saló',
-            fitness: 'Fitness/Gimnàs',
-            bakery: 'Forn/Pastisseria',
-            grocery: 'Supermercat/Botiga d\'Aliments',
-            pharmacy: 'Farmàcia',
-            petshop: 'Botiga de Mascotes/Veterinari',
-            hardware: 'Ferreteria',
-            flowers: 'Floristeria',
-            butcher: 'Carnisseria',
-            fishmonger: 'Peixateria',
-            fruitstore: 'Fruiteria',
-            stationery: 'Papeteria',
-            laundry: 'Bugaderia',
-            shoes: 'Sabateria',
-            books: 'Llibreria',
-            toys: 'Joguina',
-            jewelry: 'Joieria',
-            optics: 'Òptica',
-            other: 'Botiga'
+            restaurant: language === 'es' ? 'Restaurante/Café' : language === 'ca' ? 'Restaurant/Cafè' : 'Restaurant/Café',
+            retail: language === 'es' ? 'Tienda Minorista' : language === 'ca' ? 'Botiga Minorista' : 'Retail Store',
+            service: language === 'es' ? 'Negocio de Servicios' : language === 'ca' ? 'Negoci de Serveis' : 'Service Business',
+            beauty: language === 'es' ? 'Belleza/Salón' : language === 'ca' ? 'Bellesa/Saló' : 'Beauty/Salon',
+            fitness: language === 'es' ? 'Fitness/Gimnasio' : language === 'ca' ? 'Fitness/Gimnàs' : 'Fitness/Gym',
+            bakery: language === 'es' ? 'Panadería/Pastelería' : language === 'ca' ? 'Forn/Pastisseria' : 'Bakery/Pastry',
+            grocery: language === 'es' ? 'Supermercado/Tienda de Alimentos' : language === 'ca' ? 'Supermercat/Botiga d\'Aliments' : 'Grocery Store/Food Shop',
+            pharmacy: language === 'es' ? 'Farmacia' : language === 'ca' ? 'Farmàcia' : 'Pharmacy',
+            petshop: language === 'es' ? 'Tienda de Mascotas/Veterinaria' : language === 'ca' ? 'Botiga de Mascotes/Veterinari' : 'Pet Shop/Veterinary',
+            hardware: language === 'es' ? 'Ferretería' : language === 'ca' ? 'Ferreteria' : 'Hardware Store',
+            flowers: language === 'es' ? 'Florería' : language === 'ca' ? 'Floristeria' : 'Flower Shop',
+            butcher: language === 'es' ? 'Carnicería' : language === 'ca' ? 'Carnisseria' : 'Butcher Shop',
+            fishmonger: language === 'es' ? 'Pescadería' : language === 'ca' ? 'Peixateria' : 'Fishmonger',
+            fruitstore: language === 'es' ? 'Frutería' : language === 'ca' ? 'Fruiteria' : 'Fruit Store',
+            stationery: language === 'es' ? 'Papelería' : language === 'ca' ? 'Papeteria' : 'Stationery Store',
+            laundry: language === 'es' ? 'Lavandería' : language === 'ca' ? 'Bugaderia' : 'Laundry',
+            shoes: language === 'es' ? 'Zapatería' : language === 'ca' ? 'Sabateria' : 'Shoe Store',
+            books: language === 'es' ? 'Librería' : language === 'ca' ? 'Llibreria' : 'Bookstore',
+            toys: language === 'es' ? 'Juguetería' : language === 'ca' ? 'Joguina' : 'Toy Store',
+            jewelry: language === 'es' ? 'Joyería' : language === 'ca' ? 'Joieria' : 'Jewelry Store',
+            optics: language === 'es' ? 'Óptica' : language === 'ca' ? 'Òptica' : 'Optics',
+            other: language === 'es' ? 'Otro' : language === 'ca' ? 'Altres' : 'Other'
         };
 
-        const businessName = businessTypeNames[businessType] || 'Botiga';
+        const businessName = businessTypeNames[businessType] || (language === 'es' ? 'Negocio' : 'Business');
         const productsList = products.split(',').map(p => p.trim()).filter(p => p);
         const promotionsList = promotions.split(',').map(p => p.trim()).filter(p => p);
         
         // Auto-recommend format if not selected
         const selectedFormat = format || this.recommendFormat(socialMedia);
-        
-        // Generate Gemini prompts for image creation
-        const geminiPrompts = this.generateGeminiPrompts(language, businessName, socialMedia, this.getStyleTemplates(communicationStyle, language), productsList, promotionsList, selectedFormat);
 
         return {
-            geminiPrompts,
             socialMedia: this.generateSocialMediaContent(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList, promotionsList),
             imageSuggestions: this.generateImageSuggestions(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList),
             productPromotion: this.generateProductPromotion(language, businessName, communicationStyle, productsList, promotionsList),
@@ -387,37 +369,93 @@ class MarketingContentGenerator {
 
     getStyleTemplates(style, language) {
         const templates = {
-            elegant: {
+            elegant: language === 'es' ? {
+                greeting: 'Estimado',
+                closing: 'Con mayor consideración',
+                tone: 'sofisticado',
+                adjectives: ['exquisito', 'premium', 'refinado', 'lujoso', 'excepcional'],
+                callsToAction: ['Le invitamos a experimentar', 'Permítanos presentarle', 'Descubra la elegancia de'],
+                hashtags: ['#Lujo', '#Elegancia', '#Sofisticado', '#CalidadPremium']
+            } : language === 'ca' ? {
                 greeting: 'Estimat',
                 closing: 'Amb la màxima consideració',
                 tone: 'sofisticat',
-                adjectives: ['exquisit', 'premium', 'refinat', 'luxós', 'excepcional'],
+                adjectives: ['exquisit', 'premium', 'refinat', 'de luxe', 'excepcional'],
                 callsToAction: ['Us convidem a experimentar', 'Permeteu-nos presentar-vos', 'Descobriu l\'elegància de'],
-                hashtags: ['#Luxos', '#Elegància', '#Sofisticat', '#QualitatPremium']
+                hashtags: ['#Lux', '#Elegància', '#Sofisticat', '#QualitatPremium']
+            } : {
+                greeting: 'Esteemed',
+                closing: 'With utmost regards',
+                tone: 'sophisticated',
+                adjectives: ['exquisite', 'premium', 'refined', 'luxurious', 'exceptional'],
+                callsToAction: ['We invite you to experience', 'Allow us to present', 'Discover the elegance of'],
+                hashtags: ['#Luxury', '#Elegance', '#Sophisticated', '#PremiumQuality']
             },
-            friendly: {
+            friendly: language === 'es' ? {
+                greeting: 'Hola',
+                closing: 'Calurosamente',
+                tone: 'acogedor',
+                adjectives: ['increíble', 'maravilloso', 'fantástico', 'genial', 'increíble'],
+                callsToAction: ['Ven a pasar el rato', 'Únete a nosotros para', 'Disfrutemos juntos'],
+                hashtags: ['#Familia', '#Comunidad', '#Amigable', '#Juntos']
+            } : language === 'ca' ? {
                 greeting: 'Hola',
                 closing: 'Cordialment',
                 tone: 'acollidor',
                 adjectives: ['increïble', 'meravellós', 'fantàstic', 'genial', 'increïble'],
-                callsToAction: ['Vine a passar l\'estona', 'Uneix-te a nosaltres per a', 'Gaudim junts'],
-                hashtags: ['#Família', '#Comunitat', '#Amistós', '#Junts']
+                callsToAction: ['Vine a passar l\'estona', 'Uneix-te a nosaltres per', 'Gaudim junts'],
+                hashtags: ['#Familia', '#Comunitat', '#Amigable', '#Junts']
+            } : {
+                greeting: 'Hey there',
+                closing: 'Warmly',
+                tone: 'welcoming',
+                adjectives: ['amazing', 'wonderful', 'fantastic', 'great', 'awesome'],
+                callsToAction: ['Come hang out', 'Join us for', 'Let\'s enjoy'],
+                hashtags: ['#Family', '#Community', '#Friendly', '#Together']
             },
-            simple: {
+            simple: language === 'es' ? {
+                greeting: 'Hola',
+                closing: 'Gracias',
+                tone: 'directo',
+                adjectives: ['bueno', 'agradable', 'calidad', 'fresco', 'local'],
+                callsToAction: ['Visítanos', 'Prueba nuestro', 'Consigue tu'],
+                hashtags: ['#Simple', '#Directo', '#SinComplicaciones', '#Calidad']
+            } : language === 'ca' ? {
                 greeting: 'Hola',
                 closing: 'Gràcies',
                 tone: 'directe',
                 adjectives: ['bo', 'agradable', 'qualitat', 'fresc', 'local'],
-                callsToAction: ['Visita\'ns', 'Prova el nostre', 'Consigueix el teu'],
+                callsToAction: ['Visita\'ns', 'Prova el nostre', 'Aconsegueix el teu'],
                 hashtags: ['#Simple', '#Directe', '#SenseComplicacions', '#Qualitat']
+            } : {
+                greeting: 'Hello',
+                closing: 'Thanks',
+                tone: 'direct',
+                adjectives: ['good', 'nice', 'quality', 'fresh', 'local'],
+                callsToAction: ['Visit us', 'Try our', 'Get your'],
+                hashtags: ['#Simple', '#Direct', '#NoFrills', '#Quality']
             },
-            modern: {
+            modern: language === 'es' ? {
+                greeting: 'Qué tal',
+                closing: 'Saludos',
+                tone: 'trendy',
+                adjectives: ['tendencia', 'viral', 'épico', 'genial', 'increíble'],
+                callsToAction: ['Sube de nivel con', 'Experimenta el vibe', 'Entérate de'],
+                hashtags: ['#Tendencia', '#Moderno', '#Viral', '#SiguienteNivel']
+            } : language === 'ca' ? {
                 greeting: 'Com va',
                 closing: 'Salutacions',
                 tone: 'trendy',
                 adjectives: ['tendència', 'viral', 'èpic', 'genial', 'increïble'],
-                callsToAction: ['Puji de nivell amb', 'Experimenta el vibe', 'Assabenta\'t de'],
+                callsToAction: ['Puja de nivell amb', 'Experimenta el vibe', 'Assabenta\'t de'],
                 hashtags: ['#Tendència', '#Modern', '#Viral', '#SegüentNivell']
+            } : {
+                greeting: 'Hi',
+                closing: 'Cheers',
+                tone: 'trendy',
+                adjectives: ['trending', 'viral', 'epic', 'lit', 'fire'],
+                callsToAction: ['Level up with', 'Experience the vibe', 'Get in on'],
+                hashtags: ['#Trending', '#Modern', '#Viral', '#NextLevel']
             }
         };
         
@@ -1010,10 +1048,10 @@ class MarketingContentGenerator {
             <div class="results-header">
                 <h2 class="results-title">
                     <span class="title-icon">🚀</span>
-                    Contingut de Marketing MarketBarri
+                    ${language === 'es' ? 'Contenido de Marketing LocalBoost IA' : language === 'ca' ? 'Contingut de Marketing LocalBoost IA' : 'LocalBoost IA Marketing Content Generated'}
                 </h2>
                 <p class="results-subtitle">
-                    El teu contingut professional està llest per usar
+                    ${language === 'es' ? 'Tu contenido profesional está listo para usar' : language === 'ca' ? 'El teu contingut professional està llest per usar' : 'Your professional content is ready to use'}
                 </p>
             </div>
             
@@ -1022,8 +1060,8 @@ class MarketingContentGenerator {
                     <div class="card-header">
                         <div class="card-icon">🤖</div>
                         <div class="card-title-group">
-                            <h3 class="card-title">Prompts IA per Gemini</h3>
-                            <p class="card-subtitle">Optimitza el teu contingut amb IA</p>
+                            <h3 class="card-title">${language === 'es' ? 'Prompts IA para Gemini' : language === 'ca' ? 'Prompts IA per Gemini' : 'AI Prompts for Gemini'}</h3>
+                            <p class="card-subtitle">${language === 'es' ? 'Optimiza tu contenido con IA' : language === 'ca' ? 'Optimitza el teu contingut amb IA' : 'Optimize your content with AI'}</p>
                         </div>
                     </div>
                     <div class="card-content">
@@ -2533,5 +2571,5 @@ Try asking me about any of these topics, or describe what you'd like to achieve 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.generator = new MarketingContentGenerator();
+    new MarketingContentGenerator();
 });
