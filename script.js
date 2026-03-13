@@ -2583,5 +2583,5 @@ Try asking me about any of these topics, or describe what you'd like to achieve 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new MarketingContentGenerator();
+    window.generator = new MarketingContentGenerator();
 });
