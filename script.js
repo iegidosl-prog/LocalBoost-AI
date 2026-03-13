@@ -161,7 +161,7 @@ class MarketingContentGenerator {
     }
 
     initThemeToggleListener() {
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggleBtn = document.getElementById('themeToggle');
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', () => this.toggleTheme());
         }
@@ -175,17 +175,14 @@ class MarketingContentGenerator {
     }
 
     updateThemeToggleUI() {
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggleBtn = document.getElementById('themeToggle');
         const themeIcon = themeToggleBtn?.querySelector('.theme-icon');
-        const themeText = themeToggleBtn?.querySelector('.theme-text');
         
-        if (themeIcon && themeText) {
+        if (themeIcon) {
             if (this.currentTheme === 'dark') {
                 themeIcon.textContent = '☀️';
-                themeText.textContent = 'Light Mode';
             } else {
                 themeIcon.textContent = '🌙';
-                themeText.textContent = 'Dark Mode';
             }
         }
     }
