@@ -15,10 +15,6 @@ class MarketingContentGenerator {
     initEventListeners() {
         const form = document.getElementById('marketingForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
-        const helpBtn = document.getElementById('helpBtn');
-        const closeHelpModal = document.getElementById('closeHelpModal');
-        const helpModal = document.getElementById('helpModal');
-        const languageSelect = document.getElementById('language');
 
         if (form) {
             form.addEventListener('submit', (e) => {
@@ -30,32 +26,6 @@ class MarketingContentGenerator {
         if (generateNewBtn) {
             generateNewBtn.addEventListener('click', () => {
                 this.generateContent();
-            });
-        }
-
-        // Help button functionality
-        if (helpBtn) {
-            helpBtn.addEventListener('click', () => {
-                if (helpModal) {
-                    helpModal.style.display = 'flex';
-                }
-            });
-        }
-
-        if (closeHelpModal) {
-            closeHelpModal.addEventListener('click', () => {
-                if (helpModal) {
-                    helpModal.style.display = 'none';
-                }
-            });
-        }
-
-        // Close modal when clicking outside
-        if (helpModal) {
-            helpModal.addEventListener('click', (e) => {
-                if (e.target === helpModal) {
-                    helpModal.style.display = 'none';
-                }
             });
         }
 
