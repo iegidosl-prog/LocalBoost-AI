@@ -27,6 +27,7 @@ class MarketingContentGenerator {
         // Fallback: Direct button click listener
         if (generateBtn) {
             generateBtn.addEventListener('click', (e) => {
+                console.log('Generate button clicked!');
                 e.preventDefault();
                 this.generateContent();
             });
@@ -280,6 +281,7 @@ class MarketingContentGenerator {
     }
 
     generateContent() {
+        console.log('generateContent() called');
         const language = 'ca'; // Fixed to Catalan
         const businessType = document.getElementById('businessType').value;
         const socialMedia = document.getElementById('socialMedia').value;
@@ -288,14 +290,19 @@ class MarketingContentGenerator {
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
+        console.log('Form values:', { businessType, socialMedia, communicationStyle, dailyProducts, promotions });
+
         if (!businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
+            console.log('Validation failed - missing fields');
             this.showAlert('Si us plau, completa tots els camps');
             return;
         }
 
+        console.log('Validation passed - showing loading state');
         this.showLoadingState();
 
         setTimeout(() => {
+            console.log('Timeout reached - creating content');
             const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
             this.displayResults(content, language);
         }, 1000);
