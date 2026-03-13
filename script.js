@@ -15,9 +15,18 @@ class MarketingContentGenerator {
     initEventListeners() {
         const form = document.getElementById('marketingForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
+        const generateBtn = document.getElementById('generateBtn');
 
         if (form) {
             form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.generateContent();
+            });
+        }
+
+        // Fallback: Direct button click listener
+        if (generateBtn) {
+            generateBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.generateContent();
             });
