@@ -13,6 +13,14 @@ class MarketingContentGenerator {
     }
 
     initEventListeners() {
+        // Simple test button
+        const testBtn = document.getElementById('testBtn');
+        if (testBtn) {
+            testBtn.addEventListener('click', () => {
+                alert('TEST BUTTON WORKS! JavaScript is loaded and working.');
+            });
+        }
+
         const form = document.getElementById('marketingForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
         const generateBtn = document.getElementById('generateBtn');
