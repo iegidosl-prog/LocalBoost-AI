@@ -311,38 +311,44 @@ class MarketingContentGenerator {
 
         setTimeout(() => {
             console.log('Timeout reached - creating content');
-            const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
-            this.displayResults(content, language);
+            try {
+                const content = this.createMarketingContent(language, businessType, socialMedia, format, communicationStyle, dailyProducts, promotions);
+                console.log('Content created successfully:', content);
+                this.displayResults(content, language);
+            } catch (error) {
+                console.error('Error creating content:', error);
+                this.showAlert('Error en generar contingut. Revisa la consola.');
+            }
         }, 1000);
     }
 
     createMarketingContent(language, businessType, socialMedia, format, communicationStyle, products, promotions) {
         const businessTypeNames = {
-            restaurant: language === 'es' ? 'Restaurante/Café' : language === 'ca' ? 'Restaurant/Cafè' : 'Restaurant/Café',
-            retail: language === 'es' ? 'Tienda Minorista' : language === 'ca' ? 'Botiga Minorista' : 'Retail Store',
-            service: language === 'es' ? 'Negocio de Servicios' : language === 'ca' ? 'Negoci de Serveis' : 'Service Business',
-            beauty: language === 'es' ? 'Belleza/Salón' : language === 'ca' ? 'Bellesa/Saló' : 'Beauty/Salon',
-            fitness: language === 'es' ? 'Fitness/Gimnasio' : language === 'ca' ? 'Fitness/Gimnàs' : 'Fitness/Gym',
-            bakery: language === 'es' ? 'Panadería/Pastelería' : language === 'ca' ? 'Forn/Pastisseria' : 'Bakery/Pastry',
-            grocery: language === 'es' ? 'Supermercado/Tienda de Alimentos' : language === 'ca' ? 'Supermercat/Botiga d\'Aliments' : 'Grocery Store/Food Shop',
-            pharmacy: language === 'es' ? 'Farmacia' : language === 'ca' ? 'Farmàcia' : 'Pharmacy',
-            petshop: language === 'es' ? 'Tienda de Mascotas/Veterinaria' : language === 'ca' ? 'Botiga de Mascotes/Veterinari' : 'Pet Shop/Veterinary',
-            hardware: language === 'es' ? 'Ferretería' : language === 'ca' ? 'Ferreteria' : 'Hardware Store',
-            flowers: language === 'es' ? 'Florería' : language === 'ca' ? 'Floristeria' : 'Flower Shop',
-            butcher: language === 'es' ? 'Carnicería' : language === 'ca' ? 'Carnisseria' : 'Butcher Shop',
-            fishmonger: language === 'es' ? 'Pescadería' : language === 'ca' ? 'Peixateria' : 'Fishmonger',
-            fruitstore: language === 'es' ? 'Frutería' : language === 'ca' ? 'Fruiteria' : 'Fruit Store',
-            stationery: language === 'es' ? 'Papelería' : language === 'ca' ? 'Papeteria' : 'Stationery Store',
-            laundry: language === 'es' ? 'Lavandería' : language === 'ca' ? 'Bugaderia' : 'Laundry',
-            shoes: language === 'es' ? 'Zapatería' : language === 'ca' ? 'Sabateria' : 'Shoe Store',
-            books: language === 'es' ? 'Librería' : language === 'ca' ? 'Llibreria' : 'Bookstore',
-            toys: language === 'es' ? 'Juguetería' : language === 'ca' ? 'Joguina' : 'Toy Store',
-            jewelry: language === 'es' ? 'Joyería' : language === 'ca' ? 'Joieria' : 'Jewelry Store',
-            optics: language === 'es' ? 'Óptica' : language === 'ca' ? 'Òptica' : 'Optics',
-            other: language === 'es' ? 'Otro' : language === 'ca' ? 'Altres' : 'Other'
+            restaurant: 'Restaurant/Cafè',
+            retail: 'Botiga Minorista',
+            service: 'Negoci de Serveis',
+            beauty: 'Bellesa/Saló',
+            fitness: 'Fitness/Gimnàs',
+            bakery: 'Forn/Pastisseria',
+            grocery: 'Supermercat/Botiga d\'Aliments',
+            pharmacy: 'Farmàcia',
+            petshop: 'Botiga de Mascotes/Veterinari',
+            hardware: 'Ferreteria',
+            flowers: 'Floristeria',
+            butcher: 'Carnisseria',
+            fishmonger: 'Peixateria',
+            fruitstore: 'Fruiteria',
+            stationery: 'Papeteria',
+            laundry: 'Bugaderia',
+            shoes: 'Sabateria',
+            books: 'Llibreria',
+            toys: 'Joguina',
+            jewelry: 'Joieria',
+            optics: 'Òptica',
+            other: 'Botiga'
         };
 
-        const businessName = businessTypeNames[businessType] || (language === 'es' ? 'Negocio' : 'Business');
+        const businessName = businessTypeNames[businessType] || 'Botiga';
         const productsList = products.split(',').map(p => p.trim()).filter(p => p);
         const promotionsList = promotions.split(',').map(p => p.trim()).filter(p => p);
         
