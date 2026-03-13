@@ -61,19 +61,6 @@
                 </div>
                 
                 <form id="marketingForm" class="marketing-form">
-                    <!-- Language Selection -->
-                    <div class="form-group">
-                        <label for="language" class="form-label">
-                            <span class="label-icon">🌍</span>
-                            Idioma
-                        </label>
-                        <select id="language" name="language" class="form-select">
-                            <option value="ca" selected>Català</option>
-                            <option value="es">Español</option>
-                            <option value="en">English</option>
-                        </select>
-                    </div>
-
                     <!-- Business Type -->
                     <div class="form-group">
                         <label for="businessType" class="form-label">
@@ -283,40 +270,41 @@
             </section>
         </main>
 
-        <!-- Chatbot -->
-        <div id="chatbot" class="chatbot">
-            <div class="chatbot-header">
-                <div class="chatbot-title">
-                    <span class="chatbot-icon">🤖</span>
-                    <span class="chatbot-name">Assistent MarketBarri</span>
+        <!-- Simple Help Button -->
+        <button id="helpBtn" class="help-btn" aria-label="Ajuda">
+            <span class="help-icon">❓</span>
+        </button>
+
+        <!-- Help Modal -->
+        <div id="helpModal" class="help-modal" style="display: none;">
+            <div class="help-modal-content">
+                <div class="help-modal-header">
+                    <h3>Ajuda de MarketBarri</h3>
+                    <button id="closeHelpModal" class="close-modal-btn">✕</button>
                 </div>
-                <button id="closeChatbot" class="close-chatbot-btn">✕</button>
-            </div>
-            <div class="chatbot-messages" id="chatbotMessages">
-                <div class="chatbot-message">
-                    <div class="message-content">
-                        <p>👋 Hola! Soc l'assistent de MarketBarri. Com puc ajudar-te a crear contingut per a la teva botiga de barri avui?</p>
-                    </div>
+                <div class="help-modal-body">
+                    <h4>🚀 Com utilitzar MarketBarri</h4>
+                    <ol>
+                        <li>Selecciona el teu tipus de botiga</li>
+                        <li>Trieu les xarxes socials on voleu publicar</li>
+                        <li>Escriviu els vostres productes diaris</li>
+                        <li>Afegiu les promocions actuals</li>
+                        <li>Feu clic a "Generar Contingut"</li>
+                    </ol>
+                    
+                    <h4>💡 Consells</h4>
+                    <ul>
+                        <li>Sigueu específic amb els productes</li>
+                        <li>Utilitzeu promocions atractives</li>
+                        <li>El contingut es generarà automàticament</li>
+                        <li>Podeu copiar els prompts per a Gemini IA</li>
+                    </ul>
+                    
+                    <h4>📧 Contacte</h4>
+                    <p>Per a més ajuda: support@marketbarri.cat</p>
                 </div>
-            </div>
-            <div class="chatbot-input-container">
-                <input 
-                    type="text" 
-                    id="chatbotInput" 
-                    class="chatbot-input" 
-                    placeholder="Escriu la teva pregunta..."
-                    maxlength="200"
-                >
-                <button id="sendChatbotMessage" class="send-chatbot-btn">
-                    <span class="send-icon">📤</span>
-                </button>
             </div>
         </div>
-
-        <!-- Chatbot Toggle Button -->
-        <button id="chatbotToggle" class="chatbot-toggle-btn" aria-label="Obrir assistent IA">
-            <span class="chatbot-toggle-icon">🤖</span>
-        </button>
 
         <!-- PWA Install Prompt -->
         <div id="pwaInstallPrompt" class="pwa-install-prompt" style="display: none;">

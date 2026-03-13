@@ -13,8 +13,11 @@ class MarketingContentGenerator {
     }
 
     initEventListeners() {
-        const form = document.getElementById('businessForm');
+        const form = document.getElementById('marketingForm');
         const generateNewBtn = document.getElementById('generateNewBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        const closeHelpModal = document.getElementById('closeHelpModal');
+        const helpModal = document.getElementById('helpModal');
         const languageSelect = document.getElementById('language');
 
         if (form) {
@@ -30,12 +33,29 @@ class MarketingContentGenerator {
             });
         }
 
-        // Language change handler
-        if (languageSelect) {
-            languageSelect.addEventListener('change', (e) => {
-                const selectedLang = e.target.value;
-                document.body.setAttribute('lang', selectedLang);
-                this.updatePageLanguage(selectedLang);
+        // Help button functionality
+        if (helpBtn) {
+            helpBtn.addEventListener('click', () => {
+                if (helpModal) {
+                    helpModal.style.display = 'flex';
+                }
+            });
+        }
+
+        if (closeHelpModal) {
+            closeHelpModal.addEventListener('click', () => {
+                if (helpModal) {
+                    helpModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        if (helpModal) {
+            helpModal.addEventListener('click', (e) => {
+                if (e.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
             });
         }
 
@@ -47,9 +67,6 @@ class MarketingContentGenerator {
 
         // Theme toggle listener
         this.initThemeToggleListener();
-
-        // Chatbot event listeners
-        this.initChatbotEventListeners();
 
         // Generate new content button
         document.addEventListener('click', (e) => {
@@ -287,7 +304,7 @@ class MarketingContentGenerator {
     }
 
     generateContent() {
-        const language = document.getElementById('language').value;
+        const language = 'ca'; // Fixed to Catalan
         const businessType = document.getElementById('businessType').value;
         const socialMedia = document.getElementById('socialMedia').value;
         const format = document.getElementById('format').value;
@@ -295,8 +312,8 @@ class MarketingContentGenerator {
         const dailyProducts = document.getElementById('dailyProducts').value;
         const promotions = document.getElementById('promotions').value;
 
-        if (!language || !businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
-            this.showAlert(language === 'es' ? 'Por favor complete todos los campos' : language === 'ca' ? 'Si us plau, completeu tots els camps' : 'Please fill in all fields');
+        if (!businessType || !socialMedia || !communicationStyle || !dailyProducts || !promotions) {
+            this.showAlert('Si us plau, completa tots els camps');
             return;
         }
 
