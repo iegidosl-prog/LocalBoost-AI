@@ -340,8 +340,12 @@ class MarketingContentGenerator {
         
         // Auto-recommend format if not selected
         const selectedFormat = format || this.recommendFormat(socialMedia);
+        
+        // Generate Gemini prompts for image creation
+        const geminiPrompts = this.generateGeminiPrompts(language, businessName, socialMedia, this.getStyleTemplates(communicationStyle, language), productsList, promotionsList, selectedFormat);
 
         return {
+            geminiPrompts,
             socialMedia: this.generateSocialMediaContent(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList, promotionsList),
             imageSuggestions: this.generateImageSuggestions(language, businessName, socialMedia, selectedFormat, communicationStyle, productsList),
             productPromotion: this.generateProductPromotion(language, businessName, communicationStyle, productsList, promotionsList),
